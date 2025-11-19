@@ -1,0 +1,19 @@
+name: evrag
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+    # 开发工具
+    - pipreqs
+    - pip-tools
+    - pipdeptree
+    - pytest>=7.0.0
+    - pytest-cov>=4.0.0
+    - ruff>=0.1.0
+    - mypy>=1.0.0
+    - pre-commit>=3.0.0
+    # PyTorch和CUDA相关包会在后续通过requirements.txt安装
+    # 这样更灵活，可以精确控制版本
