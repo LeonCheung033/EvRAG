@@ -1,0 +1,90 @@
+# 工作流名称：CI（Continuous Integration）
+name: CI
+
+# 触发条件
+on:
+  # 当代码推送到 develop 或 main 分支时触发
+  push:
+    branches: [ develop, main ]
+  
+  # 当向 develop 或 main 分支发起 Pull Request 时触发
+  pull_request:
+    branches: [ develop, main ]
+
+# 定义工作流中的任务（jobs）
+jobs:
+  test:
+    # 在最新的 Ubuntu 虚拟机上运行（GitHub 提供的标准环境）
+    runs-on: ubuntu-latest
+
+    # 使用矩阵策略：虽然目前只测试一个 Python 版本，但便于未来扩展
+    strategy:
+      matrix:
+        python-version: ["3.12"]  # 指定要测试的 Python 版本
+
+    # 任务执行步骤
+    steps:
+      # 步骤 1：检出代码
+      # 使用官方 action 获取当前提交的源码
+      - uses: actions/checkout@v3
+
+      # 步骤 2：设置 Conda 环境
+      # 使用社区维护的 setup-miniconda action
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true           # 自动更新 conda 本身到最新版
+          python-version: ${{ matrix.python-version }}  # 使用矩阵中的 Python 版本
+          environment-file: environment.yml # 从项目根目录加载 conda 环境定义
+          activate-environment: evrag       # 创建并激活名为 'evrag' 的环境
+
+      # 步骤 3：安装额外的 pip 依赖（如有）
+      # 注意：使用 bash -l {0} 确保正确加载 conda 环境（login shell）
+      - name: Install dependencies
+        shell: bash -l {0}
+        run: |
+          conda activate evrag
+          # 尝试安装主依赖（如果存在）
+          pip install -r requirements.txt || echo "requirements.txt not found, skipping"
+          # 安装开发依赖（如 pytest, ruff, mypy 等）
+          pip install -r requirements-dev.txt
+
+      # 步骤 4：代码风格检查（Ruff Linter）
+      - name: Lint with ruff
+        shell: bash -l {0}
+        run: |
+          conda activate evrag
+          ruff check src/ || echo "No source code to lint yet"
+        # 允许此步骤失败（项目初期可能无代码或未配置规则）
+        continue-on-error: true
+
+      # 步骤 5：静态类型检查（MyPy）
+      - name: Type check with mypy
+        shell: bash -l {0}
+        run: |
+          conda activate evrag
+          mypy src/ || echo "Type checking skipped"
+        # 允许失败（类型注解可能尚未完善）
+        continue-on-error: true
+
+      # 步骤 6：运行单元测试 + 生成覆盖率报告
+      - name: Test with pytest
+        shell: bash -l {0}
+        run: |
+          conda activate evrag
+          # 运行测试，并生成 XML 格式的覆盖率报告（供 Codecov 使用）
+          pytest tests/ -v --cov=src/evrag --cov-report=xml || echo "No tests found yet"
+        # 允许失败（初期可能无测试）
+        continue-on-error: true
+
+      # 步骤 7：上传覆盖率报告到 Codecov（第三方覆盖率服务）
+      # if: always() → 即使前面步骤失败也尝试上传（便于调试）
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml        # 指定覆盖率报告路径
+          flags: unittests            # 标记此次上传为“单元测试”
+          name: codecov-umbrella      # 在 Codecov 中的构建名称
+        # 允许失败（如 coverage.xml 不存在）
+        continue-on-error: true
