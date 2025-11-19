@@ -7,7 +7,10 @@ EvRAG - Enhanced Vector Retrieval-Augmented Generation
 __version__ = "0.1.0"
 __author__ = "Leon Cheung"
 
-# 版本信息会在后续开发中逐步导入模块
-# 例如：
-# from .config import Config
-# from .retriever import BM25Retriever
+from .config import Settings, get_settings, reload_settings
+
+__all__ = [
+    "Settings",
+    "get_settings",
+    "reload_settings",
+]
