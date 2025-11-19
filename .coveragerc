@@ -1,0 +1,19 @@
+[run]
+# 指定需要统计代码覆盖率的源代码目录
+# 只有这个目录下的 Python 文件会被纳入覆盖率计算
+source = src/evrag
+
+# 排除不需要统计覆盖率的路径或文件
+omit = 
+    */tests/*           # 排除所有 tests 目录（测试代码本身不需要被覆盖）
+    */__pycache__/*     # 排除 Python 缓存目录（自动生成，无需覆盖）
+
+[report]
+# 定义在生成覆盖率报告时应忽略的代码行（即使未执行也不计入“未覆盖”）
+exclude_lines =
+    pragma: no cover        # 手动标记：在代码行末尾加 `# pragma: no cover` 可跳过覆盖检查
+    def __repr__            # 通常 __repr__ 方法用于调试，难以/无需测试，可排除
+    raise AssertionError    # 断言失败的抛出语句（通常用于防御性编程，不一定能触发）
+    raise NotImplementedError  # 表示未实现的方法，正常情况下不应被调用
+    if __name__ == "__main__":  # 主程序入口，通常用于脚本调试，非库核心逻辑
+    if TYPE_CHECKING:       # 类型检查专用代码块（运行时不会执行，mypy 等静态检查使用）

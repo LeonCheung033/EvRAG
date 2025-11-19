@@ -1,0 +1,84 @@
+# .pre-commit-config.yaml
+# 用途：定义 Git 提交前自动运行的代码质量检查钩子（hooks）
+# 放置位置：项目根目录（必须）
+# 工具：https://pre-commit.com
+
+repos:
+  # ==============================
+  # 1. 官方通用钩子集合（pre-commit-hooks）
+  # 来源：https://github.com/pre-commit/pre-commit-hooks
+  # ==============================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0  # 使用的具体版本（建议固定，避免意外 break）
+    hooks:
+      # 删除每行末尾的多余空格
+      - id: trailing-whitespace
+
+      # 确保文件以单个换行符结尾（Unix 标准）
+      - id: end-of-file-fixer
+
+      # 检查 YAML 文件语法是否合法
+      - id: check-yaml
+
+      # 阻止提交过大的文件（默认 >500KB），防止误提交二进制文件
+      - id: check-added-large-files
+
+      # 检查 JSON 文件语法是否合法
+      - id: check-json
+
+      # 检查 TOML 文件语法是否合法（如 pyproject.toml）
+      - id: check-toml
+
+      # 检测文件中是否包含未解决的 Git 合并冲突标记（如 <<<<<<< HEAD）
+      - id: check-merge-conflict
+
+
+  # ==============================
+  # 2. Ruff：超快的 Python Linter + Formatter
+  # 来源：https://github.com/astral-sh/ruff-pre-commit
+  # ==============================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.0  # 注意：此版本较旧，建议升级到最新版（如 v0.13.0+）
+    hooks:
+      # 运行 Ruff linter，并自动修复可修复的问题
+      # --exit-non-zero-on-fix：即使自动修复了问题，也返回非零状态（确保开发者知道有修改）
+      # → 这会中断 commit，强制你重新 add 和 commit 修复后的文件
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+      # 运行 Ruff formatter（等价于 ruff format）
+      # 自动格式化 Python 代码（遵循项目配置或默认风格）
+      - id: ruff-format
+
+
+  # ==============================
+  # 3. MyPy：Python 静态类型检查器
+  # 来源：https://github.com/pre-commit/mirrors-mypy（pre-commit 官方镜像）
+  # ==============================
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.0  # 对应 MyPy 1.7.0 版本
+    hooks:
+      - id: mypy
+        # 额外安装类型存根包（types-all 包含大量第三方库的类型提示）
+        # 注意：types-all 较大，可根据需要替换为具体包（如 types-requests）
+        additional_dependencies: [types-all]
+
+        # 忽略无法导入的模块（因 pre-commit 在隔离环境中运行，无项目依赖）
+        # 实际项目中建议通过 additional_dependencies 补全关键依赖的类型
+        args: [--ignore-missing-imports]
+
+        # === 以下为可选配置（当前被注释）===
+        # pass_filenames: false
+        #   → 不将具体文件名传给 mypy，而是让 mypy 自己扫描整个包
+        #   → 适用于检查包级结构，但可能变慢
+
+        # always_run: false
+        #   → 默认情况下，mypy 只检查 staged 文件
+        #   → 设为 true 则每次 commit 都运行（即使没改 Python 文件）
+        #
+        # 💡 项目初期类型注解不全时，可暂时禁用 mypy：
+        #     方法1：在 hooks 前加 `#` 注释掉整个 mypy hook
+        #     方法2：设 stages: [manual]，仅手动运行
+        #
+        # ⚠️ 注意：pre-commit 中运行 mypy 有局限性（无完整依赖环境），
+        #         更推荐在 CI 或本地完整环境中运行严格类型检查。
