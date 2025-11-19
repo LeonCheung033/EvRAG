@@ -1,0 +1,46 @@
+# EvRAG配置文件示例
+# 复制此文件为 config.yaml 并根据实际情况修改
+
+# 基础路径配置
+base_dir: "."  # 项目根目录，可以使用绝对路径或相对路径
+
+# 数据路径配置
+data_dir: "data"
+pdf_path: "data/Tesla_Manual.pdf"
+test_doc_path: "data/test_docs.txt"
+stopwords_path: "data/stopwords.txt"
+image_save_dir: "data/saved_images"
+raw_docs_path: "data/processed_docs/raw_docs.pkl"
+clean_docs_path: "data/processed_docs/clean_docs.pkl"
+split_docs_path: "data/processed_docs/split_docs.pkl"
+
+# 索引路径配置
+index_dir: "data/saved_index"
+bm25_pickle_path: "data/saved_index/bm25retriever.pkl"
+tfidf_pickle_path: "data/saved_index/tfidfretriever.pkl"
+milvus_db_path: "data/saved_index/milvus.db"
+faiss_db_path: "data/saved_index/faiss.db"
+faiss_qwen_db_path: "data/saved_index/faiss_qwen.db"
+
+# 模型路径配置
+models_dir: "models"
+m3e_small_model_path: "models/AI-ModelScope/m3e-small"
+bge_m3_model_path: "models/BAAI/bge-m3"
+qwen3_embedding_model_path: "models/Qwen3-Embedding-0.6B"
+qwen3_reranker_model_path: "models/Qwen3-Reranker-0.6B"
+bge_reranker_model_path: "models/BAAI/bge-reranker-v2-m3"
+bge_reranker_tuned_model_path: "models/bge-reranker-tuned"
+
+# LLM配置
+llm_model_name: "qwen3_lora_sft_int4"
+llm_base_url: "http://localhost:8000/v1"
+llm_api_key: "EMPTY"  # 从环境变量读取，不要直接写在这里
+
+# MongoDB配置
+mongodb_host: "localhost"
+mongodb_port: 27017
+mongodb_database: "evrag"
+
+# 服务配置
+server_host: "0.0.0.0"
+server_port: 8000
