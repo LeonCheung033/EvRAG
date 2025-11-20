@@ -132,6 +132,7 @@ class Settings(BaseSettings):
 
     llm_api_key: str = Field(default="EMPTY", description="LLM API密钥")
 
+    device: str = Field(default="cuda", description="设备类型")
     # ========== MongoDB配置 ==========
     mongodb_host: str = Field(default="localhost", description="MongoDB主机地址")
 
