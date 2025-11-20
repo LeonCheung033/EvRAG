@@ -35,7 +35,7 @@ bge_reranker_tuned_model_path: "models/bge-reranker-tuned"
 llm_model_name: "qwen3_lora_sft_int4"
 llm_base_url: "http://localhost:8000/v1"
 llm_api_key: "EMPTY"  # 从环境变量读取，不要直接写在这里
-
+device: "cuda"
 # MongoDB配置
 mongodb_host: "localhost"
 mongodb_port: 27017
