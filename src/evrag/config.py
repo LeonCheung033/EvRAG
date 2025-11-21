@@ -145,6 +145,10 @@ class Settings(BaseSettings):
 
     server_port: int = Field(default=8000, description="服务器端口")
 
+    semantic_chunk_url: str = Field(
+        default="http://0.0.0.0:6000/v1/semantic-chunks", description="语义分块服务URL"
+    )
+
     # ========== Pydantic配置 ==========
     model_config = SettingsConfigDict(
         env_file=".env",
