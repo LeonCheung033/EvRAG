@@ -8,7 +8,7 @@ import json
 import pytest
 import tempfile
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 from langchain_core.documents import Document
 
 from src.evrag.gen_qa import QAGenerator
@@ -31,11 +31,11 @@ class TestQAGenerator:
         return [
             Document(
                 page_content="这是一段关于如何打开车窗的详细说明。首先，找到车窗控制按钮。然后，按下按钮即可打开车窗。",
-                metadata={"unique_id": "doc_1", "index": 0}
+                metadata={"unique_id": "doc_1", "index": 0},
             ),
             Document(
                 page_content="空调系统使用说明。",
-                metadata={"unique_id": "doc_2", "index": 1}
+                metadata={"unique_id": "doc_2", "index": 1},
             ),
         ]
 
@@ -51,11 +51,7 @@ class TestQAGenerator:
     def test_init_with_custom_params(self, mock_llm_client):
         """测试：使用自定义参数初始化"""
         generator = QAGenerator(
-            mock_llm_client,
-            min_chunk_size=50,
-            max_workers=10,
-            max_retry=5,
-            seed=123
+            mock_llm_client, min_chunk_size=50, max_workers=10, max_retry=5, seed=123
         )
 
         assert generator.min_chunk_size == 50
@@ -99,11 +95,11 @@ class TestQAGenerator:
         # 第一次失败，第二次成功
         mock_llm_client.chat.side_effect = [
             Exception("First failure"),
-            "Success response"
+            "Success response",
         ]
         generator = QAGenerator(mock_llm_client, max_retry=3)
 
-        with patch('time.sleep'):  # 跳过sleep
+        with patch("time.sleep"):  # 跳过sleep
             result = generator._call_llm("test prompt")
 
         assert result == "Success response"
@@ -114,18 +110,25 @@ class TestQAGenerator:
         mock_llm_client.chat.side_effect = Exception("Always fails")
         generator = QAGenerator(mock_llm_client, max_retry=2)
 
-        with patch('time.sleep'):  # 跳过sleep
+        with patch("time.sleep"):  # 跳过sleep
             result = generator._call_llm("test prompt")
 
         assert result is None
         assert mock_llm_client.chat.call_count == 2
 
-    def test_generate_qa_from_documents_success(self, mock_llm_client, sample_documents):
+    def test_generate_qa_from_documents_success(
+        self, mock_llm_client, sample_documents
+    ):
         """测试：成功从文档生成QA对"""
-        mock_llm_client.chat.return_value = json.dumps([
-            {"question": "如何打开车窗？", "answer": "找到车窗控制按钮，按下即可。"},
-            {"question": "车窗控制按钮在哪里？", "answer": "在车门上。"}
-        ])
+        mock_llm_client.chat.return_value = json.dumps(
+            [
+                {
+                    "question": "如何打开车窗？",
+                    "answer": "找到车窗控制按钮，按下即可。",
+                },
+                {"question": "车窗控制按钮在哪里？", "answer": "在车门上。"},
+            ]
+        )
         generator = QAGenerator(mock_llm_client, min_chunk_size=10)
 
         result = generator.generate_qa_from_documents(sample_documents)
@@ -134,7 +137,9 @@ class TestQAGenerator:
         assert "doc_1" in result
         assert "raw_resp" in result["doc_1"]
 
-    def test_generate_qa_from_documents_filter_short_docs(self, mock_llm_client, sample_documents):
+    def test_generate_qa_from_documents_filter_short_docs(
+        self, mock_llm_client, sample_documents
+    ):
         """测试：过滤太短的文档"""
         generator = QAGenerator(mock_llm_client, min_chunk_size=100)
 
@@ -143,33 +148,46 @@ class TestQAGenerator:
         # doc_2太短，应该被过滤
         assert "doc_2" not in result
 
-    def test_generate_qa_from_documents_with_checkpoint(self, mock_llm_client, sample_documents):
+    def test_generate_qa_from_documents_with_checkpoint(
+        self, mock_llm_client, sample_documents
+    ):
         """测试：使用checkpoint跳过已处理的文档"""
-        mock_llm_client.chat.return_value = json.dumps([{"question": "Q", "answer": "A"}])
+        mock_llm_client.chat.return_value = json.dumps(
+            [{"question": "Q", "answer": "A"}]
+        )
         generator = QAGenerator(mock_llm_client, min_chunk_size=10)
         checkpoint = {"doc_1": {"unique_id": "doc_1", "raw_resp": "existing"}}
 
-        result = generator.generate_qa_from_documents(sample_documents, checkpoint=checkpoint)
+        result = generator.generate_qa_from_documents(
+            sample_documents, checkpoint=checkpoint
+        )
 
         # doc_1应该被跳过
         assert result["doc_1"]["raw_resp"] == "existing"
         # 不应该为doc_1调用LLM
         assert mock_llm_client.chat.call_count == 0
 
-    def test_generate_qa_from_documents_with_output_file(self, mock_llm_client, sample_documents):
+    def test_generate_qa_from_documents_with_output_file(
+        self, mock_llm_client, sample_documents
+    ):
         """测试：生成QA对并保存到文件"""
-        mock_llm_client.chat.return_value = json.dumps([{"question": "Q", "answer": "A"}])
+        mock_llm_client.chat.return_value = json.dumps(
+            [{"question": "Q", "answer": "A"}]
+        )
         generator = QAGenerator(mock_llm_client, min_chunk_size=10)
 
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
             output_file = Path(f.name)
 
         try:
-            result = generator.generate_qa_from_documents(sample_documents, output_file=output_file)
+            result = generator.generate_qa_from_documents(
+                sample_documents, output_file=output_file
+            )
+            assert len(result) == 1
 
             assert output_file.exists()
             # 验证文件内容
-            with open(output_file, 'r', encoding='utf-8') as f:
+            with open(output_file, "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 assert len(lines) > 0
         finally:
@@ -177,7 +195,9 @@ class TestQAGenerator:
 
     def test_generalize_questions_success(self, mock_llm_client):
         """测试：成功泛化问题"""
-        mock_llm_client.chat.return_value = "1. 怎么打开车窗\n2. 如何开启车窗\n3. 车窗怎么开"
+        mock_llm_client.chat.return_value = (
+            "1. 怎么打开车窗\n2. 如何开启车窗\n3. 车窗怎么开"
+        )
         generator = QAGenerator(mock_llm_client)
         questions = ["如何打开车窗？"]
 
@@ -191,11 +211,14 @@ class TestQAGenerator:
         mock_llm_client.chat.return_value = "1. 问题1\n2. 问题2"
         generator = QAGenerator(mock_llm_client)
 
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as f:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".json") as f:
             output_file = Path(f.name)
 
         try:
-            result = generator.generalize_questions(["测试问题"], output_file=output_file)
+            result = generator.generalize_questions(
+                ["测试问题"], output_file=output_file
+            )
+            assert len(result) == 1
 
             assert output_file.exists()
         finally:
@@ -224,7 +247,9 @@ class TestQAGenerator:
 
     def test_score_qa_quality_with_result_tags(self, mock_llm_client):
         """测试：从带标签的结果中提取JSON"""
-        mock_llm_client.chat.return_value = '<result>{"score": 5, "reason": "Excellent"}</result>'
+        mock_llm_client.chat.return_value = (
+            '<result>{"score": 5, "reason": "Excellent"}</result>'
+        )
         generator = QAGenerator(mock_llm_client)
 
         result = generator.score_qa_quality("Q", "A")
@@ -243,10 +268,12 @@ class TestQAGenerator:
 
     def test_parse_qa_response_valid_json(self):
         """测试：解析有效的QA响应JSON"""
-        raw_resp = json.dumps([
-            {"question": "如何打开车窗？", "answer": "按下按钮"},
-            {"question": "如何关闭车窗？", "answer": "再次按下按钮"}
-        ])
+        raw_resp = json.dumps(
+            [
+                {"question": "如何打开车窗？", "answer": "按下按钮"},
+                {"question": "如何关闭车窗？", "answer": "再次按下按钮"},
+            ]
+        )
 
         result = QAGenerator.parse_qa_response(raw_resp)
 
@@ -256,9 +283,11 @@ class TestQAGenerator:
 
     def test_parse_qa_response_with_text_wrapper(self):
         """测试：解析带文本包装的JSON响应"""
-        raw_resp = "Here is the result:\n" + json.dumps([
-            {"question": "Q", "answer": "A"}
-        ]) + "\nEnd of result"
+        raw_resp = (
+            "Here is the result:\n"
+            + json.dumps([{"question": "Q", "answer": "A"}])
+            + "\nEnd of result"
+        )
 
         result = QAGenerator.parse_qa_response(raw_resp)
 
@@ -345,7 +374,7 @@ class TestQAGenerator:
         mock_llm_client.chat.side_effect = Exception("LLM error")
         generator = QAGenerator(mock_llm_client, min_chunk_size=10, max_retry=1)
 
-        with patch('time.sleep'):  # 跳过sleep
+        with patch("time.sleep"):  # 跳过sleep
             result = generator.generate_qa_from_documents(sample_documents)
 
         # 所有文档都失败，结果应该为空或只包含checkpoint
@@ -353,13 +382,15 @@ class TestQAGenerator:
 
     def test_generate_qa_concurrent_processing(self, mock_llm_client):
         """测试：并发处理多个文档"""
-        mock_llm_client.chat.return_value = json.dumps([{"question": "Q", "answer": "A"}])
+        mock_llm_client.chat.return_value = json.dumps(
+            [{"question": "Q", "answer": "A"}]
+        )
         generator = QAGenerator(mock_llm_client, min_chunk_size=10, max_workers=2)
-        
+
         documents = [
             Document(
                 page_content="文档内容" * 20,  # 确保长度足够
-                metadata={"unique_id": f"doc_{i}"}
+                metadata={"unique_id": f"doc_{i}"},
             )
             for i in range(5)
         ]
