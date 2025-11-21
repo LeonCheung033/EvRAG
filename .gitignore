@@ -83,3 +83,17 @@ Thumbs.db
 # 数据库文件
 *.sqlite
 *.sqlite3
+
+# 代码检查缓存
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage*
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+.hypothesis/
+.ipynb_checkpoints/
+*.ipynb
