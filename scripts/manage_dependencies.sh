@@ -15,11 +15,15 @@ TEMP_REQ=$(mktemp)
 
 # 扫描 src/ 目录（主要代码）
 echo "Scanning src/ directory..."
-pipreqs src/ --encoding=utf8 --savepath "${TEMP_REQ}.src" 2>&1 | grep -v "INFO\|WARNING" || true
+# 将警告信息重定向到 /dev/null，只保留错误信息
+pipreqs src/ --encoding=utf8 --savepath "${TEMP_REQ}.src" 2>&1 | \
+    grep -v -E "^(INFO|WARNING|Please, verify)" || true
 
 # 扫描 tests/ 目录（测试代码）
 echo "Scanning tests/ directory..."
-pipreqs tests/ --encoding=utf8 --savepath "${TEMP_REQ}.tests" 2>&1 | grep -v "INFO\|WARNING" || true
+# 将警告信息重定向到 /dev/null，只保留错误信息
+pipreqs tests/ --encoding=utf8 --savepath "${TEMP_REQ}.tests" 2>&1 | \
+    grep -v -E "^(INFO|WARNING|Please, verify)" || true
 
 # 合并所有依赖并去重，按包名排序
 echo "Merging dependencies..."
