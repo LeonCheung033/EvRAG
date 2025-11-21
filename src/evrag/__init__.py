@@ -13,4 +13,6 @@ __all__ = [
     "Settings",
     "get_settings",
     "reload_settings",
+    "__version__",
+    "__author__",
 ]
