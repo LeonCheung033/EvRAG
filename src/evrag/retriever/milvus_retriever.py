@@ -18,7 +18,7 @@ from pymilvus import (
     RRFRanker,
 )
 from pymilvus.model.hybrid import BGEM3EmbeddingFunction
-
+from pathlib import Path
 from src.evrag.retriever.base import BaseRetriever
 from src.evrag.config import get_settings
 
@@ -27,6 +27,7 @@ EMB_BATCH = 50
 MAX_TEXT_LENGTH = 512
 ID_MAX_LENGTH = 100
 COL_NAME = "hybrid_bge_m3"
+MILVUS_ALIAS = "default"  # 连接别名
 
 
 class MilvusRetriever(BaseRetriever):
@@ -75,9 +76,31 @@ class MilvusRetriever(BaseRetriever):
     def _connect_milvus(self) -> None:
         """connect to milvus"""
         try:
-            connections.connect(
-                uri=str(self.milvus_db_path),
-            )
+            # 确保数据库目录存在
+            db_path = Path(self.milvus_db_path)
+            db_dir = db_path.parent
+            db_dir.mkdir(parents=True, exist_ok=True)
+
+            # 使用绝对路径
+            absolute_path = db_path.absolute()
+
+            # 检查是否已经连接
+            if MILVUS_ALIAS not in connections.list_connections():
+                connections.connect(
+                    alias=MILVUS_ALIAS,
+                    uri=str(absolute_path),
+                )
+            else:
+                # 如果已经连接，验证连接是否有效
+                try:
+                    # 尝试获取连接地址来验证连接
+                    connections.get_connection_addr(MILVUS_ALIAS)
+                except Exception:
+                    # 连接无效，重新连接
+                    connections.connect(
+                        alias=MILVUS_ALIAS,
+                        uri=str(absolute_path),
+                    )
         except Exception as e:
             raise ConnectionError(f"Failed to connect to Milvus: {e}")
 
