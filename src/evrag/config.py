@@ -262,7 +262,9 @@ def get_settings(config_file: Optional[Path] = None) -> Settings:
     获取配置实例（单例模式）
 
     Args:
-        config_file: 配置文件路径（可选）
+        config_file: 配置文件路径（可选）。如果为None，会自动查找以下位置的配置文件：
+            - config/config.yaml（相对于当前工作目录）
+            - 项目根目录下的config/config.yaml
 
     Returns:
         Settings实例
@@ -271,6 +273,22 @@ def get_settings(config_file: Optional[Path] = None) -> Settings:
     # 所以这里我们可能要修改全局变量，所以需要声明 global
     global _settings
     if _settings is None:
+        # 如果没有提供配置文件路径，尝试查找默认配置文件
+        if config_file is None:
+            # 首先尝试当前工作目录下的 config/config.yaml
+            default_config = Path.cwd() / "config" / "config.yaml"
+            if default_config.exists():
+                config_file = default_config
+            else:
+                # 尝试项目根目录（通过查找包含 src 目录的父目录）
+                current = Path.cwd()
+                while current != current.parent:
+                    potential_config = current / "config" / "config.yaml"
+                    if potential_config.exists():
+                        config_file = potential_config
+                        break
+                    current = current.parent
+
         _settings = Settings(config_file=config_file)
     return _settings
 
