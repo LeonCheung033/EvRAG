@@ -45,6 +45,7 @@ logs/
 config/config.yaml
 requirements.txt
 evrag-gitflow-uv-de56e013.plan.md
+evrag-gitflow-conda-phase2.plan.md
 
 # 测试覆盖率报告
 htmlcov/
@@ -97,3 +98,9 @@ htmlcov/
 .hypothesis/
 .ipynb_checkpoints/
 *.ipynb
+
+# data、model、log
+data/
+models/
+log/
+mongodb/
