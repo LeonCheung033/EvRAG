@@ -20,7 +20,11 @@ from ..config import get_settings
 
 # 全局变量
 settings = get_settings()
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# 根据配置指定GPU设备ID
+if torch.cuda.is_available() and settings.device == "cuda":
+    device = torch.device(f"cuda:{settings.semantic_chunk_gpu_id}")
+else:
+    device = torch.device("cpu")
 _min_chunk_size = 50
 _min_doc_size = 256
 embedding_model: Optional[SentenceTransformer] = None
@@ -39,6 +43,7 @@ async def lifespan(app: FastAPI):
         embedding_model = SentenceTransformer(str(settings.m3e_small_model_path))
         embedding_model = embedding_model.to(device)
         print(f"✓ 语义切分模型已加载: {settings.m3e_small_model_path}")
+        print(f"✓ 模型部署在设备: {device}")
     else:
         raise RuntimeError(f"模型路径不存在: {settings.m3e_small_model_path}")
 

@@ -4,6 +4,7 @@ OpenAI API客户端
 连接到远程OpenAI兼容的API服务（如豆包、通义千问等）。
 """
 
+import os
 from typing import List, Dict, Optional, Any, Iterator
 from openai import OpenAI
 
@@ -15,11 +16,13 @@ class OpenAIClient(BaseLLMClient):
     """
     OpenAI兼容API客户端
 
-    连接到远程OpenAI兼容的API服务。
+    连接到远程OpenAI兼容的API服务（如豆包、Deepseek等）。
+    支持通过service参数选择不同的服务商。
     """
 
     def __init__(
         self,
+        service: str = "doubao",
         api_key: Optional[str] = None,
         base_url: Optional[str] = None,
         model: Optional[str] = None,
@@ -28,20 +31,40 @@ class OpenAIClient(BaseLLMClient):
         初始化OpenAI客户端
 
         Args:
-            api_key: API密钥
-            base_url: API基础URL
-            model: 默认模型名称
+            service: 服务商名称，可选值：'doubao', 'deepseek', 'custom'
+            api_key: API密钥（可选，如果提供则覆盖配置）
+            base_url: API基础URL（可选，如果提供则覆盖配置）
+            model: 默认模型名称（可选，如果提供则覆盖配置）
         """
         settings = get_settings()
 
-        self.api_key = api_key or settings.llm_api_key
-        self.base_url = base_url or settings.llm_base_url
-        self.model = model or settings.llm_model_name
-
-        if not self.api_key or self.api_key == "EMPTY":
+        # 根据service选择配置
+        if service == "doubao":
+            self.api_key = api_key or settings.doubao_api_key
+            self.base_url = base_url or settings.doubao_base_url
+            self.model = model or settings.doubao_model_name
+        elif service == "deepseek":
+            self.api_key = api_key or settings.deepseek_api_key
+            self.base_url = base_url or settings.deepseek_base_url
+            self.model = model or settings.deepseek_model_name
+        elif service == "custom":
+            # 自定义服务，必须提供所有参数
+            if not api_key or not base_url or not model:
+                raise ValueError(
+                    "For custom service, api_key, base_url, and model must be provided."
+                )
+            self.api_key = api_key
+            self.base_url = base_url
+            self.model = model
+        else:
             raise ValueError(
-                "OpenAI API key is required. "
-                "Please set LLM_API_KEY environment variable or configure it in settings."
+                f"Unknown service: {service}. Supported services: 'doubao', 'deepseek', 'custom'"
+            )
+
+        if not self.api_key or self.api_key == "EMPTY" or self.api_key == "":
+            raise ValueError(
+                f"{service.capitalize()} API key is required. "
+                f"Please configure {service}_api_key in config.yaml."
             )
 
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)

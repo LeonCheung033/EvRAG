@@ -52,9 +52,25 @@ class BGEReranker(BaseReranker):
             )
         # 确定设备
         if device is None:
-            device = settings.device
+            if settings.device == "cuda":
+                # 使用配置中指定的GPU设备ID
+                self.device_id = settings.reranker_gpu_id
+                self.device = f"cuda:{self.device_id}"
+            else:
+                self.device_id = None
+                self.device = "cpu"
+        else:
+            # 如果手动指定了设备，解析设备ID
+            if device.startswith("cuda:"):
+                self.device_id = int(device.split(":")[1])
+                self.device = device
+            elif device == "cuda":
+                self.device_id = settings.reranker_gpu_id
+                self.device = f"cuda:{self.device_id}"
+            else:
+                self.device_id = None
+                self.device = "cpu"
 
-        self.device = device
         self.max_length = max_length
 
         self._load_model()
@@ -73,11 +89,17 @@ class BGEReranker(BaseReranker):
                 trust_remote_code=True,
             )
             # 根据设备类型移动模型
-            if self.device == "cuda" and torch.cuda.is_available():
-                self.model = self.model.half().cuda()  # 使用半精度以节省显存
+            if self.device.startswith("cuda:") and torch.cuda.is_available():
+                # 使用指定的GPU设备ID
+                self.model = self.model.half().to(self.device)  # 使用半精度以节省显存
+                print(f"✓ Reranker模型已加载到设备: {self.device}")
+            elif self.device == "cuda" and torch.cuda.is_available():
+                # 兼容旧配置（只指定cuda，不指定ID）
+                self.model = self.model.half().cuda()
             else:
                 self.model = self.model.float().cpu()
                 self.device = "cpu"
+                self.device_id = None
 
         except Exception as e:
             raise ValueError(
@@ -110,7 +132,10 @@ class BGEReranker(BaseReranker):
             return_tensors="pt",
         )
 
-        if self.device == "cuda" and torch.cuda.is_available():
+        if self.device.startswith("cuda:") and torch.cuda.is_available():
+            # 使用指定的GPU设备
+            inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        elif self.device == "cuda" and torch.cuda.is_available():
             inputs = {k: v.cuda() for k, v in inputs.items()}
 
         # 计算相关性分数
