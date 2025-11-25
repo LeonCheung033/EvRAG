@@ -225,24 +225,62 @@ class QAGenerator:
         """
         qa_checkpoint = checkpoint or {}
         file_lock = threading.Lock()
+        
+        # 统计信息
+        stats = {
+            "total_docs": len(documents),
+            "duplicate_unique_ids": 0,
+            "missing_unique_ids": 0,
+            "too_short": 0,
+            "in_checkpoint": len(qa_checkpoint),
+            "processed": 0,
+            "failed": 0,
+        }
+        
+        # 检查重复的unique_id
+        unique_id_count = {}
+        for doc in documents:
+            unique_id = doc.metadata.get("unique_id")
+            if unique_id:
+                unique_id_count[unique_id] = unique_id_count.get(unique_id, 0) + 1
+            else:
+                stats["missing_unique_ids"] += 1
+        
+        # 统计重复的unique_id数量
+        duplicate_ids = {uid: count for uid, count in unique_id_count.items() if count > 1}
+        stats["duplicate_unique_ids"] = sum(count - 1 for count in duplicate_ids.values())
+        
+        if duplicate_ids:
+            print(f"Warning: Found {len(duplicate_ids)} duplicate unique_ids, {stats['duplicate_unique_ids']} documents will be skipped")
 
         def process_doc(doc: Document) -> Optional[Dict[str, Any]]:
             """处理单个文档"""
             unique_id = doc.metadata.get("unique_id")
+            if not unique_id:
+                stats["missing_unique_ids"] += 1
+                return None
+                
             if unique_id in qa_checkpoint:
                 return None
 
             # 过滤太短的文档
-            if len(doc.page_content.replace("\n", "")) < self.min_chunk_size:
+            content_length = len(doc.page_content.replace("\n", ""))
+            if content_length < self.min_chunk_size:
+                stats["too_short"] += 1
                 return None
 
             prompt = self._build_prompt(CONTEXT_PROMPT_TPL, doc.page_content)
             result = self._call_llm(prompt, temperature=0.85, top_p=0.95)
 
             if result is None:
+                stats["failed"] += 1
                 return None
 
-            item = {"unique_id": unique_id, "raw_resp": result}
+            # 清理响应中的 markdown 代码块标记
+            cleaned_resp = self.clean_markdown_code_blocks(result)
+
+            stats["processed"] += 1
+            item = {"unique_id": unique_id, "raw_resp": cleaned_resp}
 
             # 如果指定了输出文件，追加写入
             if output_file:
@@ -257,17 +295,31 @@ class QAGenerator:
 
             return item
 
+        # 使用文档索引作为key，避免重复unique_id覆盖问题
+        # 但最终结果仍以unique_id为key（如果unique_id重复，后面的会覆盖前面的）
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = {
-                doc.metadata.get("unique_id"): executor.submit(process_doc, doc)
-                for doc in documents
+                i: executor.submit(process_doc, doc)
+                for i, doc in enumerate(documents)
             }
 
-            for unique_id in tqdm(futures, desc="Generating QA pairs"):
-                future = futures[unique_id]
+            for idx in tqdm(futures, desc="Generating QA pairs"):
+                future = futures[idx]
                 result = future.result()
                 if result:
+                    unique_id = result["unique_id"]
                     qa_checkpoint[unique_id] = result
+        
+        # 打印统计信息
+        print(f"\nQA Generation Statistics:")
+        print(f"  - Total documents: {stats['total_docs']}")
+        print(f"  - Unique unique_ids: {len(unique_id_count)}")
+        print(f"  - Duplicate unique_ids: {len(duplicate_ids)} ({stats['duplicate_unique_ids']} docs skipped)")
+        print(f"  - Missing unique_ids: {stats['missing_unique_ids']}")
+        print(f"  - Too short (<{self.min_chunk_size} chars): {stats['too_short']}")
+        print(f"  - In checkpoint (skipped): {stats['in_checkpoint']}")
+        print(f"  - Successfully processed: {stats['processed']}")
+        print(f"  - Failed: {stats['failed']}")
 
         return qa_checkpoint
 
@@ -430,30 +482,72 @@ class QAGenerator:
             return None
 
     @staticmethod
+    def clean_markdown_code_blocks(text: str) -> str:
+        """
+        清理文本中的 markdown 代码块标记
+
+        Args:
+            text: 包含可能包含 markdown 代码块标记的文本
+
+        Returns:
+            清理后的文本
+        """
+        if not text or not isinstance(text, str):
+            return text
+        
+        cleaned = text.strip()
+        
+        # 移除 ```json 和 ``` 代码块标记
+        if cleaned.startswith('```json'):
+            # 移除开头的 ```json
+            cleaned = cleaned[7:].strip()
+        elif cleaned.startswith('```'):
+            # 移除开头的 ```
+            cleaned = cleaned[3:].strip()
+        
+        # 移除结尾的 ```
+        if cleaned.endswith('```'):
+            cleaned = cleaned[:-3].strip()
+        
+        return cleaned
+
+    @staticmethod
     def parse_qa_response(raw_resp: str) -> List[Dict[str, str]]:
         """
         解析QA生成的响应
 
         Args:
-            raw_resp: LLM返回的原始响应
+            raw_resp: LLM返回的原始响应（可能已清理或未清理）
 
         Returns:
             QA对列表，每个元素包含question和answer
         """
+        if not raw_resp or not isinstance(raw_resp, str):
+            return []
+        
+        # 先清理响应，移除代码块标记
+        cleaned = QAGenerator.clean_markdown_code_blocks(raw_resp)
+        
+        # 尝试解析JSON
         try:
-            # 尝试直接解析JSON
-            qa_list = json.loads(raw_resp)
+            # 尝试直接解析清理后的JSON
+            qa_list = json.loads(cleaned)
             if isinstance(qa_list, list):
-                return qa_list
+                # 过滤掉非字典元素，确保每个元素都是字典
+                return [qa for qa in qa_list if isinstance(qa, dict) and 'question' in qa and 'answer' in qa]
             else:
                 return []
         except json.JSONDecodeError:
-            # 如果解析失败，尝试提取JSON部分
-            json_match = re.search(r"\[.*\]", raw_resp, re.DOTALL)
+            # 如果解析失败，尝试用正则表达式提取JSON数组
+            json_match = re.search(r"\[.*\]", cleaned, re.DOTALL)
             if json_match:
                 try:
                     qa_list = json.loads(json_match.group())
-                    return qa_list if isinstance(qa_list, list) else []
+                    if isinstance(qa_list, list):
+                        # 过滤掉非字典元素，确保每个元素都是字典
+                        return [qa for qa in qa_list if isinstance(qa, dict) and 'question' in qa and 'answer' in qa]
+                    else:
+                        return []
                 except json.JSONDecodeError:
                     pass
             return []

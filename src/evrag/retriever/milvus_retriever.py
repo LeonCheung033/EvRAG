@@ -24,7 +24,7 @@ from src.evrag.config import get_settings
 
 # 常量定义
 EMB_BATCH = 50
-MAX_TEXT_LENGTH = 512
+MAX_TEXT_LENGTH = 512  # 与旧项目保持一致
 ID_MAX_LENGTH = 100
 COL_NAME = "hybrid_bge_m3"
 MILVUS_ALIAS = "default"  # 连接别名
@@ -64,6 +64,19 @@ class MilvusRetriever(BaseRetriever):
         self._connect_milvus()
 
         # initialize embedding function
+        # 注意：BGEM3EmbeddingFunction内部使用sentence-transformers
+        # 我们通过设置torch的默认设备来控制GPU使用
+        if settings.device == "cuda":
+            import torch
+            # 保存原始默认设备
+            original_device = torch.cuda.current_device() if torch.cuda.is_available() else None
+            # 设置默认设备为配置的GPU
+            if torch.cuda.is_available() and settings.milvus_retriever_gpu_id < torch.cuda.device_count():
+                torch.cuda.set_device(settings.milvus_retriever_gpu_id)
+                print(f"✓ Milvus检索器将使用GPU {settings.milvus_retriever_gpu_id}")
+            else:
+                print(f"⚠ GPU {settings.milvus_retriever_gpu_id} 不可用，使用默认GPU")
+        
         self.embedding_handler = BGEM3EmbeddingFunction(
             model_name=str(self.bge_m3_model_path),
             device="cuda" if settings.device == "cuda" else "cpu",
@@ -157,7 +170,20 @@ class MilvusRetriever(BaseRetriever):
         Args:
             documents: The documents to save.
         """
-        raw_texts = [doc.page_content for doc in docs]
+        # 提取文本并截断过长的文本（作为安全措施）
+        raw_texts = []
+        truncated_count = 0
+        for doc in docs:
+            text = doc.page_content
+            if len(text) > MAX_TEXT_LENGTH:
+                # 截断到最大长度（保留前MAX_TEXT_LENGTH个字符）
+                text = text[:MAX_TEXT_LENGTH]
+                truncated_count += 1
+            raw_texts.append(text)
+        
+        if truncated_count > 0:
+            print(f"⚠️  警告: {truncated_count} 个文档被截断（超过 {MAX_TEXT_LENGTH} 字符）")
+        
         unique_ids = [
             doc.metadata.get("unique_id", str(i)) for i, doc in enumerate(docs)
         ]
@@ -188,12 +214,38 @@ class MilvusRetriever(BaseRetriever):
 
         Args:
             query_dense_embedding: 查询的dense向量
-            query_sparse_embedding: 查询的sparse向量
+            query_sparse_embedding: 查询的sparse向量（可能是scipy sparse matrix或dict）
             limit: 返回结果数量
 
         Returns:
             检索结果列表
         """
+        # 转换sparse vector格式：如果是scipy sparse matrix，转换为dict格式
+        if hasattr(query_sparse_embedding, 'toarray'):
+            # scipy sparse matrix -> dict {index: value}
+            import numpy as np
+            sparse_array = query_sparse_embedding.toarray().flatten()
+            query_sparse_embedding = {int(i): float(v) for i, v in enumerate(sparse_array) if v != 0}
+        elif hasattr(query_sparse_embedding, 'getnnz'):
+            # scipy sparse matrix (CSR/CSC) -> dict {index: value}
+            import numpy as np
+            if hasattr(query_sparse_embedding, 'indices') and hasattr(query_sparse_embedding, 'data'):
+                # CSR or CSC format
+                query_sparse_embedding = {
+                    int(idx): float(val) 
+                    for idx, val in zip(query_sparse_embedding.indices, query_sparse_embedding.data)
+                }
+            else:
+                # Fallback: convert to dense then to dict
+                sparse_array = query_sparse_embedding.toarray().flatten()
+                query_sparse_embedding = {int(i): float(v) for i, v in enumerate(sparse_array) if v != 0}
+        elif isinstance(query_sparse_embedding, dict):
+            # 已经是dict格式，确保值是float类型
+            query_sparse_embedding = {int(k): float(v) for k, v in query_sparse_embedding.items()}
+        elif isinstance(query_sparse_embedding, (list, tuple)):
+            # 如果是列表，转换为dict格式（只保留非零值）
+            query_sparse_embedding = {int(i): float(v) for i, v in enumerate(query_sparse_embedding) if v != 0}
+        
         dense_search_params = {"metric_type": "IP", "params": {}}
         dense_req = AnnSearchRequest(
             [query_dense_embedding], "dense_vector", dense_search_params, limit=limit

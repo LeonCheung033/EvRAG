@@ -8,7 +8,7 @@
 """
 
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional, Any, List
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from watchdog.events import FileSystemEventHandler
@@ -122,23 +122,84 @@ class Settings(BaseSettings):
     )
 
     # ========== LLM配置 ==========
-    llm_model_name: str = Field(
-        default="qwen3_lora_sft_int4", description="LLM模型名称"
-    )
-
-    llm_base_url: str = Field(
-        default="http://localhost:8000/v1", description="LLM API基础URL"
-    )
-
-    llm_api_key: str = Field(default="EMPTY", description="LLM API密钥")
-
     device: str = Field(default="cuda", description="设备类型")
+    
+    # 本地vLLM服务配置
+    local_llm_model_name: str = Field(
+        default="qwen3_lora_sft_int4", description="本地vLLM模型名称"
+    )
+    local_llm_base_url: str = Field(
+        default="http://localhost:8000/v1", description="本地vLLM API基础URL"
+    )
+    local_llm_api_key: str = Field(
+        default="EMPTY", description="本地vLLM API密钥（通常为EMPTY）"
+    )
+    
+    # 豆包API配置
+    doubao_api_key: str = Field(
+        default="", description="豆包API密钥"
+    )
+    doubao_base_url: str = Field(
+        default="https://ark.cn-beijing.volces.com/api/v3", description="豆包API基础URL"
+    )
+    doubao_model_name: str = Field(
+        default="doubao-seed-1-6-lite-251015", description="豆包推理接入点ID"
+    )
+    
+    # Deepseek API配置
+    deepseek_api_key: str = Field(
+        default="", description="Deepseek API密钥"
+    )
+    deepseek_base_url: str = Field(
+        default="https://api.deepseek.com", description="Deepseek API基础URL"
+    )
+    deepseek_model_name: str = Field(
+        default="deepseek-chat", description="Deepseek模型名称"
+    )
+    
+    # 兼容旧配置（保留向后兼容）
+    llm_model_name: str = Field(
+        default="qwen3_lora_sft_int4", description="LLM模型名称（兼容字段，等同于local_llm_model_name）"
+    )
+    llm_base_url: str = Field(
+        default="http://localhost:8000/v1", description="LLM API基础URL（兼容字段，等同于local_llm_base_url）"
+    )
+    llm_api_key: str = Field(
+        default="EMPTY", description="LLM API密钥（兼容字段，等同于local_llm_api_key）"
+    )
+    
+    # ========== GPU设备分配配置 ==========
+    semantic_chunk_gpu_id: int = Field(
+        default=0, description="语义切分服务使用的GPU设备ID"
+    )
+    milvus_retriever_gpu_id: int = Field(
+        default=1, description="Milvus检索器使用的GPU设备ID"
+    )
+    reranker_gpu_id: int = Field(
+        default=2, description="Reranker使用的GPU设备ID"
+    )
+    vllm_gpu_ids: List[int] = Field(
+        default_factory=lambda: [3, 5, 6],
+        description="vLLM服务使用的GPU设备ID列表（tensor parallelism）"
+    )
+    
     # ========== MongoDB配置 ==========
     mongodb_host: str = Field(default="localhost", description="MongoDB主机地址")
 
     mongodb_port: int = Field(default=27017, description="MongoDB端口")
 
     mongodb_database: str = Field(default="evrag", description="MongoDB数据库名称")
+
+    # ========== PDF解析配置 ==========
+    pdf_min_filter_pages: int = Field(
+        default=4, description="最小页码（从0开始），小于此页码的页面将被跳过（用于跳过封面、目录等）"
+    )
+    pdf_max_filter_pages: Optional[int] = Field(
+        default=247, description="最大页码（从0开始），大于此页码的页面将被跳过，None表示不限制"
+    )
+    pdf_page_clip: int = Field(
+        default=50, description="页面底部裁剪像素数（用于去除页眉页脚）"
+    )
 
     # ========== 服务配置 ==========
     server_host: str = Field(default="0.0.0.0", description="服务器监听地址")

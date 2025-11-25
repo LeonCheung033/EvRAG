@@ -35,9 +35,10 @@ class LocalLLMClient(BaseLLMClient):
 
         settings = get_settings()
 
-        self.api_key = api_key or settings.llm_api_key
-        self.base_url = base_url or settings.llm_base_url
-        self.model = model or settings.llm_model_name
+        # 优先使用新的local_llm配置，兼容旧的llm配置
+        self.api_key = api_key or settings.local_llm_api_key or settings.llm_api_key
+        self.base_url = base_url or settings.local_llm_base_url or settings.llm_base_url
+        self.model = model or settings.local_llm_model_name or settings.llm_model_name
 
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
