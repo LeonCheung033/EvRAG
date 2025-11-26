@@ -51,6 +51,7 @@ evrag-gitflow-conda-phase2.plan.md
 htmlcov/
 .coverage
 .coverage.*
+.coveragerc
 .pytest_cache/
 .tox/
 .hypothesis/
