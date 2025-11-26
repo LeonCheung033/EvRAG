@@ -721,3 +721,203 @@ def generate_processing_examples_report(
     
     return "\n".join(lines)
 
+
+def generate_splitting_flow_report(
+    clean_docs: List[Document],
+    split_docs: List[Document],
+    num_examples: int = 5,
+) -> str:
+    """
+    生成展示切分流程的详细报告：清洗后文档 → m3e聚类(父文档) → 子文档切分
+    
+    展示从清洗后的文档，经过m3e语义聚类生成父文档，再到句子级切分生成子文档的完整流程。
+    
+    Args:
+        clean_docs: 清洗后的文档列表
+        split_docs: 切分后的文档列表（包含父文档和子文档）
+        num_examples: 要展示的示例数量
+    
+    Returns:
+        格式化的文本报告字符串
+    """
+    lines = []
+    lines.append("=" * 80)
+    lines.append("文档切分流程详细报告")
+    lines.append("展示：清洗后文档 → m3e语义聚类(父文档) → 句子级切分(子文档)")
+    lines.append("=" * 80)
+    lines.append("")
+    
+    if not clean_docs or not split_docs:
+        lines.append("错误: 没有可用的文档数据")
+        return "\n".join(lines)
+    
+    # 分离父文档和子文档
+    parent_docs = [d for d in split_docs if not d.metadata.get('parent_id')]
+    child_docs = [d for d in split_docs if d.metadata.get('parent_id')]
+    
+    # 建立parent_id到子文档的映射
+    parent_to_children = {}
+    for child_doc in child_docs:
+        parent_id = child_doc.metadata.get('parent_id')
+        if parent_id:
+            if parent_id not in parent_to_children:
+                parent_to_children[parent_id] = []
+            parent_to_children[parent_id].append(child_doc)
+    
+    # 建立parent_id到父文档的映射
+    parent_id_to_parent = {doc.metadata.get('unique_id'): doc for doc in parent_docs}
+    
+    # 选择几个有代表性的清洗后文档
+    indices = []
+    if len(clean_docs) >= num_examples:
+        # 选择开头、中间、结尾的文档
+        step = max(1, len(clean_docs) // num_examples)
+        indices = [0, len(clean_docs) // 4, len(clean_docs) // 2, len(clean_docs) * 3 // 4, len(clean_docs) - 1][:num_examples]
+    else:
+        indices = list(range(len(clean_docs)))
+    
+    for idx, example_idx in enumerate(indices, 1):
+        lines.append("=" * 80)
+        lines.append(f"示例 {idx}/{len(indices)}: 文档 #{example_idx + 1}")
+        lines.append("=" * 80)
+        lines.append("")
+        
+        clean_doc = clean_docs[example_idx]
+        clean_stats = calculate_text_stats(clean_doc.page_content)
+        
+        # 1. 显示清洗后文档
+        lines.append("1. 清洗后文档 (Clean Document)")
+        lines.append(f"   - 来源: {clean_doc.metadata.get('source', 'N/A')}")
+        lines.append(f"   - 页码: {clean_doc.metadata.get('page', 'N/A')}")
+        lines.append(f"   - 字符数: {clean_stats['char_count']}")
+        lines.append(f"   - Token数: {clean_stats['token_count']}")
+        lines.append(f"   - 行数: {clean_stats['line_count']}")
+        lines.append(f"   - unique_id: {clean_doc.metadata.get('unique_id', 'N/A')}")
+        lines.append("")
+        lines.append("   内容:")
+        lines.append("   " + "-" * 76)
+        content = clean_doc.page_content
+        if len(content) > 1500:
+            content = content[:1500] + "\n   ... (内容过长，已截断)"
+        for line in content.split('\n'):
+            lines.append(f"   {line}")
+        lines.append("   " + "-" * 76)
+        lines.append("")
+        
+        # 2. 找到对应的父文档（通过source和page匹配）
+        related_parent_docs = []
+        for parent_doc in parent_docs:
+            if (parent_doc.metadata.get('source') == clean_doc.metadata.get('source') and
+                parent_doc.metadata.get('page') == clean_doc.metadata.get('page')):
+                related_parent_docs.append(parent_doc)
+        
+        if related_parent_docs:
+            lines.append(f"2. m3e语义聚类后的父文档 (Parent Documents after M3E Clustering)")
+            lines.append(f"   - 父文档数量: {len(related_parent_docs)}")
+            total_parent_chars = sum(len(doc.page_content) for doc in related_parent_docs)
+            avg_parent_chars = total_parent_chars / len(related_parent_docs) if related_parent_docs else 0
+            lines.append(f"   - 总字符数: {total_parent_chars} (平均: {avg_parent_chars:.1f})")
+            lines.append(f"   - 说明: 清洗后的文档通过m3e模型进行语义聚类，将语义相关的段落合并为父文档")
+            lines.append("")
+            
+            # 显示每个父文档
+            for i, parent_doc in enumerate(related_parent_docs, 1):
+                parent_stats = calculate_text_stats(parent_doc.page_content)
+                parent_id = parent_doc.metadata.get('unique_id')
+                children_count = len(parent_to_children.get(parent_id, []))
+                
+                lines.append(f"   父文档 {i}/{len(related_parent_docs)}:")
+                lines.append(f"   - unique_id: {parent_id}")
+                lines.append(f"   - 字符数: {parent_stats['char_count']}")
+                lines.append(f"   - Token数: {parent_stats['token_count']}")
+                lines.append(f"   - 行数: {parent_stats['line_count']}")
+                lines.append(f"   - 对应的子文档数: {children_count}")
+                lines.append("   - 内容:")
+                lines.append("   " + "-" * 76)
+                content = parent_doc.page_content
+                if len(content) > 800:
+                    content = content[:800] + "\n   ... (内容过长，已截断)"
+                for line in content.split('\n'):
+                    lines.append(f"   {line}")
+                lines.append("   " + "-" * 76)
+                lines.append("")
+            
+            # 3. 显示子文档
+            lines.append("3. 句子级切分后的子文档 (Child Documents after Sentence-level Splitting)")
+            all_related_children = []
+            for parent_doc in related_parent_docs:
+                parent_id = parent_doc.metadata.get('unique_id')
+                children = parent_to_children.get(parent_id, [])
+                all_related_children.extend(children)
+            
+            if all_related_children:
+                lines.append(f"   - 子文档总数: {len(all_related_children)}")
+                total_child_chars = sum(len(doc.page_content) for doc in all_related_children)
+                avg_child_chars = total_child_chars / len(all_related_children) if all_related_children else 0
+                lines.append(f"   - 总字符数: {total_child_chars} (平均: {avg_child_chars:.1f})")
+                lines.append(f"   - 说明: 每个父文档通过句子级切分器(RecursiveCharacterTextSplitter)进行细粒度切分，生成多个子文档")
+                lines.append("")
+                
+                # 按父文档分组显示子文档
+                for parent_idx, parent_doc in enumerate(related_parent_docs, 1):
+                    parent_id = parent_doc.metadata.get('unique_id')
+                    children = parent_to_children.get(parent_id, [])
+                    
+                    if children:
+                        lines.append(f"   来自父文档 {parent_idx} 的子文档 (共{len(children)}个):")
+                        lines.append(f"   - 父文档 unique_id: {parent_id[:32]}...")
+                        lines.append("")
+                        
+                        # 显示前5个子文档的详细信息，其余只显示统计
+                        display_count = min(5, len(children))
+                        for i, child_doc in enumerate(children[:display_count], 1):
+                            child_stats = calculate_text_stats(child_doc.page_content)
+                            lines.append(f"   子文档 {i}/{len(children)}:")
+                            lines.append(f"   - unique_id: {child_doc.metadata.get('unique_id', 'N/A')}")
+                            lines.append(f"   - parent_id: {child_doc.metadata.get('parent_id', 'N/A')[:32]}...")
+                            lines.append(f"   - 字符数: {child_stats['char_count']}")
+                            lines.append(f"   - Token数: {child_stats['token_count']}")
+                            lines.append(f"   - 内容:")
+                            lines.append("   " + "-" * 76)
+                            content = child_doc.page_content
+                            if len(content) > 500:
+                                content = content[:500] + "\n   ... (内容过长，已截断)"
+                            for line in content.split('\n'):
+                                lines.append(f"   {line}")
+                            lines.append("   " + "-" * 76)
+                            lines.append("")
+                        
+                        if len(children) > display_count:
+                            lines.append(f"   ... 还有 {len(children) - display_count} 个子文档未显示")
+                            lines.append("")
+            else:
+                lines.append("   - 未找到对应的子文档（可能父文档长度未超过阈值，直接作为最终文档）")
+                lines.append("")
+        else:
+            lines.append("2. m3e语义聚类后的父文档")
+            lines.append("   - 未找到对应的父文档（可能该文档未被切分）")
+            lines.append("")
+            lines.append("3. 句子级切分后的子文档")
+            lines.append("   - 未找到对应的子文档")
+            lines.append("")
+        
+        # 总结
+        lines.append("处理流程总结:")
+        lines.append(f"   - 清洗后文档: 1个文档，{clean_stats['char_count']}字符")
+        if related_parent_docs:
+            lines.append(f"   - m3e聚类: 生成{len(related_parent_docs)}个父文档，共{total_parent_chars}字符")
+            if all_related_children:
+                lines.append(f"   - 句子级切分: 生成{len(all_related_children)}个子文档，共{total_child_chars}字符")
+                expansion_ratio = len(all_related_children) / len(related_parent_docs) if related_parent_docs else 0
+                lines.append(f"   - 父文档到子文档扩展倍数: {expansion_ratio:.2f}x")
+            else:
+                lines.append(f"   - 句子级切分: 父文档长度未超过阈值，未生成子文档")
+        lines.append("")
+        lines.append("")
+    
+    lines.append("=" * 80)
+    lines.append("报告生成完成")
+    lines.append("=" * 80)
+    
+    return "\n".join(lines)
+

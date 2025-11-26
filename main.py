@@ -5,6 +5,7 @@ EvRAG主入口
 """
 
 import sys
+import json
 import logging
 import random
 from pathlib import Path
@@ -829,6 +830,317 @@ def gen_qa(
             monitor.print_summary()
         console.print(f"[bold red]Error generating QA pairs: {e}[/bold red]")
         logger.exception("QA generation failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def process_qa(
+    qa_pair_path: Path = typer.Option(Path("data/qa_pairs/qa_pair.json"), "--qa-pair-path", help="QA对文件路径"),
+    output_dir: Path = typer.Option(Path("data/qa_pairs"), "--output-dir", "-o", help="输出目录"),
+    negative_samples_path: Path = typer.Option(Path("data/ut/raw_general_chats.txt"), "--negative-samples-path", help="负样本文件路径"),
+    quality_threshold: int = typer.Option(3, "--quality-threshold", help="质量打分阈值"),
+    train_ratio: float = typer.Option(0.9, "--train-ratio", help="训练集比例"),
+    config_file: Optional[Path] = typer.Option(None, "--config", "-c", help="配置文件路径"),
+    step: str = typer.Option("all", "--step", help="执行步骤: load, filter, generalize, split, keywords, negative, save, all"),
+    skip_quality_scoring: bool = typer.Option(False, "--skip-quality-scoring", help="跳过质量打分"),
+    skip_question_rewriting: bool = typer.Option(False, "--skip-question-rewriting", help="跳过问题改写"),
+    max_workers: int = typer.Option(20, "--workers", "-w", help="最大并发工作线程数"),
+):
+    """
+    QA数据处理流程
+    
+    从qa_pair.json开始，经过质量打分、过滤、问题改写、数据扩充、
+    训练/测试集切分，最终生成train_qa_pair.json和test_qa_pair.json。
+    
+    支持分步执行，使用 --step 参数指定执行的步骤。
+    """
+    console.print("[bold green]Processing QA data...[/bold green]")
+    
+    # 重新加载配置
+    if config_file:
+        reload_settings(config_file)
+    settings = get_settings()
+    
+    # 初始化性能监控
+    monitor = PerformanceMonitor("process_qa", output_dir=Path("logs/performance"))
+    monitor.start()
+    
+    try:
+        from src.evrag.gen_qa import QAGenerator, QAProcessor
+        from src.evrag.client import OpenAIClient
+        
+        # ========== 1. 初始化LLM客户端和QA生成器 ==========
+        with monitor.step("初始化"):
+            console.print("\n[bold cyan][1/1] Initializing...[/bold cyan]")
+            llm_client = OpenAIClient(service="deepseek")
+            qa_generator = QAGenerator(
+                llm_client=llm_client,
+                max_workers=max_workers,
+            )
+            qa_processor = QAProcessor(
+                qa_generator=qa_generator,
+                quality_threshold=quality_threshold,
+                train_ratio=train_ratio,
+            )
+            console.print("[bold green]✓[/bold green] Initialized")
+        
+        # 确保输出目录存在
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # 定义输出文件路径
+        expand_qa_pair_path = output_dir / "expand_qa_pair.json"
+        train_path = output_dir / "train_qa_pair.json"
+        test_path = output_dir / "test_qa_pair.json"
+        test_keywords_path = output_dir / "test_keywords_pair.json"
+        
+        # ========== 2. 分步执行 ==========
+        if step == "all":
+            # 完整流程
+            console.print("\n[bold cyan]Running full pipeline...[/bold cyan]")
+            qa_processor.process(
+                qa_pair_path=qa_pair_path,
+                output_dir=output_dir,
+                negative_samples_path=negative_samples_path,
+                skip_quality_scoring=skip_quality_scoring,
+                skip_question_rewriting=skip_question_rewriting,
+            )
+        elif step == "load":
+            # 步骤1: 加载QA对
+            console.print("\n[bold cyan][Step 1] Loading QA pairs...[/bold cyan]")
+            qa_dict = qa_processor.load_qa_pairs(qa_pair_path)
+            console.print(f"[bold green]✓[/bold green] Loaded {len(qa_dict)} QA pairs")
+            
+            # 统计信息
+            total_qa_pairs = 0
+            for unique_id, info in qa_dict.items():
+                raw_resp = info.get("raw_resp", "[]")
+                try:
+                    qa_list = qa_generator.parse_qa_response(raw_resp)
+                    total_qa_pairs += len(qa_list)
+                except:
+                    pass
+            console.print(f"  - Total documents: {len(qa_dict)}")
+            console.print(f"  - Total QA pairs: {total_qa_pairs}")
+            
+        elif step == "filter":
+            # 步骤2: QA质量打分和过滤
+            console.print("\n[bold cyan][Step 2] Scoring and filtering QA pairs...[/bold cyan]")
+            qa_dict = qa_processor.load_qa_pairs(qa_pair_path)
+            filtered_qa_pairs = qa_processor.score_and_filter_qa_pairs(
+                qa_dict=qa_dict,
+                skip_scoring=skip_quality_scoring,
+            )
+            # 保存过滤后的QA对
+            filtered_path = output_dir / "filtered_qa_pair.json"
+            qa_processor.save_filtered_qa_pairs(
+                filtered_qa_pairs=filtered_qa_pairs,
+                output_path=filtered_path,
+            )
+            console.print(f"[bold green]✓[/bold green] Filtered to {len(filtered_qa_pairs)} QA pairs")
+            console.print(f"  - Quality threshold: {quality_threshold}")
+            console.print(f"  - Skip scoring: {skip_quality_scoring}")
+            console.print(f"  - Saved to: {filtered_path}")
+            
+        elif step == "generalize":
+            # 步骤3: 问题改写并生成expand_qa_pair.json（合并generalize和expand）
+            console.print("\n[bold cyan][Step 3] Generalizing and expanding questions...[/bold cyan]")
+            # 从filtered_qa_pair.json加载数据（保证原子性）
+            filtered_path = output_dir / "filtered_qa_pair.json"
+            if not filtered_path.exists():
+                console.print(f"[bold red]✗[/bold red] Filtered QA pairs file not found: {filtered_path}")
+                console.print("  Please run 'filter' step first")
+                return
+            
+            filtered_qa_pairs = qa_processor.load_filtered_qa_pairs(filtered_path)
+            expand_qa_pairs = qa_processor.generalize_and_expand_questions(
+                filtered_qa_pairs=filtered_qa_pairs,
+                output_file=expand_qa_pair_path,
+                skip_rewriting=skip_question_rewriting,
+            )
+            console.print(f"[bold green]✓[/bold green] Generalized {len(expand_qa_pairs)} questions")
+            console.print(f"  - Output file: {expand_qa_pair_path}")
+            console.print(f"  - Skip rewriting: {skip_question_rewriting}")
+            
+        elif step == "split":
+            # 步骤5: 训练/测试集切分
+            console.print("\n[bold cyan][Step 5] Splitting train/test sets...[/bold cyan]")
+            # 从filtered_qa_pair.json加载数据
+            filtered_path = output_dir / "filtered_qa_pair.json"
+            if not filtered_path.exists():
+                console.print(f"[bold red]✗[/bold red] Filtered QA pairs file not found: {filtered_path}")
+                console.print("  Please run 'filter' step first")
+                return
+            
+            filtered_qa_pairs = qa_processor.load_filtered_qa_pairs(filtered_path)
+            # 加载expand_qa_pair.json
+            if not expand_qa_pair_path.exists():
+                console.print(f"[bold red]✗[/bold red] Expand QA pairs file not found: {expand_qa_pair_path}")
+                console.print("  Please run 'generalize' step first")
+                return
+            
+            expand_qa_pairs = qa_processor.generalize_and_expand_questions(
+                filtered_qa_pairs=filtered_qa_pairs,
+                output_file=expand_qa_pair_path,
+                skip_rewriting=True,  # 只加载，不重新生成
+            )
+            expanded_qa_pairs = qa_processor.expand_qa_pairs(
+                qa_pairs=filtered_qa_pairs,
+                expand_qa_pairs=expand_qa_pairs,
+            )
+            train_qa_pairs, test_qa_pairs = qa_processor.split_train_test(expanded_qa_pairs)
+            
+            # 保存切分后的结果（中间结果，后续还会添加关键词和负样本）
+            qa_processor.save_final_data(
+                train_qa_pairs=train_qa_pairs,
+                test_qa_pairs=test_qa_pairs,
+                train_path=train_path,
+                test_path=test_path,
+            )
+            
+            console.print(f"[bold green]✓[/bold green] Split completed")
+            console.print(f"  - Expanded QA pairs: {len(expanded_qa_pairs)}")
+            console.print(f"  - Train set: {len(train_qa_pairs)} QA pairs ({len(train_qa_pairs)/len(expanded_qa_pairs)*100:.1f}%)")
+            console.print(f"  - Test set: {len(test_qa_pairs)} QA pairs ({len(test_qa_pairs)/len(expanded_qa_pairs)*100:.1f}%)")
+            console.print(f"  - Saved to: {train_path} and {test_path}")
+            
+        elif step == "keywords":
+            # 步骤6: 测试集关键词提取
+            console.print("\n[bold cyan][Step 6] Extracting keywords for test set...[/bold cyan]")
+            # 直接从切分后的测试集文件加载数据
+            if not test_path.exists():
+                console.print(f"[bold red]✗[/bold red] Test QA pairs file not found: {test_path}")
+                console.print("  Please run 'split' step first")
+                return
+            
+            # 加载测试集
+            with open(test_path, "r", encoding="utf-8") as fd:
+                test_qa_pairs = json.load(fd)
+            
+            console.print(f"  - Loaded {len(test_qa_pairs)} test QA pairs")
+            
+            # 提取关键词
+            keywords_mapping = qa_processor.extract_keywords_for_test_set(
+                test_qa_pairs=test_qa_pairs,
+                output_file=test_keywords_path,
+            )
+            
+            # 保存更新后的测试集（包含关键词）
+            # 只保存测试集，不覆盖训练集
+            test_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(test_path, "w", encoding="utf-8") as fd:
+                json.dump(test_qa_pairs, fd, ensure_ascii=False, indent=2)
+            print(f"Updated test set saved to: {test_path}, {len(test_qa_pairs)} 条")
+            
+            console.print(f"[bold green]✓[/bold green] Extracted keywords for {len(keywords_mapping)} answers")
+            console.print(f"  - Keywords file: {test_keywords_path}")
+            console.print(f"  - Updated test set: {test_path}")
+            
+        elif step == "negative":
+            # 步骤7: 添加负样本
+            console.print("\n[bold cyan][Step 7] Adding negative samples...[/bold cyan]")
+            # 直接从已保存的训练集和测试集文件加载数据
+            if not train_path.exists():
+                console.print(f"[bold red]✗[/bold red] Train QA pairs file not found: {train_path}")
+                console.print("  Please run 'split' step first")
+                return
+            
+            if not test_path.exists():
+                console.print(f"[bold red]✗[/bold red] Test QA pairs file not found: {test_path}")
+                console.print("  Please run 'split' step first")
+                return
+            
+            # 加载训练集和测试集
+            with open(train_path, "r", encoding="utf-8") as fd:
+                train_qa_pairs = json.load(fd)
+            with open(test_path, "r", encoding="utf-8") as fd:
+                test_qa_pairs = json.load(fd)
+            
+            console.print(f"  - Loaded {len(train_qa_pairs)} train QA pairs")
+            console.print(f"  - Loaded {len(test_qa_pairs)} test QA pairs")
+            
+            # 添加负样本
+            train_qa_pairs, test_qa_pairs = qa_processor.add_negative_samples(
+                train_qa_pairs=train_qa_pairs,
+                test_qa_pairs=test_qa_pairs,
+                negative_samples_path=negative_samples_path,
+            )
+            
+            # 保存添加负样本后的数据
+            qa_processor.save_final_data(
+                train_qa_pairs=train_qa_pairs,
+                test_qa_pairs=test_qa_pairs,
+                train_path=train_path,
+                test_path=test_path,
+            )
+            
+            console.print(f"[bold green]✓[/bold green] Added negative samples")
+            console.print(f"  - Train set: {len(train_qa_pairs)} QA pairs")
+            console.print(f"  - Test set: {len(test_qa_pairs)} QA pairs")
+            console.print(f"  - Saved to: {train_path} and {test_path}")
+            
+        elif step == "save":
+            # 步骤8: 保存最终数据（验证和重新保存，确保格式正确）
+            console.print("\n[bold cyan][Step 8] Saving final data...[/bold cyan]")
+            # 直接从已保存的文件加载最终数据
+            if not train_path.exists():
+                console.print(f"[bold red]✗[/bold red] Train QA pairs file not found: {train_path}")
+                console.print("  Please run 'negative' step first")
+                return
+            
+            if not test_path.exists():
+                console.print(f"[bold red]✗[/bold red] Test QA pairs file not found: {test_path}")
+                console.print("  Please run 'negative' step first")
+                return
+            
+            # 加载最终数据
+            with open(train_path, "r", encoding="utf-8") as fd:
+                train_qa_pairs = json.load(fd)
+            with open(test_path, "r", encoding="utf-8") as fd:
+                test_qa_pairs = json.load(fd)
+            
+            console.print(f"  - Loaded {len(train_qa_pairs)} train QA pairs")
+            console.print(f"  - Loaded {len(test_qa_pairs)} test QA pairs")
+            
+            # 重新保存（确保格式正确，打乱顺序）
+            qa_processor.save_final_data(
+                train_qa_pairs=train_qa_pairs,
+                test_qa_pairs=test_qa_pairs,
+                train_path=train_path,
+                test_path=test_path,
+            )
+            
+            console.print(f"[bold green]✓[/bold green] Saved final data")
+            console.print(f"  - Train set: {train_path} ({len(train_qa_pairs)} QA pairs)")
+            console.print(f"  - Test set: {test_path} ({len(test_qa_pairs)} QA pairs)")
+            
+            # 统计信息
+            train_negative = len([q for q in train_qa_pairs if q.get("answer") == "无答案"])
+            test_negative = len([q for q in test_qa_pairs if q.get("answer") == "无答案"])
+            test_with_keywords = len([q for q in test_qa_pairs if q.get("keywords")])
+            console.print(f"  - Train negative samples: {train_negative}")
+            console.print(f"  - Test negative samples: {test_negative}")
+            console.print(f"  - Test samples with keywords: {test_with_keywords}")
+        else:
+            console.print(f"[bold red]Error: Unknown step '{step}'[/bold red]")
+            console.print("Available steps: load, filter, generalize, split, keywords, negative, save, all")
+            raise typer.Exit(1)
+        
+        # 结束监控并生成报告
+        monitor.end()
+        report_path = monitor.save_report()
+        monitor.print_summary()
+        
+        console.print("\n[bold green]✓ QA processing completed![/bold green]")
+        console.print(f"  - Performance report saved to: {report_path}")
+        
+    except Exception as e:
+        # 即使失败也保存监控数据
+        if 'monitor' in locals():
+            monitor.end()
+            monitor.save_report()
+            monitor.print_summary()
+        console.print(f"[bold red]Error processing QA data: {e}[/bold red]")
+        logger.exception("QA processing failed")
         raise typer.Exit(1)
 
 

@@ -5,5 +5,6 @@ QA生成模块
 """
 
 from .generator import QAGenerator
+from .qa_processor import QAProcessor
 
-__all__ = ["QAGenerator"]
+__all__ = ["QAGenerator", "QAProcessor"]

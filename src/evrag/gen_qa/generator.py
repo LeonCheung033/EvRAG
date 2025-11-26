@@ -187,23 +187,31 @@ class QAGenerator:
             try:
                 result = self.llm_client.chat(
                     messages=messages,
+                    model=None,  # 使用客户端默认模型
                     temperature=temperature,
                     top_p=top_p,
                     stream=False,
                 )
                 return result
             except Exception as e:
-                if attempt < self.max_retry - 1:
-                    sleep_seconds = random.randint(1, 4)
+                error_str = str(e)
+                # 如果是400错误且提示等待，增加等待时间
+                if "400" in error_str and "wait" in error_str.lower():
+                    sleep_seconds = 60  # 等待1分钟
                     print(
-                        f"Error: {str(e)}, remain retry: {self.max_retry - attempt - 1}, sleeping {sleep_seconds}s"
+                        f"Error: {error_str}, API rate limit detected, waiting {sleep_seconds}s..."
                     )
-                    import time
-
-                    time.sleep(sleep_seconds)
+                elif attempt < self.max_retry - 1:
+                    sleep_seconds = random.randint(2, 5)  # 增加重试间隔
+                    print(
+                        f"Error: {error_str}, remain retry: {self.max_retry - attempt - 1}, sleeping {sleep_seconds}s"
+                    )
                 else:
-                    print(f"Failed after {self.max_retry} retries: {str(e)}")
+                    print(f"Failed after {self.max_retry} retries: {error_str}")
                     return None
+                
+                import time
+                time.sleep(sleep_seconds)
         return None
 
     def generate_qa_from_documents(
@@ -408,7 +416,7 @@ class QAGenerator:
         def process_text(doc: Document) -> Optional[Dict[str, Any]]:
             """处理单个文本"""
             prompt = self._build_prompt(KEYWORDS_PROMPT_TPL, doc.page_content)
-            result = self._call_llm(prompt, temperature=0.001, top_p=0)
+            result = self._call_llm(prompt, temperature=0.001, top_p=0.1)  # top_p不能为0，改为0.1
 
             if result is None:
                 return None
@@ -461,7 +469,7 @@ class QAGenerator:
             .replace("{{answer}}", answer)
             .strip()
         )
-        result = self._call_llm(prompt, temperature=0.001, top_p=0)
+        result = self._call_llm(prompt, temperature=0.001, top_p=0.1)  # top_p不能为0，改为0.1
 
         if result is None:
             return None
