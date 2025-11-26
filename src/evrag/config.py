@@ -157,6 +157,17 @@ class Settings(BaseSettings):
         default="deepseek-chat", description="Deepseek模型名称"
     )
     
+    # ========== SiliconFlow API配置（用于Reranker） ==========
+    siliconflow_api_key: str = Field(
+        default="", description="SiliconFlow API密钥"
+    )
+    siliconflow_base_url: str = Field(
+        default="https://api.siliconflow.cn/v1", description="SiliconFlow API基础URL"
+    )
+    siliconflow_reranker_model: str = Field(
+        default="Qwen/Qwen3-Reranker-8B", description="SiliconFlow Reranker模型名称"
+    )
+    
     # 兼容旧配置（保留向后兼容）
     llm_model_name: str = Field(
         default="qwen3_lora_sft_int4", description="LLM模型名称（兼容字段，等同于local_llm_model_name）"

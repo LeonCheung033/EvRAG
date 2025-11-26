@@ -15,10 +15,16 @@ LLM_CHAT_PROMPT = """
 
 ### 任务
 你是特斯拉电动汽车Model 3车型的用户手册问答系统，你具备{{信息}}中的知识。
-请回答问题"{query}"，答案需要精准，语句通顺，并严格按照以下格式输出
+请回答问题"{query}"，答案需要精准，语句通顺。
 
-{{答案}}【{{引用编号1}}, {{引用编号2}}, ...】
-如果无法从中得到答案，请说 "无答案" ，不允许在答案中添加编造成分。
+**输出要求：**
+1. 直接输出答案内容，不要输出任何思考过程、推理过程或解释性文字
+2. 答案末尾必须包含引用标记，格式为：【引用编号1, 引用编号2, ...】
+3. 如果无法从中得到答案，请说 "无答案"
+4. 不允许在答案中添加编造成分
+
+**输出格式示例：**
+{{答案内容}}【1, 2, 3】
 """
 
 
@@ -47,7 +53,7 @@ class ChatClient:
         self.prompt_template = prompt_template or LLM_CHAT_PROMPT
         self.system_message = system_message or "你是一个有用的人工智能助手."
 
-    def chat(self, query: str, context: str, stream: bool = False, **kwargs) -> str:
+    def chat(self, query: str, context: str, stream: bool = False, enable_thinking: bool = False, **kwargs) -> str:
         """
         发送RAG问答请求
 
@@ -55,6 +61,7 @@ class ChatClient:
             query: 用户问题
             context: 检索到的上下文信息
             stream: 是否流式返回
+            enable_thinking: 是否启用思考模式（默认False，数据生成任务禁用；问答任务可启用）
             **kwargs: 其他LLM参数
 
         Returns:
@@ -68,11 +75,23 @@ class ChatClient:
         ]
 
         # 设置默认参数
-        default_kwargs = {
-            "max_tokens": 4096,
-            "temperature": 0.001,
-            "top_p": 0.95,
-        }
+        # 根据enable_thinking选择不同的推荐参数
+        if enable_thinking:
+            # 思考模式推荐参数：Temperature=0.6, TopP=0.95
+            default_kwargs = {
+                "max_tokens": 4096,
+                "temperature": 0.6,
+                "top_p": 0.95,
+            }
+        else:
+            # 非思考模式推荐参数：Temperature=0.7, TopP=0.8
+            default_kwargs = {
+                "max_tokens": 4096,
+                "temperature": 0.7,
+                "top_p": 0.8,
+            }
+        
+        default_kwargs["enable_thinking"] = enable_thinking
         default_kwargs.update(kwargs)
 
         if stream:

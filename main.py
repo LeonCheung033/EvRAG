@@ -614,6 +614,7 @@ def infer(
     topk: int = typer.Option(5, "--topk", "-k", help="返回的文档数量"),
     config_file: Optional[Path] = typer.Option(None, "--config", "-c", help="配置文件路径"),
     stream: bool = typer.Option(False, "--stream", "-s", help="流式输出"),
+    enable_thinking: bool = typer.Option(False, "--enable-thinking/--no-enable-thinking", help="是否启用思考模式（默认关闭，复杂推理任务可启用）"),
 ):
     """
     推理/问答
@@ -669,12 +670,12 @@ def infer(
         if stream:
             console.print("\n[bold cyan]Answer:[/bold cyan]")
             response = ""
-            for chunk in chat_client.chat(query=query, context=context, stream=True):
+            for chunk in chat_client.chat(query=query, context=context, stream=True, enable_thinking=enable_thinking):
                 console.print(chunk, end="")
                 response += chunk
             console.print("\n")
         else:
-            response = chat_client.chat(query=query, context=context, stream=False)
+            response = chat_client.chat(query=query, context=context, stream=False, enable_thinking=enable_thinking)
             console.print(f"\n[bold cyan]Answer:[/bold cyan]\n{response}\n")
 
         # 后处理
@@ -1141,6 +1142,323 @@ def process_qa(
             monitor.print_summary()
         console.print(f"[bold red]Error processing QA data: {e}[/bold red]")
         logger.exception("QA processing failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def generate_sft_data(
+    train_qa_path: Path = typer.Option(Path("data/qa_pairs/train_qa_pair.json"), "--train-qa-path", help="训练集QA对文件路径"),
+    output_dir: Path = typer.Option(Path("data"), "--output-dir", "-o", help="输出目录"),
+    config_file: Optional[Path] = typer.Option(None, "--config", "-c", help="配置文件路径"),
+    step: str = typer.Option("all", "--step", help="执行步骤: train_data, summary, rerank, test_verify, test_pred, all"),
+    bm25_topk: int = typer.Option(5, "--bm25-topk", help="BM25检索数量"),
+    milvus_topk: int = typer.Option(10, "--milvus-topk", help="Milvus检索数量"),
+    reranker_topk: int = typer.Option(5, "--reranker-topk", help="Reranker重排序数量"),
+    test_rate: float = typer.Option(0.08, "--test-rate", help="测试集比例"),
+    rerank_dev_size: int = typer.Option(1000, "--rerank-dev-size", help="Reranker开发集大小"),
+    max_workers: int = typer.Option(10, "--workers", "-w", help="最大并发工作线程数"),
+):
+    """
+    生成微调训练数据
+    
+    从train_qa_pair.json生成微调训练数据，包括：
+    1. train_data.json - RAG检索数据
+    2. summary_data - SFT训练数据
+    3. rerank_data - Reranker训练数据
+    4. test_qa_pair_verify.json - 测试集验证数据（从test_qa_pair.json筛选）
+    5. test_qa_pair_pred.json - 测试集预测数据（对验证集进行RAG预测）
+    """
+    console.print("[bold green]Generating SFT data...[/bold green]")
+    
+    # 重新加载配置
+    if config_file:
+        reload_settings(config_file)
+    settings = get_settings()
+    
+    # 初始化性能监控
+    monitor = PerformanceMonitor("generate_sft_data", output_dir=Path("logs/performance"))
+    monitor.start()
+    
+    try:
+        from src.evrag.gen_qa import SFTDataGenerator
+        from src.evrag.client import OpenAIClient, MongoDBClient
+        
+        # 初始化LLM客户端（使用Deepseek API生成问答数据）
+        with monitor.step("初始化"):
+            console.print("\n[bold cyan][1/1] Initializing...[/bold cyan]")
+            console.print("[yellow]Using Deepseek API for QA generation...[/yellow]")
+            llm_client = OpenAIClient(service="deepseek")
+            
+            # 检查MongoDB配置
+            mongodb_client = None
+            if hasattr(settings, 'mongodb_host') and settings.mongodb_host:
+                try:
+                    mongodb_client = MongoDBClient()
+                except Exception as e:
+                    console.print(f"[yellow]Warning: MongoDB connection failed: {e}[/yellow]")
+                    mongodb_client = None
+            
+            # 检查SiliconFlow API配置（用于Reranker）
+            use_siliconflow = bool(settings.siliconflow_api_key)
+            if use_siliconflow:
+                console.print("[yellow]Using SiliconFlow API for Reranker...[/yellow]")
+            else:
+                console.print("[yellow]Warning: SiliconFlow API key not configured, using BGE Reranker[/yellow]")
+            
+            sft_generator = SFTDataGenerator(
+                llm_client=llm_client,
+                mongodb_client=mongodb_client,
+                bm25_topk=bm25_topk,
+                milvus_topk=milvus_topk,
+                reranker_topk=reranker_topk,
+                test_rate=test_rate,
+                rerank_dev_size=rerank_dev_size,
+                max_workers=max_workers,
+                use_siliconflow_reranker=use_siliconflow,
+            )
+            console.print("[bold green]✓[/bold green] Initialized")
+        
+        # 确保输出目录存在
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # 定义输出文件路径
+        train_data_path = output_dir / "qa_pairs" / "train_data.json"
+        summary_dir = output_dir / "summary_data"
+        rerank_dir = output_dir / "rerank_data"
+        
+        # 分步执行
+        if step == "all":
+            # 完整流程
+            console.print("\n[bold cyan]Running full pipeline...[/bold cyan]")
+            
+            # Step 1: 生成train_data.json
+            console.print("\n[bold cyan][Step 1] Generating train_data.json...[/bold cyan]")
+            sft_generator.generate_train_data(
+                train_qa_path=train_qa_path,
+                output_path=train_data_path,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated train_data.json")
+            
+            # Step 2: 生成summary_data
+            console.print("\n[bold cyan][Step 2] Generating summary_data...[/bold cyan]")
+            summary_train, summary_test = sft_generator.generate_summary_data(
+                train_data_path=train_data_path,
+                output_dir=output_dir,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated summary_data")
+            console.print(f"  - Train: {len(summary_train)} items")
+            console.print(f"  - Test: {len(summary_test)} items")
+            
+            # Step 3: 生成rerank_data
+            console.print("\n[bold cyan][Step 3] Generating rerank_data...[/bold cyan]")
+            rerank_train, rerank_dev, rerank_test = sft_generator.generate_rerank_data(
+                train_data_path=train_data_path,
+                output_dir=output_dir,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated rerank_data")
+            console.print(f"  - Train: {len(rerank_train)} items")
+            console.print(f"  - Dev: {len(rerank_dev)} items")
+            console.print(f"  - Test: {len(rerank_test)} items")
+            
+            # Step 4: 生成test_qa_pair_verify.json
+            console.print("\n[bold cyan][Step 4] Generating test_qa_pair_verify.json...[/bold cyan]")
+            test_qa_path = output_dir / "qa_pairs" / "test_qa_pair.json"
+            test_verify_path = output_dir / "qa_pairs" / "test_qa_pair_verify.json"
+            
+            if test_qa_path.exists():
+                verify_pairs = sft_generator.generate_test_verify_data(
+                    test_qa_path=test_qa_path,
+                    output_path=test_verify_path,
+                    verify_ratio=0.1,
+                )
+                console.print(f"[bold green]✓[/bold green] Generated test_qa_pair_verify.json")
+                console.print(f"  - Verify set: {len(verify_pairs)} items")
+                
+                # Step 5: 生成test_qa_pair_pred.json
+                console.print("\n[bold cyan][Step 5] Generating test_qa_pair_pred.json...[/bold cyan]")
+                test_pred_path = output_dir / "qa_pairs" / "test_qa_pair_pred.json"
+                
+                pred_results = sft_generator.generate_test_pred_data(
+                    test_verify_path=test_verify_path,
+                    output_path=test_pred_path,
+                )
+                console.print(f"[bold green]✓[/bold green] Generated test_qa_pair_pred.json")
+                console.print(f"  - Prediction results: {len(pred_results)} items")
+            else:
+                console.print(f"[yellow]⚠[/yellow] Test QA file not found: {test_qa_path}")
+                console.print("  Skipping test data generation")
+            
+        elif step == "train_data":
+            # 步骤1: 生成train_data.json
+            console.print("\n[bold cyan][Step 1] Generating train_data.json...[/bold cyan]")
+            sft_generator.generate_train_data(
+                train_qa_path=train_qa_path,
+                output_path=train_data_path,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated train_data.json")
+            console.print(f"  - Output: {train_data_path}")
+            
+        elif step == "summary":
+            # 步骤2: 生成summary_data
+            console.print("\n[bold cyan][Step 2] Generating summary_data...[/bold cyan]")
+            if not train_data_path.exists():
+                console.print(f"[bold red]✗[/bold red] Train data file not found: {train_data_path}")
+                console.print("  Please run 'train_data' step first")
+                return
+            
+            summary_train, summary_test = sft_generator.generate_summary_data(
+                train_data_path=train_data_path,
+                output_dir=output_dir,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated summary_data")
+            console.print(f"  - Train: {len(summary_train)} items")
+            console.print(f"  - Test: {len(summary_test)} items")
+            
+        elif step == "rerank":
+            # 步骤3: 生成rerank_data
+            console.print("\n[bold cyan][Step 3] Generating rerank_data...[/bold cyan]")
+            if not train_data_path.exists():
+                console.print(f"[bold red]✗[/bold red] Train data file not found: {train_data_path}")
+                console.print("  Please run 'train_data' step first")
+                return
+            
+            rerank_train, rerank_dev, rerank_test = sft_generator.generate_rerank_data(
+                train_data_path=train_data_path,
+                output_dir=output_dir,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated rerank_data")
+            console.print(f"  - Train: {len(rerank_train)} items")
+            console.print(f"  - Dev: {len(rerank_dev)} items")
+            console.print(f"  - Test: {len(rerank_test)} items")
+            
+        elif step == "test_verify":
+            # 步骤4: 生成test_qa_pair_verify.json
+            console.print("\n[bold cyan][Step 4] Generating test_qa_pair_verify.json...[/bold cyan]")
+            test_qa_path = output_dir / "qa_pairs" / "test_qa_pair.json"
+            test_verify_path = output_dir / "qa_pairs" / "test_qa_pair_verify.json"
+            
+            if not test_qa_path.exists():
+                console.print(f"[bold red]✗[/bold red] Test QA file not found: {test_qa_path}")
+                console.print("  Please ensure test_qa_pair.json exists")
+                return
+            
+            verify_pairs = sft_generator.generate_test_verify_data(
+                test_qa_path=test_qa_path,
+                output_path=test_verify_path,
+                verify_ratio=0.1,  # 默认10%作为验证集
+            )
+            console.print(f"[bold green]✓[/bold green] Generated test_qa_pair_verify.json")
+            console.print(f"  - Verify set: {len(verify_pairs)} items")
+            
+        elif step == "test_pred":
+            # 步骤5: 生成test_qa_pair_pred.json
+            console.print("\n[bold cyan][Step 5] Generating test_qa_pair_pred.json...[/bold cyan]")
+            test_verify_path = output_dir / "qa_pairs" / "test_qa_pair_verify.json"
+            test_pred_path = output_dir / "qa_pairs" / "test_qa_pair_pred.json"
+            
+            if not test_verify_path.exists():
+                console.print(f"[bold red]✗[/bold red] Test verify file not found: {test_verify_path}")
+                console.print("  Please run 'test_verify' step first")
+                return
+            
+            pred_results = sft_generator.generate_test_pred_data(
+                test_verify_path=test_verify_path,
+                output_path=test_pred_path,
+            )
+            console.print(f"[bold green]✓[/bold green] Generated test_qa_pair_pred.json")
+            console.print(f"  - Prediction results: {len(pred_results)} items")
+            
+        else:
+            console.print(f"[bold red]Error: Unknown step '{step}'[/bold red]")
+            console.print("Available steps: train_data, summary, rerank, test_verify, test_pred, all")
+            raise typer.Exit(1)
+        
+        monitor.end()
+        monitor.print_summary()
+        
+    except Exception as e:
+        monitor.end()
+        if monitor:
+            monitor.print_summary()
+        console.print(f"[bold red]Error generating SFT data: {e}[/bold red]")
+        logger.exception("SFT data generation failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def analyze_sft_data(
+    output_dir: Path = typer.Option(Path("data"), "--output-dir", "-o", help="数据输出目录"),
+    action: str = typer.Option("all", "--action", help="执行操作: stats, validate, all"),
+    save_report: bool = typer.Option(True, "--save-report/--no-save-report", help="是否保存报告到JSON文件"),
+):
+    """
+    分析和验证SFT数据
+    
+    功能包括：
+    1. 数据统计：SFT数据和Reranker数据的统计信息
+    2. 数据验证：验证数据格式、完整性和平衡性
+    """
+    console.print("[bold green]Analyzing SFT data...[/bold green]")
+    
+    try:
+        from src.evrag.gen_qa.sft_data_analyzer import SFTDataAnalyzer, SFTDataValidator
+        
+        output_dir = Path(output_dir)
+        
+        if action in ["stats", "all"]:
+            # 数据分析
+            console.print("\n[bold cyan]Data Analysis[/bold cyan]")
+            analyzer = SFTDataAnalyzer(output_dir)
+            
+            # 分析summary数据
+            summary_stats = analyzer.analyze_summary_data()
+            analyzer.print_summary_statistics(summary_stats)
+            
+            # 分析rerank数据
+            rerank_stats = analyzer.analyze_rerank_data()
+            analyzer.print_rerank_statistics(rerank_stats)
+            
+            # 生成可视化图表
+            console.print("\n[bold cyan]Generating visualizations...[/bold cyan]")
+            report = {
+                "summary_data": summary_stats,
+                "rerank_data": rerank_stats,
+            }
+            analyzer.generate_visualizations(report, output_dir)
+            
+            # 保存统计报告
+            if save_report:
+                report_path = output_dir / "logs" / "sft_data_statistics.json"
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+                
+                with open(report_path, "w", encoding="utf-8") as f:
+                    json.dump(report, f, ensure_ascii=False, indent=2)
+                
+                console.print(f"\n[bold green]✓[/bold green] Statistics report saved to: {report_path}")
+        
+        if action in ["validate", "all"]:
+            # 数据验证
+            console.print("\n[bold cyan]Data Validation[/bold cyan]")
+            validator = SFTDataValidator(output_dir)
+            
+            validation_results = validator.validate_all()
+            validator.print_validation_results(validation_results)
+            
+            # 保存验证报告
+            if save_report:
+                report_path = output_dir / "logs" / "sft_data_validation.json"
+                report_path.parent.mkdir(parents=True, exist_ok=True)
+                
+                with open(report_path, "w", encoding="utf-8") as f:
+                    json.dump(validation_results, f, ensure_ascii=False, indent=2)
+                
+                console.print(f"\n[bold green]✓[/bold green] Validation report saved to: {report_path}")
+        
+        console.print("\n[bold green]✓ Analysis completed![/bold green]")
+        
+    except Exception as e:
+        console.print(f"[bold red]Error analyzing SFT data: {e}[/bold red]")
+        logger.exception("SFT data analysis failed")
         raise typer.Exit(1)
 
 

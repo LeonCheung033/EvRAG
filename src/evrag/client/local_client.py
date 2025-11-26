@@ -75,12 +75,34 @@ class LocalLLMClient(BaseLLMClient):
                 **kwargs,
             )
 
+        # 处理extra_body参数（用于传递chat_template_kwargs等，参考官方文档）
+        # 从kwargs中提取enable_thinking（如果存在），默认False
+        enable_thinking = kwargs.pop("enable_thinking", False)
+        
+        # 处理extra_body
+        if "extra_body" in kwargs:
+            extra_body = kwargs.pop("extra_body")
+        else:
+            extra_body = {}
+        
+        # 设置chat_template_kwargs（如果不存在或需要更新enable_thinking）
+        if "chat_template_kwargs" not in extra_body:
+            extra_body["chat_template_kwargs"] = {"enable_thinking": enable_thinking}
+        else:
+            # 如果已存在，更新enable_thinking（允许外部覆盖）
+            extra_body["chat_template_kwargs"]["enable_thinking"] = enable_thinking
+        
+        # 设置top_k（非思考模式推荐值）
+        if "top_k" not in extra_body:
+            extra_body["top_k"] = 20
+        
         completion = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
             stream=False,
+            extra_body=extra_body,
             **kwargs,
         )
 
@@ -107,12 +129,29 @@ class LocalLLMClient(BaseLLMClient):
         Yields:
             每个chunk的文本内容
         """
+        # 处理extra_body参数（用于传递chat_template_kwargs等）
+        enable_thinking = kwargs.pop("enable_thinking", False)
+        
+        if "extra_body" in kwargs:
+            extra_body = kwargs.pop("extra_body")
+        else:
+            extra_body = {}
+        
+        if "chat_template_kwargs" not in extra_body:
+            extra_body["chat_template_kwargs"] = {"enable_thinking": enable_thinking}
+        else:
+            extra_body["chat_template_kwargs"]["enable_thinking"] = enable_thinking
+        
+        if "top_k" not in extra_body:
+            extra_body["top_k"] = 20
+        
         stream = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
             stream=True,
+            extra_body=extra_body,
             **kwargs,
         )
 

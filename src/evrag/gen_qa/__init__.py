@@ -6,5 +6,7 @@ QA生成模块
 
 from .generator import QAGenerator
 from .qa_processor import QAProcessor
+from .sft_data_generator import SFTDataGenerator
+from .sft_data_analyzer import SFTDataAnalyzer, SFTDataValidator
 
-__all__ = ["QAGenerator", "QAProcessor"]
+__all__ = ["QAGenerator", "QAProcessor", "SFTDataGenerator", "SFTDataAnalyzer", "SFTDataValidator"]

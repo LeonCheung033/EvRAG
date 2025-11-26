@@ -101,13 +101,16 @@ class OpenAIClient(BaseLLMClient):
                 **kwargs,
             )
 
+        # 过滤掉 enable_thinking 参数（Deepseek 等 API 不支持）
+        filtered_kwargs = {k: v for k, v in kwargs.items() if k != "enable_thinking"}
+        
         completion = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
             stream=False,
-            **kwargs,
+            **filtered_kwargs,
         )
 
         return completion.choices[0].message.content
@@ -133,13 +136,16 @@ class OpenAIClient(BaseLLMClient):
         Yields:
             每个chunk的文本内容
         """
+        # 过滤掉 enable_thinking 参数（Deepseek 等 API 不支持）
+        filtered_kwargs = {k: v for k, v in kwargs.items() if k != "enable_thinking"}
+        
         stream = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens,
             stream=True,
-            **kwargs,
+            **filtered_kwargs,
         )
 
         for chunk in stream:
