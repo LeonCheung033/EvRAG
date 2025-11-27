@@ -1463,6 +1463,383 @@ def analyze_sft_data(
 
 
 @app.command()
+def finetune_llm(
+    config: Optional[Path] = typer.Option(
+        Path("config/finetune/qwen3_lora_sft.yaml"),
+        "--config",
+        "-c",
+        help="训练配置文件路径",
+    ),
+    resume: Optional[str] = typer.Option(
+        None,
+        "--resume",
+        help="从checkpoint恢复训练（checkpoint路径）",
+    ),
+    gpus: Optional[str] = typer.Option(
+        None,
+        "--gpus",
+        help="使用的GPU设备（如：0,1,2,3）",
+    ),
+):
+    """
+    LLM微调：使用LLaMA-Factory微调Qwen3-8B模型
+    """
+    console.print("[bold green]Starting LLM fine-tuning...[/bold green]")
+
+    try:
+        from src.evrag.finetune import LLMFineTuner, DataConverter
+        from src.evrag.config import get_settings
+
+        settings = get_settings()
+
+        # 准备数据格式转换
+        converter = DataConverter(output_dir=Path("data/finetune"))
+        
+        # 转换训练数据
+        train_data_path = Path("data/summary_data/train.json")
+        test_data_path = Path("data/summary_data/test.json")
+        
+        if train_data_path.exists():
+            llamafactory_train_path = converter.convert_sft_data_to_llamafactory(
+                train_data_path,
+                Path("data/finetune/train_llamafactory.json"),
+            )
+            console.print(f"[bold green]✓[/bold green] Training data converted")
+
+        if test_data_path.exists():
+            llamafactory_test_path = converter.convert_sft_data_to_llamafactory(
+                test_data_path,
+                Path("data/finetune/test_llamafactory.json"),
+            )
+            console.print(f"[bold green]✓[/bold green] Test data converted")
+
+        # 创建数据集配置
+        dataset_config_path = converter.create_dataset_config(
+            "faq_summary",
+            llamafactory_train_path if train_data_path.exists() else train_data_path,
+            llamafactory_test_path if test_data_path.exists() else test_data_path,
+            Path("config/finetune/datasets/faq_summary.yaml"),
+        )
+
+        # 初始化微调器
+        output_dir = Path("models/finetuned/qwen3_lora_sft/")
+        finetuner = LLMFineTuner(
+            config_path=config,
+            output_dir=output_dir,
+        )
+
+        # 执行训练
+        finetuner.train(
+            cuda_visible_devices=gpus,
+            resume_from_checkpoint=resume,
+        )
+
+        console.print(f"\n[bold green]✓ Fine-tuning completed![/bold green]")
+        console.print(f"Model saved to: {output_dir}")
+
+    except ImportError as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        console.print("Please install LLaMA-Factory or provide --llamafactory-path")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        logger.exception("LLM fine-tuning failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def finetune_reranker(
+    config: Optional[Path] = typer.Option(
+        Path("config/finetune/reranker_training.yaml"),
+        "--config",
+        "-c",
+        help="训练配置文件路径",
+    ),
+    gpus: Optional[str] = typer.Option(
+        None,
+        "--gpus",
+        help="使用的GPU设备（如：0）",
+    ),
+    rag_retrieval_path: Optional[Path] = typer.Option(
+        None,
+        "--rag-retrieval-path",
+        help="RAG-Retrieval项目路径（默认使用项目目录下的RAG-Retrieval）",
+    ),
+):
+    """
+    Reranker微调：使用RAG-Retrieval微调BGE-Reranker模型
+    """
+    console.print("[bold green]Starting Reranker fine-tuning...[/bold green]")
+
+    try:
+        from src.evrag.finetune import RerankerFineTuner
+        from src.evrag.config import get_settings
+
+        settings = get_settings()
+
+        # 初始化微调器
+        output_dir = Path("models/finetuned/bge_reranker/")
+        finetuner = RerankerFineTuner(
+            config_path=config,
+            output_dir=output_dir,
+            rag_retrieval_path=rag_retrieval_path,
+        )
+
+        # 执行训练
+        finetuner.train(cuda_visible_devices=gpus)
+
+        console.print(f"\n[bold green]✓ Fine-tuning completed![/bold green]")
+        console.print(f"Model saved to: {output_dir}")
+
+    except ImportError as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        console.print("Please install RAG-Retrieval or provide --rag-retrieval-path")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        logger.exception("Reranker fine-tuning failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def evaluate_model(
+    model_type: str = typer.Option(
+        ...,
+        "--model-type",
+        help="模型类型：llm 或 reranker",
+    ),
+    model_path: Path = typer.Option(
+        ...,
+        "--model-path",
+        help="模型路径",
+    ),
+    test_data: Path = typer.Option(
+        ...,
+        "--test-data",
+        help="测试数据路径",
+    ),
+    output_report: Optional[Path] = typer.Option(
+        None,
+        "--output-report",
+        help="评估报告输出路径",
+    ),
+    base_model_path: Optional[Path] = typer.Option(
+        None,
+        "--base-model-path",
+        help="基础模型路径（仅LoRA模型需要）",
+    ),
+    is_lora: bool = typer.Option(
+        False,
+        "--is-lora",
+        help="是否为LoRA模型",
+    ),
+):
+    """
+    模型评估：在测试集上评估微调后的模型
+    """
+    console.print(f"[bold green]Evaluating {model_type} model...[/bold green]")
+
+    try:
+        from src.evrag.finetune import ModelEvaluator, EvaluationReport
+
+        # 初始化评估器
+        evaluator = ModelEvaluator(
+            model_path=model_path,
+            model_type=model_type,
+            base_model_path=base_model_path,
+            is_lora=is_lora,
+        )
+
+        # 执行评估
+        results = evaluator.evaluate(test_data)
+
+        # 生成报告
+        if output_report:
+            report_generator = EvaluationReport(output_dir=output_report.parent)
+            report_path = report_generator.generate_report(
+                results,
+                model_type,
+                model_path,
+                test_data,
+                output_report,
+            )
+            console.print(f"[bold green]✓[/bold green] Evaluation report saved to: {report_path}")
+        else:
+            console.print(f"\n[bold green]✓ Evaluation completed![/bold green]")
+            console.print(f"Total samples: {results.get('total_samples', 0)}")
+            console.print(f"Metrics: {results.get('metrics', {})}")
+
+    except Exception as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        logger.exception("Model evaluation failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def compare_models(
+    model_type: str = typer.Option(
+        ...,
+        "--model-type",
+        help="模型类型：llm 或 reranker",
+    ),
+    baseline_model: Path = typer.Option(
+        ...,
+        "--baseline-model",
+        help="基线模型路径",
+    ),
+    finetuned_model: Path = typer.Option(
+        ...,
+        "--finetuned-model",
+        help="微调后模型路径",
+    ),
+    test_data: Path = typer.Option(
+        ...,
+        "--test-data",
+        help="测试数据路径",
+    ),
+    output_dir: Path = typer.Option(
+        Path("reports/evaluation"),
+        "--output-dir",
+        help="输出目录",
+    ),
+    baseline_base_model: Optional[Path] = typer.Option(
+        None,
+        "--baseline-base-model",
+        help="基线模型的基础模型路径（仅LLM需要）",
+    ),
+    finetuned_base_model: Optional[Path] = typer.Option(
+        None,
+        "--finetuned-base-model",
+        help="微调后模型的基础模型路径（仅LoRA需要）",
+    ),
+    finetuned_is_lora: bool = typer.Option(
+        False,
+        "--finetuned-is-lora",
+        help="微调后模型是否为LoRA",
+    ),
+    baseline_vllm_url: str = typer.Option(
+        ...,
+        "--baseline-vllm-url",
+        help="基线模型的vLLM服务地址（如 http://localhost:8000/v1）",
+    ),
+    baseline_vllm_model: str = typer.Option(
+        ...,
+        "--baseline-vllm-model",
+        help="基线模型的vLLM模型名称（如 models/Qwen3-8B）",
+    ),
+    finetuned_vllm_url: str = typer.Option(
+        ...,
+        "--finetuned-vllm-url",
+        help="微调后模型的vLLM服务地址（如 http://localhost:8001/v1）",
+    ),
+    finetuned_vllm_model: str = typer.Option(
+        ...,
+        "--finetuned-vllm-model",
+        help="微调后模型的vLLM模型名称（如 qwen3_lora_sft）",
+    ),
+    batch_size: int = typer.Option(
+        8,
+        "--batch-size",
+        help="vLLM批量生成大小",
+    ),
+):
+    """
+    模型对比评估：对比基线模型和微调后模型的性能
+    """
+    console.print(f"[bold green]Comparing {model_type} models...[/bold green]")
+
+    try:
+        from src.evrag.finetune import PerformanceComparison
+
+        # 初始化对比器
+        comparer = PerformanceComparison()
+
+        # 执行对比评估（仅支持vLLM模式）
+        comparison = comparer.compare_models(
+            baseline_model_path=baseline_model,
+            finetuned_model_path=finetuned_model,
+            test_data_path=test_data,
+            model_type=model_type,
+            baseline_base_model_path=baseline_base_model,
+            finetuned_base_model_path=finetuned_base_model,
+            finetuned_is_lora=finetuned_is_lora,
+            output_dir=output_dir,
+            use_vllm=True,  # 固定为True，仅支持vLLM
+            baseline_vllm_url=baseline_vllm_url,
+            baseline_vllm_model=baseline_vllm_model,
+            finetuned_vllm_url=finetuned_vllm_url,
+            finetuned_vllm_model=finetuned_vllm_model,
+            batch_size=batch_size,
+        )
+
+        console.print(f"\n[bold green]✓ Comparison completed![/bold green]")
+        console.print(f"Results saved to: {output_dir}")
+
+    except Exception as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        logger.exception("Model comparison failed")
+        raise typer.Exit(1)
+
+
+@app.command()
+def plot_training_metrics(
+    log_dir: Path = typer.Option(
+        ...,
+        "--log-dir",
+        help="TensorBoard日志目录",
+    ),
+    output_dir: Optional[Path] = typer.Option(
+        None,
+        "--output-dir",
+        help="图表输出目录",
+    ),
+    metrics: str = typer.Option(
+        "all",
+        "--metrics",
+        help="要绘制的指标（all, loss, lr, eval, gpu）",
+    ),
+    gpu_log: Optional[Path] = typer.Option(
+        None,
+        "--gpu-log",
+        help="GPU监控日志文件路径",
+    ),
+):
+    """
+    绘制训练指标图表：从TensorBoard日志生成可视化图表
+    """
+    console.print("[bold green]Generating training metrics plots...[/bold green]")
+
+    try:
+        from src.evrag.finetune import TrainingVisualizer
+
+        if output_dir is None:
+            output_dir = log_dir / "plots"
+        else:
+            output_dir = Path(output_dir)
+
+        visualizer = TrainingVisualizer(output_dir=output_dir)
+
+        if metrics == "all" or "loss" in metrics:
+            visualizer.plot_training_loss(log_dir)
+        if metrics == "all" or "lr" in metrics:
+            visualizer.plot_learning_rate(log_dir)
+        if metrics == "all" or "eval" in metrics:
+            visualizer.plot_evaluation_metrics(log_dir)
+        if metrics == "all" or "gpu" in metrics:
+            if gpu_log:
+                visualizer.plot_gpu_utilization(gpu_log)
+            else:
+                console.print("[yellow]Warning: GPU log not provided, skipping GPU plot[/yellow]")
+
+        console.print(f"\n[bold green]✓ Plots saved to: {output_dir}[/bold green]")
+
+    except Exception as e:
+        console.print(f"[bold red]Error: {e}[/bold red]")
+        logger.exception("Plot generation failed")
+        raise typer.Exit(1)
+
+
+@app.command()
 def version():
     """显示版本信息"""
     from src.evrag import __version__

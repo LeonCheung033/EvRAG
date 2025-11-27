@@ -96,10 +96,18 @@ class LocalLLMClient(BaseLLMClient):
         if "top_k" not in extra_body:
             extra_body["top_k"] = 20
         
+        # vLLM API: 如果model为None，不传递model参数，让vLLM使用默认模型
+        create_kwargs = {
+            "messages": messages,
+            "temperature": temperature,
+        }
+        # 只有当model明确指定时才传递
+        api_model = model or self.model
+        if api_model:
+            create_kwargs["model"] = api_model
+        
         completion = self.client.chat.completions.create(
-            model=model or self.model,
-            messages=messages,
-            temperature=temperature,
+            **create_kwargs,
             max_tokens=max_tokens,
             stream=False,
             extra_body=extra_body,

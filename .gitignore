@@ -105,3 +105,7 @@ data/
 models/
 log/
 mongodb/
+
+# 微调依赖项目（已克隆到本地，但不提交到git）
+LLaMA-Factory-main/
+RAG-Retrieval/

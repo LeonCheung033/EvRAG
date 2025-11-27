@@ -1,0 +1,5662 @@
+{
+  "baseline_results": {
+    "total_samples": 1000,
+    "predictions": [
+      {
+        "query": "Model 3洗车时，哪些清洁剂成分不能用，否则可能影响保修？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3交车时里程表显示有公里数，这是怎么回事？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统显示CP_a056警报时，充电中断的原因是什么？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "同一个轮胎的胎压警报反复出现，要怎么解决？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个车的门从里面怎么开？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当气囊系统工作正常，乘车时应该注意哪些事项来防止意外伤害？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些情况下应该按下紧急呼叫按钮？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "装新空调滤芯的时候，箭头该朝哪边？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车速达到多少时前撞预警功能会被激活？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用第三方配件连接低压插座时，该留意哪些安全细节？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何识别充电问题是车辆引起的还是所用设备导致的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "清洁车内照明时需要特别注意哪些事项？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开启赛道模式后，悬架会有什么不同？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "如果不用特斯拉原厂配件会有什么影响？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何从车内打开车门？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "天气特别热的时候，如果要去超级充电站，车子会提前为电池充电做哪些准备？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果Wall Connector显示CC_a027警报，首先该怎么做？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "哪些环境条件会影响辅助驾驶功能的性能？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些情况下自动泊车会失效，得由驾驶员接手？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆Model 3的车窗系统在安全和便捷方面有什么特别之处？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3插头插着但没充电的时候，能量从哪来？在什么情况下会启用电池供电？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这种带温度控制的通风口是干嘛的？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "装大号ISOFIX/i-Size儿童安全座椅（C类）的时候要留意哪些事情？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么保证特斯拉总能享受到最新的强大功能？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "正常驾驶情况下，方向盘左侧的滚轮都有哪些功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Tesla车主手册中关于功能可用性和版权信息的主要规定有哪些？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的驾驶座和副驾驶温度怎么分开调？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "解除这两种胎压警报，需要哪些共同的条件才行？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何操作才能关掉Model 3的空调？关掉后对驾驶体验有什么影响？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果车的电路系统有问题，左边哪些功能可能会不好使？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么样的天气或路况会让辅助驾驶不好用？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "贴挡风玻璃标签时，怎样做才安全？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统显示CC_a011警报时，它意味着什么？正确的处理步骤有哪些？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当副驾位前气囊关闭后有成人在副驾位就坐时应该怎么做？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要怎样设置汽车才能让手机蓝牙好连一点？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "行程规划能帮我做什么？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用行车记录仪之前，应该做哪些准备工作？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当APP_w048辅助驾驶功能暂时不可用警报出现时，建议采取什么措施？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么设置才能让哨兵模式的摄像头识别更准确？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的主动防护前罩在车速多少到多少之间会启动？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "CP_a078警报出现时，需要采取哪些步骤？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "组别0+（13千克以下）的ISOFIX/i-Size儿童座椅，能选哪些大小规格？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "太阳能充电功能的工作原理和系统要求是什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "清洁摄像头镜头时该怎么做才能避免刮花或损坏？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的摄像头盲点内有哪些障碍物无法被探测到？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在什么情况下Model 3会自动降低行驶速度？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "从USB设备要求到视频查看的完整使用流程涉及哪些关键环节？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要怎么样才能正确打开Model 3的牵引环盖？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "行人保护系统的工作机制依赖哪些条件？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果移动连接器和适配器连接时太热了，应该检查哪些地方？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果出现CC_a002警报，用户需要怎么做？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "自动泊车过程中有哪些需要特别注意的警报？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "他就是说可以同时执行多个指令你说一句很长的话它都可以一个步骤一个步骤的执行之前的我们只能说说一句它识别一句",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为啥得把雨刮器片固定好？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这种高压电池通常的电压值是多少？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "比较一下VCFRONT_a597和VCSEC_a221警报的严重程度和处理措施有什么不同？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3会在什么情况下自动关闭电源系统？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "驾驶完车后，冷却功能起什么效果？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆 Model 3 内部提供了哪些电子设备连接口？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "气囊警报指示灯在什么情况下会一直点亮？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "昆凌的老公有哪些专辑",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "针对UMC_a015警报，从故障诊断到解决方案的完整处理流程是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果遇到CP_a078警报，正确的应对方法是什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要是觉得车子充电有问题，该看哪些地方？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何为个性喇叭准备USB设备？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用跳线给Model 3搭电的时候，怎么防止线路短路？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低压电池和高压电池在电压和类型上的主要差异是什么？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当三种智能辅助系统发出警报时，车辆应该怎么处理？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "面对多样化的道路条件，辅助驾驶系统怎样进行速度控制？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果在常规充电站频繁遇到PCS_a054报警，应该怎么处理？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用召唤功能时需要注意哪些重要安全事项？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些场景下智能泊车系统可能无法使用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "移动连接器充电的正确方法有哪些步骤？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遥控钥匙的三个按钮分别有什么功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么会出现“移动连接器充电失败（插座接地有问题）”的警告？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些情况下不适合用轮胎补气工具来修车胎？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这三种充电警报出现时，哪些情况建议去专业维修点？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么说电动车必须要有提醒行人的功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "各种警报的处理方法有什么相同之处？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘上能操作哪些东西？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车机可以播报的功能包括哪些",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "手套箱密码忘记了，应该怎么操作才能打开？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统显示CC_a001警报时，它表示什么问题？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "换入倒挡时可能出现什么音频相关现象？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "三种警报在温度正常可问题持续时，分别推荐什么解决办法？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "换遥控钥匙电池时需要注意什么？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果系统报出CC_a012警报，代表什么情况？根源在哪里？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "高速行驶中，如何让消失的驾驶模式条重新出现？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车内的灯光都包括什么",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "自动模式下的顶灯什么时候会自己亮起来？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用这个设备时，温度应该控制在什么范围内？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么条件下能够启动脱困起步？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么时候会出现“充电速度下降 - 壁挂式连接器过热”的警告信息？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "外后视镜有哪些常见功能，怎么操作它们？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎怎么用才能更耐用一些？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "召唤功能的表现受哪些因素影响？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "红色刹车灯亮了该怎么办？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "DOT轮胎编号主要显示了哪些信息？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "驾驶座车门解锁模式打开后，其他车门该怎么解锁？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "座椅安全带在什么情况下会自动拉紧或锁定？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "操作能量回收制动装置时，需要注意哪些安全事项和维护措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "HomeLink自动关闭的条件有哪些？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "全轮驱动技术应用在哪些车型上？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "行程安排中，怎么取消或重新加入超级充电站这个点？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当PCS_a016和PCS_a017警报触发时，什么条件下应该预约服务？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问如何把BabyFirst 156H或R155H Joy Pro-Z儿童座椅固定到车辆后排？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开车时，哪些情形下驾驶员必须对安全行驶和防止碰撞负主要责任？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "CP_a066警报出现时，外部充电设备未准备就绪的可能原因有哪些？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高压系统部件和电缆有哪些安全注意事项？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些驾驶行为会显著增加车辆的能耗？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3底部快捷栏的应用图标可以自己更换吗？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎结构里R代表什么含义？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么物品可能会对镀铬和金属表面造成损害？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "各类警报的共同应对策略有哪些？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用雨刮器时，有哪些安全方面的注意事项？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "我操他车是怎么来的车",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "使用特斯拉时，需要完成哪些主要操作步骤？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果电动门和车窗突然断电，该怎么安全下车？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "紧急呼叫系统应该在哪些场景下使用？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "辅助驾驶系统是怎么检测司机有没有专心开车的？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下行程安排会弹出提醒或警示？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "针对PCS_a090警报，建议采取哪些措施来排除故障？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆Model 3的驾驶室怎么通风换气？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么时候车道辅助系统可能无法正常工作或错误提示？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个PCS_a017警报是在说明什么问题？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "操作应急轮胎修理套装时应该遵守哪些安全提示？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎样才能让轮胎跑得更久？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何查找快速充电站？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下需要关注车轮定位问题？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统提示“车辆正准备熄火”时，正确的应对方法是什么？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果出现CC_a010警报，可能是哪些硬件部件引起的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3的前备箱要怎么才能打开？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆Model 3的安全锁定功能具体包括什么，怎么保障不同情况下的车辆安全？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低温环境下使用超充，加热泵车辆前部产生无气味水汽，是否属于正常情况？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "三种警报在环境温度正常但问题仍存在时分别建议采取什么措施？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘左侧和右侧各有哪些重要的功能按键？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "左滚轮的自定义选项在哪里可以调整？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的USB口在使用过程中需要注意哪些关键点？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么用方向盘上的控制键把方向盘调到最合适的位置？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "抽烟有什么危害",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "智能辅助导航驾驶的激活和停用条件是什么？激活和停用的时候，会看到或听到什么提示？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "语音控制特斯拉的时候，隐私数据会被怎么处理？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在什么情况下手套箱会自动关闭并上锁？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "手都都这样了",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "通过手机App远程管理特斯拉车辆，具体能做什么？需要满足哪些要求才能用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉DIY教程的图文说明和视频演示在哪儿能看？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "想知道车子的里程数，有哪些方法可以查到？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果遇到紧急情况，怎么从车内打开前备箱？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有哪些好的驾驶习惯能帮助延长续航？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "1分等于多少秒",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 2
+      },
+      {
+        "query": "通过哪些途径可以查看车辆的里程表和车辆里程？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "根据文本内容，当遇到不同类型的充电故障时，分别应该采取哪些具体的排查和处理措施？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的语音指令能调节哪些车内温度功能？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个PCS_a019警报一响，交流充电和直流充电各自会出什么状况？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "手动拔掉充电电缆需要注意哪些步骤？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的自动驾驶功能在国外使用时有什么特别要留意的？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么用左边的滚轮启动雨刮模式？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "准妈咪们要怎样系安全带才合适？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当车辆充电系统报警时，如何区分是外部充电设备故障还是车辆自身问题？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于胎压的日常维护，需要注意些什么重要内容？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎磨损到哪种程度必须更换？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当Model 3无法识别车钥匙时，有什么解决办法？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "再下一句",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "开Model 3的时候用辅助驾驶，得注意哪些安全方面？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果Wi-Fi网速很卡或者根本连不上，有哪些方法可以试试？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "明天呢",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "车主手册上的图和触摸屏显示的不一样，可能是什么原因造成的？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "中控台这边都有些什么重要的东西啊？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么才能让墙壁插座和移动连接器接得更稳当？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在设置Wall Connector的旋转开关时，电工需要遵守哪些安全规则？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助转向、变道和导航驾驶在哪些共同条件下会受限？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "前备箱自动锁定的触发条件有哪些？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在车辆行驶时使用触摸屏有什么安全风险？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下需要启动紧急呼叫功能？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在什么情况下不能使用轮胎充气套件进行修理？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在Model 3有电的前提下，怎样开启车门？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遥控钥匙电池快耗尽时，怎么知道该换电池了？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "CC_a020警报重连后仍然出现，应该让谁来检查问题？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么会出现“无法充电 - 主/配对装置不匹配”的警告提示？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎标识中的R表示什么意思？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "盲点警示灯在哪种情况下会显示红色并快速闪烁？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "频繁忽略注意力提醒对驾驶员会造成什么后果？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "辅助驾驶功能使用前，哪些环境因素需要特别留意？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些天气条件会影响车道辅助功能的正常工作？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3怎么预估电量使用情况？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用Tesla App操作Model 3，需要具备怎样的网络条件才能正常工作？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "副驾驶位置的安全气囊什么时候不适合让小孩乘坐？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要是车子没电了，后门怎么才能打开？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助导航驾驶功能在哪些情况下会启用和禁用？启用和禁用的时候，有哪些画面和声音的提示信息？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的完整操作流程涵盖哪些内容？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "无线充电器失灵了，通常有哪些因素会导致这种情况？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的后摄像头具体安装在哪个部位？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果房子的电线发热严重，该联系哪个部门？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Wall Connector硬件出问题的话，一般会包含哪些具体故障？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "停车后冷却系统有什么用处？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下防撞辅助系统的摄像头或传感器会无法正常工作？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "前后制动盘的使用极限厚度分别是多少？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用HomeLink时，默认模式和通用接收器模式在时间上有什么关键要求？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "驾驶时如何关注电量的消耗变化？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于车辆充电的安全操作和最佳实践有哪些重要注意事项？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开车时用手机App要留意哪些安全方面？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎的抓地力等级对它的表现有什么影响？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "导航时弹出电量提醒是什么意思？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "文本里说的三种警报，处理它们时有哪些通用的建议？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "郭德纲有什么出名的作品",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "在寒冷天气条件下，从驻车准备到驾驶期间需要采取哪些综合措施来确保车辆正常运行？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要是充电时出现警告，最先要检查什么部分？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "正确手动取下充电线应该怎么做？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3的播放器界面有几种样式？切换方式是什么？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "关前备箱的时候要怎么做才能避免弄坏它？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助驾驶功能在哪里开启？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于Model 3座椅的安全保护措施和使用建议是什么？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "你能说说Model 3导航系统在充电站信息展示、耗电预估和推荐路线方面都有什么具体作用吗？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "挑选不同加速档位时该注意什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "文本中三个警报各对应什么车辆系统，出现问题时针对每个系统应采取什么措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车子自动大灯在哪些情况下会自动开启？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "激活牵引模式需要满足哪些条件？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在使用辅助驾驶功能前，需要确保摄像头的什么状态？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低温环境下，从停车状态到上路驾驶，需要采取哪些步骤来维护车辆性能？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "赛道模式自定义设置中的“处理平衡”有什么用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的车灯系统有哪些自动和手动的功能可以操作？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当移动连接器发现控制导频信号无法正常产生或保持时，这代表什么情况？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在摄像头校准时，哪些路况和环境条件能让校准更迅速？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "给座椅我安全带",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的18寸与19寸轮毂在尺寸和偏置距上有什么共同特征？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在测量Model 3螺旋弹簧高度和高性能版车身高度时需要注意什么？两者的标准高度分别是多少？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3是否允许使用带腿部支撑的儿童约束装置？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当CP_a151警报显示充电接口异常，充电会出什么问题？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "使用哨兵模式需要经过哪些设置和操作才能让它正常启动？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高压系统部件和电缆的安全使用注意事项是什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "配置HomeLink的时候有什么安全提醒要留意？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高级智能召唤无法对哪些物体做出停车反应？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在自动设置下，外部车灯会在哪些场景自动打开？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低温环境下VCSEC_a221警报出现的原因是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "通过哪些方式可以访问Model3的预约功能？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉DIY维护指南中提供了哪些简单的DIY程序示例？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "离开车子后自动上锁，哪些钥匙可以触发这个功能？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果BMS_a079警报长时间不消失，可能带来哪些问题？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "放一首关于它的歌",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "EDR 都会记录哪些数据内容？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "距离明天呢",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "运输Model 3时为什么车轮不能接触地面？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3中控屏底部的“我的应用”区域怎么自己调整？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "电工在负载共享系统中遇到多个主装置时，需要核实哪些方面？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要使用手机钥匙功能，得先具备哪些要求？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "多个Wall Connector配对共享负载时，主设备的工作电流设置要符合哪些要求？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问Model 3媒体播放器的显示选项有哪些？具体怎么切换？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "主动巡航功能在什么天气情况下最好别用？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3 能不能给别的车接电打火？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "美国DOT轮胎识别号包含哪些主要信息？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "系统报出CC_a009警报，这时候要怎么办？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的行人警示系统在什么条件下会激活？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何分别控制Model 3驾驶员和乘客的温度设置？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有什么办法能让语音指令识别更准一些？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么判断ISOFIX/i-Size儿童座椅有没有装好？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的座椅有哪些安全功能以及使用时要留意什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高性能版与后驱长续航版在轮圈尺寸上存在哪些差异？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当充电异常可能和电线或外部配件有关时，需要怎么做？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "停车时有什么方法可以监控电量的流失？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问Model 3的车内摄像头在哪个地方？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用辅助驾驶系统的时候，驾驶员得注意哪些安全方面？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "PCS_a073警报表明外部充电设备出现了什么具体问题？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么开车才能让续航更远？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个喇叭的个性化功能怎么才能启动？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3运输时轮胎不碰地是出于什么原因？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么后轮比前轮磨损得更快？不进行轮胎对调会带来哪些问题？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "ISOFIX/i-Size系统里，哪些体重范围的儿童完全不能使用安全座椅？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "召唤功能的性能表现和什么有关？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的轮胎在没开过的情况下，充气压力该是多少？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何启用和禁用脱困起步功能？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "那就可以空调屏幕",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "某些车辆没有特定组件和程序的原因是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于Model 3的咨询，Tesla的客服电话是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于Model 3的续航里程显示和实际行驶距离，有哪些重要注意事项？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果仪表盘显示“车辆正准备熄火”，应该怎么处理？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个车的悬架在赛道模式下会怎么设置？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "刹车踏板和加速踏板的无效行程各有多少？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 2
+      },
+      {
+        "query": "Model 3的刹车系统出问题时，什么情况下会影响刹车效果，让车停不下来？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当TAS_a314警报一直存在时，车主有什么应对方法？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "怎么看懂充电地点图钉显示的几种状态？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轻触地图上的充电点标识能进行哪些操作？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "天冷的时候，从停车到开车这段时间该做些什么才能让车不出毛病？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开启智能辅助转向后，限速信息检测失灵了怎么办？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果怀疑充电故障是线路或外部设备引起的，该怎么办？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘上的电容按键使用时有哪些注意事项？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "电表上怎么显示用了多少电？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "ISOFIX/i-Size锚固件在什么情况下不能使用？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪里可以查到这台设备的HomeLink认证编号？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "啥呢",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "特斯拉DIY的说明文档和演示视频在哪个平台可以找到？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "防滑链使用过程中有什么禁忌和提醒？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "座椅加热功能分几档？怎么知道现在用的是哪一档？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "跨接Model 3电瓶时，怎样操作可以避免短路风险？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当Model 3表现异常时，完整的循环通断操作流程是什么？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "后驱长续航版和高性能版的高度差别在哪里？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3的音响调节功能包括哪些参数？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "特斯拉的保修期内道路援助都包含哪些项目？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有没有和UMC_a014警报处理方法相似的警报？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "产品铭牌上都有哪些需要关注的信息？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎侧壁的宽度是怎么标出来的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问车内挂衣服的钩子怎么弄？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "往车前储物空间放物品有什么限制吗？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "HomeLink设置过程中，该小心哪些安全警告？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "后排中间位置可以安装ISOFIX或i-Size规格的儿童安全座椅吗？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "哪些温度条件不适合Model 3电池长时间暴露？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "启用家长控制后，Model 3会自动配置哪些安全设置？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些自然条件可能导致前摄像头能见度降低？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "胎压警示灯什么时候会自己熄灭？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果车内电动车门和车窗断电，应如何下车？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎侧壁上标示的标准信息包括哪些基本特征？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "Model 3的安全警报什么时候会启动？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "给遥控钥匙换电池，得注意哪些安全问题？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有什么办法能减少使用非官方充电器拔插时的电弧现象？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车辆在行驶过程中，能不能操作手动车门解锁装置？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "抽烟有哪些危害",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "这辆Model 3的车灯能自动做什么，手动又怎么调？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "警报显示“车辆正准备熄火”的时候，司机应该立即做什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "你知道小苹果这首歌是谁唱的吗",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "赛道模式如何通过系统调整来提升车辆在封闭路段的驾驶性能？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "是不是每台特斯拉车都具备手册上列出的全部功能？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "存储空间满了之后，新的录像会怎么对待之前的录像？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "牵引力控制系统具体是做什么用的？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用驾驶室的防过热功能，车子会不会有啥副作用？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用U盘播视频和音乐有什么硬件要求？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "做手工维护活儿，安全上该注意些什么？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "蓝牙设备配对后，怎么操作才能断开连接或取消配对？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开启疯狂模式后，车子的性能和能耗会有什么变化？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎样识别出Model 3的保持系统正在施加制动力？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "预约功能在Model3中有哪些用途？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有没有便捷的方法找到常用的温控设置？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘上有哪些控制功能？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "设备的HomeLink认证码是什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在标准模式下，方向盘左侧的滚轮能控制些什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在极端寒冷天气下，如何防止充电接口闩锁被冻住？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车灯坏了，什么时候应该联系Tesla的客服中心解决？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助变道需要具备哪些前提条件？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3轮胎固定过程中有哪些重要细节需要关注？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎侧面标记的基本信息通常包含什么？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3高性能版的前后轮毂尺寸和偏置距配置是怎样的？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遇到“充电失败-车辆连接异常”的提示时，具体应该怎么处理？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "转向信号灯工作时，车子会怎么提示驾驶员？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "屏幕触摸没响应，导致行车密码无法输入，应该怎么应对？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "ICR_a137警报是怎么引起的？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的远程车辆管理功能在手机App上怎么用？需要什么资格或设置才能使用？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遇到APP_w048报警时，哪些自动驾驶辅助功能可能会被关闭？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "被动锁定和解锁功能在什么情况下会自动禁用？如何重新启用？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "冬天充电接口结冰卡住电缆，要怎么处理？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "从Model 3下车后，如果检测到儿童仍在车上，系统会采取哪些安全措施？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统报出CP_a010警报，首先需要关注什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能泊车功能在什么条件下会发出蜂鸣警报并弹出立即介入的提示？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      }
+    ],
+    "metrics": {
+      "ndcg@10": 0.7520437441446465,
+      "mrr": 0.8085714285714286,
+      "precision@10": 0.18571428571428567,
+      "recall@10": 0.9285714285714286
+    }
+  },
+  "finetuned_results": {
+    "total_samples": 1000,
+    "predictions": [
+      {
+        "query": "Model 3洗车时，哪些清洁剂成分不能用，否则可能影响保修？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3交车时里程表显示有公里数，这是怎么回事？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统显示CP_a056警报时，充电中断的原因是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "同一个轮胎的胎压警报反复出现，要怎么解决？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个车的门从里面怎么开？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当气囊系统工作正常，乘车时应该注意哪些事项来防止意外伤害？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些情况下应该按下紧急呼叫按钮？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "装新空调滤芯的时候，箭头该朝哪边？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车速达到多少时前撞预警功能会被激活？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用第三方配件连接低压插座时，该留意哪些安全细节？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何识别充电问题是车辆引起的还是所用设备导致的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "清洁车内照明时需要特别注意哪些事项？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开启赛道模式后，悬架会有什么不同？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "如果不用特斯拉原厂配件会有什么影响？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何从车内打开车门？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "天气特别热的时候，如果要去超级充电站，车子会提前为电池充电做哪些准备？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果Wall Connector显示CC_a027警报，首先该怎么做？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "哪些环境条件会影响辅助驾驶功能的性能？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些情况下自动泊车会失效，得由驾驶员接手？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆Model 3的车窗系统在安全和便捷方面有什么特别之处？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3插头插着但没充电的时候，能量从哪来？在什么情况下会启用电池供电？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这种带温度控制的通风口是干嘛的？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "装大号ISOFIX/i-Size儿童安全座椅（C类）的时候要留意哪些事情？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么保证特斯拉总能享受到最新的强大功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "正常驾驶情况下，方向盘左侧的滚轮都有哪些功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Tesla车主手册中关于功能可用性和版权信息的主要规定有哪些？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的驾驶座和副驾驶温度怎么分开调？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "解除这两种胎压警报，需要哪些共同的条件才行？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何操作才能关掉Model 3的空调？关掉后对驾驶体验有什么影响？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果车的电路系统有问题，左边哪些功能可能会不好使？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么样的天气或路况会让辅助驾驶不好用？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "贴挡风玻璃标签时，怎样做才安全？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统显示CC_a011警报时，它意味着什么？正确的处理步骤有哪些？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当副驾位前气囊关闭后有成人在副驾位就坐时应该怎么做？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要怎样设置汽车才能让手机蓝牙好连一点？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "行程规划能帮我做什么？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用行车记录仪之前，应该做哪些准备工作？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当APP_w048辅助驾驶功能暂时不可用警报出现时，建议采取什么措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么设置才能让哨兵模式的摄像头识别更准确？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的主动防护前罩在车速多少到多少之间会启动？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "CP_a078警报出现时，需要采取哪些步骤？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "组别0+（13千克以下）的ISOFIX/i-Size儿童座椅，能选哪些大小规格？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "太阳能充电功能的工作原理和系统要求是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "清洁摄像头镜头时该怎么做才能避免刮花或损坏？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的摄像头盲点内有哪些障碍物无法被探测到？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在什么情况下Model 3会自动降低行驶速度？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "从USB设备要求到视频查看的完整使用流程涉及哪些关键环节？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要怎么样才能正确打开Model 3的牵引环盖？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "行人保护系统的工作机制依赖哪些条件？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果移动连接器和适配器连接时太热了，应该检查哪些地方？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果出现CC_a002警报，用户需要怎么做？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "自动泊车过程中有哪些需要特别注意的警报？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "他就是说可以同时执行多个指令你说一句很长的话它都可以一个步骤一个步骤的执行之前的我们只能说说一句它识别一句",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为啥得把雨刮器片固定好？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这种高压电池通常的电压值是多少？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "比较一下VCFRONT_a597和VCSEC_a221警报的严重程度和处理措施有什么不同？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3会在什么情况下自动关闭电源系统？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "驾驶完车后，冷却功能起什么效果？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆 Model 3 内部提供了哪些电子设备连接口？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "气囊警报指示灯在什么情况下会一直点亮？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "昆凌的老公有哪些专辑",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "针对UMC_a015警报，从故障诊断到解决方案的完整处理流程是什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果遇到CP_a078警报，正确的应对方法是什么？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要是觉得车子充电有问题，该看哪些地方？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何为个性喇叭准备USB设备？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用跳线给Model 3搭电的时候，怎么防止线路短路？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低压电池和高压电池在电压和类型上的主要差异是什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当三种智能辅助系统发出警报时，车辆应该怎么处理？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "面对多样化的道路条件，辅助驾驶系统怎样进行速度控制？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果在常规充电站频繁遇到PCS_a054报警，应该怎么处理？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用召唤功能时需要注意哪些重要安全事项？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些场景下智能泊车系统可能无法使用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "移动连接器充电的正确方法有哪些步骤？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遥控钥匙的三个按钮分别有什么功能？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么会出现“移动连接器充电失败（插座接地有问题）”的警告？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些情况下不适合用轮胎补气工具来修车胎？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这三种充电警报出现时，哪些情况建议去专业维修点？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么说电动车必须要有提醒行人的功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "各种警报的处理方法有什么相同之处？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘上能操作哪些东西？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车机可以播报的功能包括哪些",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "手套箱密码忘记了，应该怎么操作才能打开？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统显示CC_a001警报时，它表示什么问题？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "换入倒挡时可能出现什么音频相关现象？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "三种警报在温度正常可问题持续时，分别推荐什么解决办法？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "换遥控钥匙电池时需要注意什么？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果系统报出CC_a012警报，代表什么情况？根源在哪里？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "高速行驶中，如何让消失的驾驶模式条重新出现？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车内的灯光都包括什么",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "自动模式下的顶灯什么时候会自己亮起来？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用这个设备时，温度应该控制在什么范围内？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么条件下能够启动脱困起步？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么时候会出现“充电速度下降 - 壁挂式连接器过热”的警告信息？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "外后视镜有哪些常见功能，怎么操作它们？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎怎么用才能更耐用一些？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "召唤功能的表现受哪些因素影响？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "红色刹车灯亮了该怎么办？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "DOT轮胎编号主要显示了哪些信息？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "驾驶座车门解锁模式打开后，其他车门该怎么解锁？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "座椅安全带在什么情况下会自动拉紧或锁定？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "操作能量回收制动装置时，需要注意哪些安全事项和维护措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "HomeLink自动关闭的条件有哪些？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "全轮驱动技术应用在哪些车型上？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "行程安排中，怎么取消或重新加入超级充电站这个点？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当PCS_a016和PCS_a017警报触发时，什么条件下应该预约服务？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问如何把BabyFirst 156H或R155H Joy Pro-Z儿童座椅固定到车辆后排？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开车时，哪些情形下驾驶员必须对安全行驶和防止碰撞负主要责任？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "CP_a066警报出现时，外部充电设备未准备就绪的可能原因有哪些？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高压系统部件和电缆有哪些安全注意事项？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些驾驶行为会显著增加车辆的能耗？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3底部快捷栏的应用图标可以自己更换吗？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎结构里R代表什么含义？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么物品可能会对镀铬和金属表面造成损害？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "各类警报的共同应对策略有哪些？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用雨刮器时，有哪些安全方面的注意事项？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "我操他车是怎么来的车",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "使用特斯拉时，需要完成哪些主要操作步骤？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果电动门和车窗突然断电，该怎么安全下车？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "紧急呼叫系统应该在哪些场景下使用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "辅助驾驶系统是怎么检测司机有没有专心开车的？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下行程安排会弹出提醒或警示？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "针对PCS_a090警报，建议采取哪些措施来排除故障？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆Model 3的驾驶室怎么通风换气？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么时候车道辅助系统可能无法正常工作或错误提示？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个PCS_a017警报是在说明什么问题？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "操作应急轮胎修理套装时应该遵守哪些安全提示？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎样才能让轮胎跑得更久？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何查找快速充电站？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下需要关注车轮定位问题？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统提示“车辆正准备熄火”时，正确的应对方法是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果出现CC_a010警报，可能是哪些硬件部件引起的？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3的前备箱要怎么才能打开？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这辆Model 3的安全锁定功能具体包括什么，怎么保障不同情况下的车辆安全？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低温环境下使用超充，加热泵车辆前部产生无气味水汽，是否属于正常情况？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "三种警报在环境温度正常但问题仍存在时分别建议采取什么措施？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘左侧和右侧各有哪些重要的功能按键？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "左滚轮的自定义选项在哪里可以调整？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的USB口在使用过程中需要注意哪些关键点？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么用方向盘上的控制键把方向盘调到最合适的位置？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "抽烟有什么危害",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "智能辅助导航驾驶的激活和停用条件是什么？激活和停用的时候，会看到或听到什么提示？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "语音控制特斯拉的时候，隐私数据会被怎么处理？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在什么情况下手套箱会自动关闭并上锁？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "手都都这样了",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "通过手机App远程管理特斯拉车辆，具体能做什么？需要满足哪些要求才能用？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉DIY教程的图文说明和视频演示在哪儿能看？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "想知道车子的里程数，有哪些方法可以查到？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果遇到紧急情况，怎么从车内打开前备箱？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有哪些好的驾驶习惯能帮助延长续航？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "1分等于多少秒",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 2
+      },
+      {
+        "query": "通过哪些途径可以查看车辆的里程表和车辆里程？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "根据文本内容，当遇到不同类型的充电故障时，分别应该采取哪些具体的排查和处理措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的语音指令能调节哪些车内温度功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个PCS_a019警报一响，交流充电和直流充电各自会出什么状况？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "手动拔掉充电电缆需要注意哪些步骤？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的自动驾驶功能在国外使用时有什么特别要留意的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么用左边的滚轮启动雨刮模式？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "准妈咪们要怎样系安全带才合适？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当车辆充电系统报警时，如何区分是外部充电设备故障还是车辆自身问题？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于胎压的日常维护，需要注意些什么重要内容？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎磨损到哪种程度必须更换？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当Model 3无法识别车钥匙时，有什么解决办法？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "再下一句",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "开Model 3的时候用辅助驾驶，得注意哪些安全方面？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果Wi-Fi网速很卡或者根本连不上，有哪些方法可以试试？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "明天呢",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "车主手册上的图和触摸屏显示的不一样，可能是什么原因造成的？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "中控台这边都有些什么重要的东西啊？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么才能让墙壁插座和移动连接器接得更稳当？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在设置Wall Connector的旋转开关时，电工需要遵守哪些安全规则？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助转向、变道和导航驾驶在哪些共同条件下会受限？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "前备箱自动锁定的触发条件有哪些？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在车辆行驶时使用触摸屏有什么安全风险？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下需要启动紧急呼叫功能？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在什么情况下不能使用轮胎充气套件进行修理？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在Model 3有电的前提下，怎样开启车门？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遥控钥匙电池快耗尽时，怎么知道该换电池了？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "CC_a020警报重连后仍然出现，应该让谁来检查问题？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么会出现“无法充电 - 主/配对装置不匹配”的警告提示？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎标识中的R表示什么意思？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "盲点警示灯在哪种情况下会显示红色并快速闪烁？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "频繁忽略注意力提醒对驾驶员会造成什么后果？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "辅助驾驶功能使用前，哪些环境因素需要特别留意？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些天气条件会影响车道辅助功能的正常工作？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3怎么预估电量使用情况？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用Tesla App操作Model 3，需要具备怎样的网络条件才能正常工作？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "副驾驶位置的安全气囊什么时候不适合让小孩乘坐？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要是车子没电了，后门怎么才能打开？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助导航驾驶功能在哪些情况下会启用和禁用？启用和禁用的时候，有哪些画面和声音的提示信息？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的完整操作流程涵盖哪些内容？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "无线充电器失灵了，通常有哪些因素会导致这种情况？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的后摄像头具体安装在哪个部位？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果房子的电线发热严重，该联系哪个部门？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Wall Connector硬件出问题的话，一般会包含哪些具体故障？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "停车后冷却系统有什么用处？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "什么情况下防撞辅助系统的摄像头或传感器会无法正常工作？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "前后制动盘的使用极限厚度分别是多少？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "使用HomeLink时，默认模式和通用接收器模式在时间上有什么关键要求？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "驾驶时如何关注电量的消耗变化？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于车辆充电的安全操作和最佳实践有哪些重要注意事项？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开车时用手机App要留意哪些安全方面？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎的抓地力等级对它的表现有什么影响？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "导航时弹出电量提醒是什么意思？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "文本里说的三种警报，处理它们时有哪些通用的建议？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "郭德纲有什么出名的作品",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "在寒冷天气条件下，从驻车准备到驾驶期间需要采取哪些综合措施来确保车辆正常运行？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要是充电时出现警告，最先要检查什么部分？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "正确手动取下充电线应该怎么做？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3的播放器界面有几种样式？切换方式是什么？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "关前备箱的时候要怎么做才能避免弄坏它？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助驾驶功能在哪里开启？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于Model 3座椅的安全保护措施和使用建议是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "你能说说Model 3导航系统在充电站信息展示、耗电预估和推荐路线方面都有什么具体作用吗？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "挑选不同加速档位时该注意什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "文本中三个警报各对应什么车辆系统，出现问题时针对每个系统应采取什么措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车子自动大灯在哪些情况下会自动开启？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "激活牵引模式需要满足哪些条件？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在使用辅助驾驶功能前，需要确保摄像头的什么状态？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低温环境下，从停车状态到上路驾驶，需要采取哪些步骤来维护车辆性能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "赛道模式自定义设置中的“处理平衡”有什么用？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的车灯系统有哪些自动和手动的功能可以操作？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当移动连接器发现控制导频信号无法正常产生或保持时，这代表什么情况？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在摄像头校准时，哪些路况和环境条件能让校准更迅速？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "给座椅我安全带",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的18寸与19寸轮毂在尺寸和偏置距上有什么共同特征？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在测量Model 3螺旋弹簧高度和高性能版车身高度时需要注意什么？两者的标准高度分别是多少？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3是否允许使用带腿部支撑的儿童约束装置？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当CP_a151警报显示充电接口异常，充电会出什么问题？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "使用哨兵模式需要经过哪些设置和操作才能让它正常启动？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高压系统部件和电缆的安全使用注意事项是什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "配置HomeLink的时候有什么安全提醒要留意？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高级智能召唤无法对哪些物体做出停车反应？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在自动设置下，外部车灯会在哪些场景自动打开？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "低温环境下VCSEC_a221警报出现的原因是什么？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "通过哪些方式可以访问Model3的预约功能？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉DIY维护指南中提供了哪些简单的DIY程序示例？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "离开车子后自动上锁，哪些钥匙可以触发这个功能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果BMS_a079警报长时间不消失，可能带来哪些问题？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "放一首关于它的歌",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "EDR 都会记录哪些数据内容？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "距离明天呢",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "运输Model 3时为什么车轮不能接触地面？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3中控屏底部的“我的应用”区域怎么自己调整？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "电工在负载共享系统中遇到多个主装置时，需要核实哪些方面？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "要使用手机钥匙功能，得先具备哪些要求？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "多个Wall Connector配对共享负载时，主设备的工作电流设置要符合哪些要求？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问Model 3媒体播放器的显示选项有哪些？具体怎么切换？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "主动巡航功能在什么天气情况下最好别用？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3 能不能给别的车接电打火？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "美国DOT轮胎识别号包含哪些主要信息？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "系统报出CC_a009警报，这时候要怎么办？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的行人警示系统在什么条件下会激活？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何分别控制Model 3驾驶员和乘客的温度设置？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有什么办法能让语音指令识别更准一些？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么判断ISOFIX/i-Size儿童座椅有没有装好？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的座椅有哪些安全功能以及使用时要留意什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "高性能版与后驱长续航版在轮圈尺寸上存在哪些差异？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当充电异常可能和电线或外部配件有关时，需要怎么做？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "停车时有什么方法可以监控电量的流失？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问Model 3的车内摄像头在哪个地方？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用辅助驾驶系统的时候，驾驶员得注意哪些安全方面？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "PCS_a073警报表明外部充电设备出现了什么具体问题？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎么开车才能让续航更远？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个喇叭的个性化功能怎么才能启动？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3运输时轮胎不碰地是出于什么原因？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "为什么后轮比前轮磨损得更快？不进行轮胎对调会带来哪些问题？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "ISOFIX/i-Size系统里，哪些体重范围的儿童完全不能使用安全座椅？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "召唤功能的性能表现和什么有关？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3的轮胎在没开过的情况下，充气压力该是多少？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如何启用和禁用脱困起步功能？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "那就可以空调屏幕",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "某些车辆没有特定组件和程序的原因是什么？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于Model 3的咨询，Tesla的客服电话是什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "关于Model 3的续航里程显示和实际行驶距离，有哪些重要注意事项？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果仪表盘显示“车辆正准备熄火”，应该怎么处理？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "这个车的悬架在赛道模式下会怎么设置？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "刹车踏板和加速踏板的无效行程各有多少？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 2
+      },
+      {
+        "query": "Model 3的刹车系统出问题时，什么情况下会影响刹车效果，让车停不下来？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当TAS_a314警报一直存在时，车主有什么应对方法？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "怎么看懂充电地点图钉显示的几种状态？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轻触地图上的充电点标识能进行哪些操作？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "天冷的时候，从停车到开车这段时间该做些什么才能让车不出毛病？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开启智能辅助转向后，限速信息检测失灵了怎么办？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果怀疑充电故障是线路或外部设备引起的，该怎么办？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘上的电容按键使用时有哪些注意事项？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "电表上怎么显示用了多少电？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "ISOFIX/i-Size锚固件在什么情况下不能使用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪里可以查到这台设备的HomeLink认证编号？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "啥呢",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "特斯拉DIY的说明文档和演示视频在哪个平台可以找到？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "防滑链使用过程中有什么禁忌和提醒？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "座椅加热功能分几档？怎么知道现在用的是哪一档？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "跨接Model 3电瓶时，怎样操作可以避免短路风险？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当Model 3表现异常时，完整的循环通断操作流程是什么？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "后驱长续航版和高性能版的高度差别在哪里？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉Model 3的音响调节功能包括哪些参数？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "特斯拉的保修期内道路援助都包含哪些项目？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有没有和UMC_a014警报处理方法相似的警报？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "产品铭牌上都有哪些需要关注的信息？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎侧壁的宽度是怎么标出来的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "请问车内挂衣服的钩子怎么弄？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "往车前储物空间放物品有什么限制吗？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "HomeLink设置过程中，该小心哪些安全警告？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "后排中间位置可以安装ISOFIX或i-Size规格的儿童安全座椅吗？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "哪些温度条件不适合Model 3电池长时间暴露？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "启用家长控制后，Model 3会自动配置哪些安全设置？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "哪些自然条件可能导致前摄像头能见度降低？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "胎压警示灯什么时候会自己熄灭？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "如果车内电动车门和车窗断电，应如何下车？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎侧壁上标示的标准信息包括哪些基本特征？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "Model 3的安全警报什么时候会启动？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "给遥控钥匙换电池，得注意哪些安全问题？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有什么办法能减少使用非官方充电器拔插时的电弧现象？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车辆在行驶过程中，能不能操作手动车门解锁装置？",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "抽烟有哪些危害",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "这辆Model 3的车灯能自动做什么，手动又怎么调？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "警报显示“车辆正准备熄火”的时候，司机应该立即做什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "你知道小苹果这首歌是谁唱的吗",
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "num_docs": 1
+      },
+      {
+        "query": "赛道模式如何通过系统调整来提升车辆在封闭路段的驾驶性能？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "是不是每台特斯拉车都具备手册上列出的全部功能？",
+        "ndcg": 0.58688267143572,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "存储空间满了之后，新的录像会怎么对待之前的录像？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "牵引力控制系统具体是做什么用的？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用驾驶室的防过热功能，车子会不会有啥副作用？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "用U盘播视频和音乐有什么硬件要求？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "做手工维护活儿，安全上该注意些什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "蓝牙设备配对后，怎么操作才能断开连接或取消配对？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "开启疯狂模式后，车子的性能和能耗会有什么变化？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "怎样识别出Model 3的保持系统正在施加制动力？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "预约功能在Model3中有哪些用途？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "有没有便捷的方法找到常用的温控设置？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "方向盘上有哪些控制功能？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "设备的HomeLink认证码是什么？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在标准模式下，方向盘左侧的滚轮能控制些什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "在极端寒冷天气下，如何防止充电接口闩锁被冻住？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "车灯坏了，什么时候应该联系Tesla的客服中心解决？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能辅助变道需要具备哪些前提条件？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3轮胎固定过程中有哪些重要细节需要关注？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "轮胎侧面标记的基本信息通常包含什么？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "Model 3高性能版的前后轮毂尺寸和偏置距配置是怎样的？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遇到“充电失败-车辆连接异常”的提示时，具体应该怎么处理？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "转向信号灯工作时，车子会怎么提示驾驶员？",
+        "ndcg": 0.9639404333166532,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "屏幕触摸没响应，导致行车密码无法输入，应该怎么应对？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "ICR_a137警报是怎么引起的？",
+        "ndcg": 0.6590018048024133,
+        "mrr": 0.5,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "特斯拉的远程车辆管理功能在手机App上怎么用？需要什么资格或设置才能使用？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "遇到APP_w048报警时，哪些自动驾驶辅助功能可能会被关闭？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "被动锁定和解锁功能在什么情况下会自动禁用？如何重新启用？",
+        "ndcg": 0.6885288809404666,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "冬天充电接口结冰卡住电缆，要怎么处理？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "从Model 3下车后，如果检测到儿童仍在车上，系统会采取哪些安全措施？",
+        "ndcg": 1.0,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "当系统报出CP_a010警报，首先需要关注什么？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      },
+      {
+        "query": "智能泊车功能在什么条件下会发出蜂鸣警报并弹出立即介入的提示？",
+        "ndcg": 0.7967075809905066,
+        "mrr": 1.0,
+        "precision": 0.2,
+        "recall": 1.0,
+        "num_docs": 3
+      }
+    ],
+    "metrics": {
+      "ndcg@10": 0.7905729911787346,
+      "mrr": 0.8228571428571428,
+      "precision@10": 0.18571428571428567,
+      "recall@10": 0.9285714285714286
+    }
+  },
+  "comparison": {
+    "baseline": {
+      "total_samples": 1000,
+      "metrics": {
+        "ndcg@10": 0.7520437441446465,
+        "mrr": 0.8085714285714286,
+        "precision@10": 0.18571428571428567,
+        "recall@10": 0.9285714285714286
+      }
+    },
+    "finetuned": {
+      "total_samples": 1000,
+      "metrics": {
+        "ndcg@10": 0.7905729911787346,
+        "mrr": 0.8228571428571428,
+        "precision@10": 0.18571428571428567,
+        "recall@10": 0.9285714285714286
+      }
+    },
+    "improvement": {
+      "ndcg@10": {
+        "absolute": 0.03852924703408811,
+        "relative": 5.123272061508895
+      },
+      "mrr": {
+        "absolute": 0.014285714285714235,
+        "relative": 1.7667844522968132
+      },
+      "precision@10": {
+        "absolute": 0.0,
+        "relative": 0.0
+      },
+      "recall@10": {
+        "absolute": 0.0,
+        "relative": 0.0
+      }
+    }
+  }
+}
