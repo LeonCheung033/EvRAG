@@ -23,3 +23,13 @@ tqdm==4.67.1
 transformers==4.57.1
 uvicorn==0.38.0
 watchdog==6.0.0
+
+# 微调相关依赖
+matplotlib>=3.7.0
+seaborn>=0.13.0
+tensorboard>=2.15.0
+numpy>=1.24.0
+
+# 评估相关依赖
+rouge-score>=0.1.2
+nltk>=3.8.1
