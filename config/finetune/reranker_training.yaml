@@ -1,11 +1,11 @@
 batch_size: 8
 document_format: '{}'
-epochs: 1
+epochs: 2
 gradient_accumulation_steps: 2
 log_interval: 10
 log_with: tensorboard
 loss_type: pointwise_bce
-lr: 5e-5
+lr: 2e-5
 max_label: 2
 max_len: 4096
 min_label: 0

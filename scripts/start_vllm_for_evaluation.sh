@@ -23,11 +23,29 @@ FINETUNED_BASE_MODEL_PATH="${FINETUNED_BASE_MODEL_PATH:-$PROJECT_ROOT/models/Qwe
 BASELINE_PORT="${BASELINE_PORT:-8000}"
 FINETUNED_PORT="${FINETUNED_PORT:-8001}"
 
-BASELINE_GPU_IDS="${BASELINE_GPU_IDS:-0,1}"
-FINETUNED_GPU_IDS="${FINETUNED_GPU_IDS:-2,3}"
+BASELINE_GPU_IDS="${BASELINE_GPU_IDS:-0}"
+FINETUNED_GPU_IDS="${FINETUNED_GPU_IDS:-1}"
 
 BASELINE_MODEL_NAME="${BASELINE_MODEL_NAME:-Qwen3-8B}"
 FINETUNED_MODEL_NAME="${FINETUNED_MODEL_NAME:-qwen3_lora_sft}"
+
+# 并发度配置（可根据显存情况调整）
+BASELINE_MAX_NUM_SEQS="${BASELINE_MAX_NUM_SEQS:-32}"
+FINETUNED_MAX_NUM_SEQS="${FINETUNED_MAX_NUM_SEQS:-32}"
+
+# vLLM显存优化配置
+# gpu_memory_utilization: GPU显存利用率（0-1），降低此值可以留出更多显存给KV cache，提高并发
+BASELINE_GPU_MEMORY_UTIL="${BASELINE_GPU_MEMORY_UTIL:-0.80}"
+FINETUNED_GPU_MEMORY_UTIL="${FINETUNED_GPU_MEMORY_UTIL:-0.80}"
+
+# max-model-len: 最大模型长度，限制KV cache大小（Qwen3-8B默认8192，降低到6144可以减少显存占用）
+# 对于RAG任务，4096通常足够，可以显著减少KV cache的显存占用
+BASELINE_MAX_MODEL_LEN="${BASELINE_MAX_MODEL_LEN:-6144}"
+FINETUNED_MAX_MODEL_LEN="${FINETUNED_MAX_MODEL_LEN:-6144}"
+
+# swap-space: CPU交换空间（GiB），当GPU显存不足时使用CPU内存
+BASELINE_SWAP_SPACE="${BASELINE_SWAP_SPACE:-4}"
+FINETUNED_SWAP_SPACE="${FINETUNED_SWAP_SPACE:-4}"
 
 # 日志目录
 LOG_DIR="$PROJECT_ROOT/log"
@@ -81,6 +99,10 @@ echo -e "  模型路径: ${BASELINE_MODEL_PATH}"
 echo -e "  端口: ${BASELINE_PORT}"
 echo -e "  GPU: ${BASELINE_GPU_IDS}"
 echo -e "  模型名称: ${BASELINE_MODEL_NAME}"
+echo -e "  最大并发序列数: ${BASELINE_MAX_NUM_SEQS}"
+echo -e "  GPU显存利用率: ${BASELINE_GPU_MEMORY_UTIL}"
+echo -e "  最大模型长度: ${BASELINE_MAX_MODEL_LEN}"
+echo -e "  CPU交换空间: ${BASELINE_SWAP_SPACE}GiB"
 echo ""
 
 CUDA_VISIBLE_DEVICES=$BASELINE_GPU_IDS nohup vllm serve "$BASELINE_MODEL_PATH" \
@@ -89,6 +111,10 @@ CUDA_VISIBLE_DEVICES=$BASELINE_GPU_IDS nohup vllm serve "$BASELINE_MODEL_PATH" \
     --host 0.0.0.0 \
     --trust-remote-code \
     --served-model-name "$BASELINE_MODEL_NAME" \
+    --max-num-seqs $BASELINE_MAX_NUM_SEQS \
+    --gpu-memory-utilization $BASELINE_GPU_MEMORY_UTIL \
+    --max-model-len $BASELINE_MAX_MODEL_LEN \
+    --swap-space $BASELINE_SWAP_SPACE \
     > "$BASELINE_LOG" 2>&1 &
 
 BASELINE_PID=$!
@@ -125,6 +151,10 @@ echo -e "  LoRA适配器路径: ${FINETUNED_MODEL_PATH}"
 echo -e "  端口: ${FINETUNED_PORT}"
 echo -e "  GPU: ${FINETUNED_GPU_IDS}"
 echo -e "  模型名称: ${FINETUNED_MODEL_NAME}"
+echo -e "  最大并发序列数: ${FINETUNED_MAX_NUM_SEQS}"
+echo -e "  GPU显存利用率: ${FINETUNED_GPU_MEMORY_UTIL}"
+echo -e "  最大模型长度: ${FINETUNED_MAX_MODEL_LEN}"
+echo -e "  CPU交换空间: ${FINETUNED_SWAP_SPACE}GiB"
 echo ""
 
 # vLLM支持通过--enable-lora参数启用LoRA，并通过--lora-modules指定适配器
@@ -136,6 +166,10 @@ CUDA_VISIBLE_DEVICES=$FINETUNED_GPU_IDS nohup vllm serve "$FINETUNED_BASE_MODEL_
     --served-model-name "$FINETUNED_MODEL_NAME" \
     --enable-lora \
     --lora-modules "$FINETUNED_MODEL_NAME=$FINETUNED_MODEL_PATH" \
+    --max-num-seqs $FINETUNED_MAX_NUM_SEQS \
+    --gpu-memory-utilization $FINETUNED_GPU_MEMORY_UTIL \
+    --max-model-len $FINETUNED_MAX_MODEL_LEN \
+    --swap-space $FINETUNED_SWAP_SPACE \
     > "$FINETUNED_LOG" 2>&1 &
 
 FINETUNED_PID=$!

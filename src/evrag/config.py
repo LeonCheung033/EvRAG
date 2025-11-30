@@ -124,15 +124,26 @@ class Settings(BaseSettings):
     # ========== LLM配置 ==========
     device: str = Field(default="cuda", description="设备类型")
     
-    # 本地vLLM服务配置
+    # 本地vLLM服务配置（基线模型）
     local_llm_model_name: str = Field(
-        default="qwen3_lora_sft_int4", description="本地vLLM模型名称"
+        default="qwen3_8b", description="本地vLLM模型名称（基线模型）"
     )
     local_llm_base_url: str = Field(
-        default="http://localhost:8000/v1", description="本地vLLM API基础URL"
+        default="http://localhost:8000/v1", description="本地vLLM API基础URL（基线模型）"
     )
     local_llm_api_key: str = Field(
-        default="EMPTY", description="本地vLLM API密钥（通常为EMPTY）"
+        default="EMPTY", description="本地vLLM API密钥（通常为EMPTY，基线模型）"
+    )
+    
+    # 微调模型vLLM服务配置
+    finetuned_llm_model_name: str = Field(
+        default="qwen3_lora_sft", description="微调模型vLLM模型名称"
+    )
+    finetuned_llm_base_url: str = Field(
+        default="http://localhost:8001/v1", description="微调模型vLLM API基础URL"
+    )
+    finetuned_llm_api_key: str = Field(
+        default="EMPTY", description="微调模型vLLM API密钥（通常为EMPTY）"
     )
     
     # 豆包API配置

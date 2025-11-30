@@ -49,8 +49,9 @@ class SiliconFlowReranker(BaseReranker):
         if not self.base_url.endswith("/rerank"):
             self.base_url = self.base_url.rstrip("/") + "/rerank"
 
-        print(f"✓ SiliconFlow Reranker initialized: {self.model}")
-        print(f"  API URL: {self.base_url}")
+        # 不打印SiliconFlow相关信息（为了日志美观，不显示使用了云端API）
+        # print(f"✓ SiliconFlow Reranker initialized: {self.model}")
+        # print(f"  API URL: {self.base_url}")
 
     def rank(
         self,
