@@ -35,10 +35,29 @@ class LocalLLMClient(BaseLLMClient):
 
         settings = get_settings()
 
-        # 优先使用新的local_llm配置，兼容旧的llm配置
-        self.api_key = api_key or settings.local_llm_api_key or settings.llm_api_key
-        self.base_url = base_url or settings.local_llm_base_url or settings.llm_base_url
-        self.model = model or settings.local_llm_model_name or settings.llm_model_name
+        # 优先使用传入的参数，如果为None则使用配置文件的默认值
+        # 注意：调用者应该明确指定base_url和model，避免混淆基线和微调模型
+        self.api_key = api_key or settings.local_llm_api_key or settings.llm_api_key or "EMPTY"
+        
+        # 如果base_url未指定，使用配置文件的默认值（但给出警告）
+        if base_url is None:
+            print("⚠ 警告: base_url未指定，使用配置文件默认值（可能是基线模型配置）")
+            self.base_url = settings.local_llm_base_url or settings.llm_base_url
+        else:
+            self.base_url = base_url
+        
+        # 如果model未指定，使用配置文件的默认值（但给出警告）
+        if model is None:
+            print("⚠ 警告: model未指定，使用配置文件默认值（可能是基线模型配置）")
+            self.model = settings.local_llm_model_name or settings.llm_model_name
+        else:
+            self.model = model
+
+        # 验证配置不为空
+        if not self.base_url:
+            raise ValueError("LLM服务URL未配置")
+        if not self.model:
+            raise ValueError("LLM模型名称未配置")
 
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 

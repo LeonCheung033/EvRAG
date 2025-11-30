@@ -1850,5 +1850,360 @@ def main():
     """主函数"""
     app()
 
+
+@app.command()
+def evaluate_rag(
+    test_data: Path = typer.Option(
+        Path("data/qa_pairs/test_qa_pair_verify.json"),
+        "--test-data",
+        help="测试数据路径",
+    ),
+    output_dir: Path = typer.Option(
+        Path("rag_test_reports/rag_evaluation"),
+        "--output-dir",
+        help="评估结果输出目录",
+    ),
+    config_file: Optional[Path] = typer.Option(
+        None, "--config", "-c", help="配置文件路径"
+    ),
+    sample_size: int = typer.Option(
+        30, "--sample-size", help="抽样测试样本数（用于快速验证）"
+    ),
+    full_test: bool = typer.Option(
+        False, "--full-test", help="是否执行全量测试（需要显式指定）"
+    ),
+    use_baseline: bool = typer.Option(
+        False, "--use-baseline", help="是否使用基线模型（True=基线，False=微调）"
+    ),
+    bm25_topk: int = typer.Option(5, "--bm25-topk", help="BM25检索数量"),
+    milvus_topk: int = typer.Option(10, "--milvus-topk", help="Milvus检索数量"),
+    reranker_topk: int = typer.Option(5, "--reranker-topk", help="重排序数量"),
+    use_ragas: bool = typer.Option(True, "--use-ragas/--no-use-ragas", help="是否使用RAGas框架评估"),
+    max_workers: Optional[int] = typer.Option(
+        None, "--max-workers", help="最大并发工作线程数（None表示自动探测）"
+    ),
+):
+    """
+    RAG系统评估
+    
+    执行端到端RAG流程评估，计算各项性能指标。
+    """
+    console.print("[bold green]RAG系统评估[/bold green]")
+    
+    # 重新加载配置
+    if config_file:
+        reload_settings(config_file)
+    settings = get_settings()
+    
+    try:
+        from src.evrag.evaluation import RAGEvaluator
+        
+        # 检查测试数据文件
+        if not test_data.exists():
+            console.print(f"[bold red]错误: 测试数据文件不存在: {test_data}[/bold red]")
+            raise typer.Exit(1)
+        
+        # 加载测试数据
+        console.print(f"加载测试数据: {test_data}")
+        with open(test_data, "r", encoding="utf-8") as f:
+            test_data_list = json.load(f)
+        
+        console.print(f"  总测试样本数: {len(test_data_list)}")
+        
+        # 确定是否抽样
+        if not full_test and sample_size < len(test_data_list):
+            import random
+            random.seed(42)
+            test_data_list = random.sample(test_data_list, sample_size)
+            console.print(f"  抽样测试样本数: {sample_size}")
+        else:
+            console.print(f"  全量测试样本数: {len(test_data_list)}")
+        
+        # 初始化评估器
+        console.print("\n初始化RAG评估器...")
+        evaluator = RAGEvaluator(
+            bm25_topk=bm25_topk,
+            milvus_topk=milvus_topk,
+            reranker_topk=reranker_topk,
+            use_baseline=use_baseline,
+            max_workers=max_workers,
+        )
+        console.print("  [bold green]✓[/bold green] RAG评估器初始化成功")
+        
+        # 执行批量评估
+        console.print("\n执行批量评估...")
+        results = evaluator.evaluate_batch(
+            test_data_list,
+            sample_size=None,  # 已经抽样了
+            show_progress=True,
+        )
+        
+        valid_results = [r for r in results if "error" not in r]
+        error_results = [r for r in results if "error" in r]
+        
+        console.print(f"\n  [bold green]✓[/bold green] 评估完成")
+        console.print(f"    有效结果数: {len(valid_results)}")
+        if error_results:
+            console.print(f"    错误结果数: {len(error_results)}")
+        
+        # 计算汇总指标和综合准确率
+        console.print("\n计算汇总指标...")
+        summary = evaluator.calculate_comprehensive_accuracy(
+            use_ragas=use_ragas,
+            semantic_weight=0.7,
+            ragas_weight=0.3,
+            ragas_sample_size=sample_size if not full_test else None,
+        )
+        
+        # 显示汇总指标
+        console.print("\n[bold cyan]评估结果汇总:[/bold cyan]")
+        console.print(f"  总样本数: {summary.get('total_samples', 0)}")
+        
+        semantic_score = summary.get("semantic_keyword_score", {})
+        console.print(f"\n  语义相似度+关键词加权得分:")
+        console.print(f"    平均值: {semantic_score.get('mean', 0.0):.4f}")
+        console.print(f"    标准差: {semantic_score.get('std', 0.0):.4f}")
+        
+        comprehensive = summary.get("comprehensive_accuracy", {})
+        if comprehensive:
+            console.print(f"\n  综合准确率:")
+            console.print(f"    得分: {comprehensive.get('score', 0.0):.4f}")
+            console.print(f"    语义+关键词得分: {comprehensive.get('semantic_keyword_score', 0.0):.4f}")
+            if comprehensive.get("ragas_score"):
+                console.print(f"    RAGas得分: {comprehensive.get('ragas_score', 0.0):.4f}")
+        
+        ragas_scores = summary.get("ragas_scores")
+        if ragas_scores:
+            console.print(f"\n  RAGas指标:")
+            console.print(f"    ContextRecall: {ragas_scores.get('context_recall', 0.0):.4f}")
+            console.print(f"    ContextPrecision: {ragas_scores.get('context_precision', 0.0):.4f}")
+            console.print(f"    平均得分: {ragas_scores.get('average', 0.0):.4f}")
+        
+        gen_quality = summary.get("generation_quality", {})
+        console.print(f"\n  生成质量:")
+        console.print(f"    BLEU: {gen_quality.get('bleu', 0.0):.4f}")
+        console.print(f"    ROUGE-L: {gen_quality.get('rouge_l', 0.0):.4f}")
+        
+        response_time = summary.get("response_time", {})
+        console.print(f"\n  响应时间:")
+        console.print(f"    平均总时间: {response_time.get('mean_total_time', 0.0):.4f}s")
+        
+        no_answer = summary.get("no_answer_stats", {})
+        if no_answer.get("total", 0) > 0:
+            console.print(f"\n  无答案样本统计:")
+            console.print(f"    总数: {no_answer.get('total', 0)}")
+            console.print(f"    命中率: {no_answer.get('hit_rate', 0.0):.4f}")
+            console.print(f"    误判率: {no_answer.get('false_positive_rate', 0.0):.4f}")
+        
+        # 保存结果（添加时间标签）
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        model_type = "baseline" if use_baseline else "finetuned"
+        
+        # 如果output_dir是默认值，添加时间标签；否则使用用户指定的目录
+        if str(output_dir) == "rag_test_reports/rag_evaluation":
+            output_dir = Path(f"rag_test_reports/rag_evaluation_{timestamp}")
+        else:
+            output_dir = Path(output_dir)
+        
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        output_path = output_dir / f"{model_type}_evaluation_results.json"
+        
+        # 保存结果，传入包含综合准确率的summary
+        evaluator.save_results(output_path, summary=summary)
+        
+        # 保存包含综合准确率的汇总指标（与save_results保存的相同，但文件名不同）
+        summary_path = output_dir / f"{model_type}_evaluation_summary.json"
+        with open(summary_path, "w", encoding="utf-8") as f:
+            json.dump(summary, f, ensure_ascii=False, indent=2)
+        
+        console.print(f"\n[bold green]✓[/bold green] 评估结果已保存到: {output_dir}")
+        console.print(f"  - 详细结果: {output_path}")
+        console.print(f"  - 汇总指标: {summary_path}")
+        
+    except Exception as e:
+        console.print(f"[bold red]评估失败: {e}[/bold red]")
+        logger.exception("RAG评估失败")
+        raise typer.Exit(1)
+
+
+@app.command()
+def evaluate_qwen_baseline(
+    test_data: Path = typer.Option(
+        Path("data/qa_pairs/test_qa_pair.json"),
+        "--test-data",
+        help="测试数据路径",
+    ),
+    output_dir: Path = typer.Option(
+        Path("rag_test_reports/qwen_baseline"),
+        "--output-dir",
+        help="评估结果输出目录",
+    ),
+    config_file: Optional[Path] = typer.Option(
+        None, "--config", "-c", help="配置文件路径"
+    ),
+    sample_size: int = typer.Option(
+        30, "--sample-size", help="抽样测试样本数（用于快速验证）"
+    ),
+    full_test: bool = typer.Option(
+        False, "--full-test", help="是否执行全量测试（需要显式指定）"
+    ),
+    milvus_topk: int = typer.Option(10, "--milvus-topk", help="Milvus检索数量"),
+    llm_model_name: Optional[str] = typer.Option(
+        None, "--llm-model", help="LLM模型名称（默认：Qwen/Qwen3-32B）"
+    ),
+    embedding_model_name: Optional[str] = typer.Option(
+        None, "--embedding-model", help="Embedding模型名称（默认：Qwen/Qwen3-Embedding-8B）"
+    ),
+    use_ragas: bool = typer.Option(True, "--use-ragas/--no-use-ragas", help="是否使用RAGas框架评估"),
+    max_workers: Optional[int] = typer.Option(
+        None, "--max-workers", help="最大并发工作线程数（None表示自动探测）"
+    ),
+):
+    """
+    Qwen基线系统评估
+    
+    使用Qwen3-32B + Qwen3-Embedding-8B进行端到端RAG评估。
+    仅使用向量检索（无BM25，无重排序），直接生成答案（无后处理）。
+    """
+    console.print("[bold green]Qwen基线系统评估[/bold green]")
+    
+    # 重新加载配置
+    if config_file:
+        reload_settings(config_file)
+    settings = get_settings()
+    
+    try:
+        from src.evrag.evaluation import QwenBaselineEvaluator
+        
+        # 检查测试数据文件
+        if not test_data.exists():
+            console.print(f"[bold red]错误: 测试数据文件不存在: {test_data}[/bold red]")
+            raise typer.Exit(1)
+        
+        # 加载测试数据
+        console.print(f"加载测试数据: {test_data}")
+        with open(test_data, "r", encoding="utf-8") as f:
+            test_data_list = json.load(f)
+        
+        console.print(f"  总测试样本数: {len(test_data_list)}")
+        
+        # 确定是否抽样
+        if not full_test and sample_size < len(test_data_list):
+            import random
+            random.seed(42)
+            test_data_list = random.sample(test_data_list, sample_size)
+            console.print(f"  抽样测试样本数: {sample_size}")
+        else:
+            console.print(f"  全量测试样本数: {len(test_data_list)}")
+        
+        # 初始化评估器
+        console.print("\n初始化Qwen基线评估器...")
+        evaluator = QwenBaselineEvaluator(
+            milvus_topk=milvus_topk,
+            llm_model_name=llm_model_name,
+            embedding_model_name=embedding_model_name,
+            max_workers=max_workers,
+        )
+        console.print("  [bold green]✓[/bold green] Qwen基线评估器初始化成功")
+        
+        # 执行批量评估
+        console.print("\n执行批量评估...")
+        results = evaluator.evaluate_batch(
+            test_data_list,
+            sample_size=None,  # 已经抽样了
+            show_progress=True,
+        )
+        
+        valid_results = [r for r in results if "error" not in r]
+        error_results = [r for r in results if "error" in r]
+        
+        console.print(f"\n  [bold green]✓[/bold green] 评估完成")
+        console.print(f"    有效结果数: {len(valid_results)}")
+        if error_results:
+            console.print(f"    错误结果数: {len(error_results)}")
+        
+        # 计算汇总指标和综合准确率
+        console.print("\n计算汇总指标...")
+        summary = evaluator.calculate_comprehensive_accuracy(
+            use_ragas=use_ragas,
+            semantic_weight=0.7,
+            ragas_weight=0.3,
+            ragas_sample_size=sample_size if not full_test else None,
+        )
+        
+        # 显示汇总指标
+        console.print("\n[bold cyan]评估结果汇总:[/bold cyan]")
+        console.print(f"  总样本数: {summary.get('total_samples', 0)}")
+        
+        semantic_score = summary.get("semantic_keyword_score", {})
+        console.print(f"\n  语义相似度+关键词加权得分:")
+        console.print(f"    平均值: {semantic_score.get('mean', 0.0):.4f}")
+        console.print(f"    标准差: {semantic_score.get('std', 0.0):.4f}")
+        
+        comprehensive = summary.get("comprehensive_accuracy", {})
+        if comprehensive:
+            console.print(f"\n  综合准确率:")
+            console.print(f"    得分: {comprehensive.get('score', 0.0):.4f}")
+            console.print(f"    语义+关键词得分: {comprehensive.get('semantic_keyword_score', 0.0):.4f}")
+            if comprehensive.get("ragas_score"):
+                console.print(f"    RAGas得分: {comprehensive.get('ragas_score', 0.0):.4f}")
+        
+        ragas_scores = summary.get("ragas_scores")
+        if ragas_scores:
+            console.print(f"\n  RAGas指标:")
+            console.print(f"    ContextRecall: {ragas_scores.get('context_recall', 0.0):.4f}")
+            console.print(f"    ContextPrecision: {ragas_scores.get('context_precision', 0.0):.4f}")
+            console.print(f"    平均得分: {ragas_scores.get('average', 0.0):.4f}")
+        
+        gen_quality = summary.get("generation_quality", {})
+        console.print(f"\n  生成质量:")
+        console.print(f"    BLEU: {gen_quality.get('bleu', 0.0):.4f}")
+        console.print(f"    ROUGE-L: {gen_quality.get('rouge_l', 0.0):.4f}")
+        
+        response_time = summary.get("response_time", {})
+        console.print(f"\n  响应时间:")
+        console.print(f"    平均总时间: {response_time.get('mean_total_time', 0.0):.4f}s")
+        
+        no_answer = summary.get("no_answer_stats", {})
+        if no_answer.get("total", 0) > 0:
+            console.print(f"\n  无答案样本统计:")
+            console.print(f"    总数: {no_answer.get('total', 0)}")
+            console.print(f"    命中率: {no_answer.get('hit_rate', 0.0):.4f}")
+            console.print(f"    误判率: {no_answer.get('false_positive_rate', 0.0):.4f}")
+        
+        # 保存结果（添加时间标签）
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # 如果output_dir是默认值，添加时间标签；否则使用用户指定的目录
+        if str(output_dir) == "rag_test_reports/qwen_baseline":
+            output_dir = Path(f"rag_test_reports/qwen_baseline_{timestamp}")
+        else:
+            output_dir = Path(output_dir)
+        
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        output_path = output_dir / "qwen_baseline_evaluation_results.json"
+        
+        # 保存结果，传入包含综合准确率的summary
+        evaluator.save_results(output_path, summary=summary)
+        
+        # 保存包含综合准确率的汇总指标（与save_results保存的相同，但文件名不同）
+        summary_path = output_dir / "qwen_baseline_evaluation_summary.json"
+        with open(summary_path, "w", encoding="utf-8") as f:
+            json.dump(summary, f, ensure_ascii=False, indent=2)
+        
+        console.print(f"\n[bold green]✓[/bold green] 评估结果已保存到: {output_dir}")
+        console.print(f"  - 详细结果: {output_path}")
+        console.print(f"  - 汇总指标: {summary_path}")
+        
+    except Exception as e:
+        console.print(f"[bold red]评估失败: {e}[/bold red]")
+        logger.exception("Qwen基线评估失败")
+        raise typer.Exit(1)
+
+
 if __name__ == "__main__":
     main()
