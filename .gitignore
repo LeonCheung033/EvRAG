@@ -105,6 +105,8 @@ data/
 models/
 log/
 mongodb/
+reports/
+rag_test_reports/
 
 # 微调依赖项目（已克隆到本地，但不提交到git）
 LLaMA-Factory-main/
