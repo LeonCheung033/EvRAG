@@ -5,9 +5,7 @@
 """
 
 import pytest
-import copy
-import hashlib
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 from langchain_core.documents import Document
 
 from src.evrag.parser.document_splitter import texts_split, save_2_mongo
@@ -40,7 +38,9 @@ class TestSave2Mongo:
         ]
 
     @patch("src.evrag.parser.document_splitter.MongoDBClient")
-    def test_save_2_mongo_saves_documents(self, mock_mongodb_client_class, sample_documents):
+    def test_save_2_mongo_saves_documents(
+        self, mock_mongodb_client_class, sample_documents
+    ):
         """测试：保存文档到MongoDB"""
         # 创建mock对象
         mock_client = Mock(spec=MongoDBClient)
@@ -52,7 +52,7 @@ class TestSave2Mongo:
 
         # 验证MongoDBClient被正确初始化
         mock_mongodb_client_class.assert_called_once()
-        
+
         # 验证连接和获取集合
         mock_client.connect.assert_called_once()
         mock_client.get_collection.assert_called_once_with("test_collection")
@@ -68,7 +68,9 @@ class TestSave2Mongo:
         assert first_call[1]["upsert"] is True
 
     @patch("src.evrag.parser.document_splitter.MongoDBClient")
-    def test_save_2_mongo_skips_documents_without_unique_id(self, mock_mongodb_client_class):
+    def test_save_2_mongo_skips_documents_without_unique_id(
+        self, mock_mongodb_client_class
+    ):
         """测试：跳过没有unique_id的文档"""
         mock_client = Mock(spec=MongoDBClient)
         mock_collection = Mock()
@@ -85,7 +87,9 @@ class TestSave2Mongo:
         mock_collection.update_one.assert_not_called()
 
     @patch("src.evrag.parser.document_splitter.MongoDBClient")
-    def test_save_2_mongo_uses_default_collection_name(self, mock_mongodb_client_class, sample_documents):
+    def test_save_2_mongo_uses_default_collection_name(
+        self, mock_mongodb_client_class, sample_documents
+    ):
         """测试：使用默认集合名称"""
         mock_client = Mock(spec=MongoDBClient)
         mock_collection = Mock()
@@ -97,7 +101,9 @@ class TestSave2Mongo:
         mock_client.get_collection.assert_called_once_with("manual_text")
 
     @patch("src.evrag.parser.document_splitter.MongoDBClient")
-    def test_save_2_mongo_handles_connection_error(self, mock_mongodb_client_class, sample_documents):
+    def test_save_2_mongo_handles_connection_error(
+        self, mock_mongodb_client_class, sample_documents
+    ):
         """测试：处理连接错误"""
         mock_client = Mock(spec=MongoDBClient)
         mock_client.connect.side_effect = Exception("Connection failed")
@@ -202,7 +208,9 @@ class TestTextsSplit:
         # 模拟失败，返回原始文本
         mock_client.chunk.return_value = [sample_raw_docs[0].page_content]
 
-        with patch("src.evrag.parser.document_splitter.text_splitter") as mock_text_splitter:
+        with patch(
+            "src.evrag.parser.document_splitter.text_splitter"
+        ) as mock_text_splitter:
             mock_text_splitter.create_documents.return_value = []
 
             result = texts_split(
@@ -221,7 +229,9 @@ class TestTextsSplit:
         mock_semantic_chunk_client,
     ):
         """测试：保留元数据"""
-        with patch("src.evrag.parser.document_splitter.text_splitter") as mock_text_splitter:
+        with patch(
+            "src.evrag.parser.document_splitter.text_splitter"
+        ) as mock_text_splitter:
             mock_text_splitter.create_documents.return_value = []
 
             result = texts_split(
@@ -242,7 +252,9 @@ class TestTextsSplit:
         mock_semantic_chunk_client,
     ):
         """测试：为子文档添加parent_id"""
-        with patch("src.evrag.parser.document_splitter.text_splitter") as mock_text_splitter:
+        with patch(
+            "src.evrag.parser.document_splitter.text_splitter"
+        ) as mock_text_splitter:
             child_doc = Document(
                 page_content="这是第一段内容。",
                 metadata={"unique_id": "raw_doc_1"},
@@ -267,13 +279,15 @@ class TestTextsSplit:
         mock_semantic_chunk_client,
     ):
         """测试：使用自定义集合名称"""
-        with patch("src.evrag.parser.document_splitter.text_splitter") as mock_text_splitter:
+        with patch(
+            "src.evrag.parser.document_splitter.text_splitter"
+        ) as mock_text_splitter:
             mock_text_splitter.create_documents.return_value = []
 
             texts_split(
                 sample_raw_docs,
                 semantic_chunk_client=mock_semantic_chunk_client,
-                collection_name="custom_collection",  
+                collection_name="custom_collection",
             )
 
             # 验证save_2_mongo被调用时使用了自定义集合名

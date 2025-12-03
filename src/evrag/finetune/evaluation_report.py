@@ -3,9 +3,8 @@
 生成详细的评估报告
 """
 
-import json
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 from datetime import datetime
 
 
@@ -74,7 +73,7 @@ class EvaluationReport:
                 f.write(f"共 {len(predictions)} 个预测结果\n\n")
                 # 可以选择性地展示前几个样本
                 for i, pred in enumerate(predictions[:5]):
-                    f.write(f"### 样本 {i+1}\n\n")
+                    f.write(f"### 样本 {i + 1}\n\n")
                     if "expected" in pred:
                         f.write(f"**期望输出**: {pred['expected']}\n\n")
                     if "predicted" in pred:
@@ -83,4 +82,3 @@ class EvaluationReport:
 
         print(f"✓ 评估报告已保存: {output_path}")
         return output_path
-

@@ -5,9 +5,8 @@
 
 import json
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import pandas as pd
 from .model_evaluator import ModelEvaluator
 
 
@@ -54,7 +53,9 @@ class PerformanceComparison:
                 baseline_value = baseline_metrics[metric]
                 finetuned_value = finetuned_metrics[metric]
                 if baseline_value != 0:
-                    improvement = ((finetuned_value - baseline_value) / baseline_value) * 100
+                    improvement = (
+                        (finetuned_value - baseline_value) / baseline_value
+                    ) * 100
                     comparison["improvement"][metric] = {
                         "absolute": finetuned_value - baseline_value,
                         "relative": improvement,
@@ -62,7 +63,7 @@ class PerformanceComparison:
                 else:
                     comparison["improvement"][metric] = {
                         "absolute": finetuned_value - baseline_value,
-                        "relative": float('inf') if finetuned_value > 0 else 0.0,
+                        "relative": float("inf") if finetuned_value > 0 else 0.0,
                     }
 
         return comparison
@@ -106,15 +107,15 @@ class PerformanceComparison:
             f.write("# 模型性能对比报告\n\n")
             f.write("## 基线模型\n\n")
             f.write(f"- 样本数: {comparison['baseline']['total_samples']}\n")
-            f.write(f"- 指标:\n")
-            for metric, value in comparison['baseline']['metrics'].items():
+            f.write("- 指标:\n")
+            for metric, value in comparison["baseline"]["metrics"].items():
                 f.write(f"  - {metric}: {value:.4f}\n")
             f.write("\n")
 
             f.write("## 微调后模型\n\n")
             f.write(f"- 样本数: {comparison['finetuned']['total_samples']}\n")
-            f.write(f"- 指标:\n")
-            for metric, value in comparison['finetuned']['metrics'].items():
+            f.write("- 指标:\n")
+            for metric, value in comparison["finetuned"]["metrics"].items():
                 f.write(f"  - {metric}: {value:.4f}\n")
             f.write("\n")
 
@@ -122,7 +123,7 @@ class PerformanceComparison:
             for metric, improvement in comparison.get("improvement", {}).items():
                 f.write(f"### {metric}\n")
                 f.write(f"- 绝对改进: {improvement['absolute']:.4f}\n")
-                if improvement['relative'] != float('inf'):
+                if improvement["relative"] != float("inf"):
                     f.write(f"- 相对改进: {improvement['relative']:.2f}%\n")
                 else:
                     f.write(f"- 相对改进: 从0提升到{improvement['absolute']:.4f}\n")
@@ -173,10 +174,12 @@ class PerformanceComparison:
         # 仅支持vLLM模式（LLM类型）
         if not use_vllm or model_type != "llm":
             raise ValueError("当前仅支持使用vLLM进行LLM模型评估")
-        
+
         if not baseline_vllm_model or not finetuned_vllm_model:
-            raise ValueError("使用vLLM时必须显式指定 --baseline-vllm-model 和 --finetuned-vllm-model")
-        
+            raise ValueError(
+                "使用vLLM时必须显式指定 --baseline-vllm-model 和 --finetuned-vllm-model"
+            )
+
         # 准备评估参数
         baseline_evaluator = ModelEvaluator(
             model_path=baseline_model_path,
@@ -207,27 +210,29 @@ class PerformanceComparison:
         # 并发评估两个模型
         print("🚀 使用并发评估（同时评估基线模型和微调模型）...")
         print()
-        
+
         def evaluate_baseline():
             print("评估基线模型...")
             result = baseline_evaluator.evaluate(test_data_path, **baseline_eval_kwargs)
             print("✓ 基线模型评估完成")
             return "baseline", result
-        
+
         def evaluate_finetuned():
             print("评估微调后模型...")
-            result = finetuned_evaluator.evaluate(test_data_path, **finetuned_eval_kwargs)
+            result = finetuned_evaluator.evaluate(
+                test_data_path, **finetuned_eval_kwargs
+            )
             print("✓ 微调模型评估完成")
             return "finetuned", result
-        
+
         # 使用线程池并发执行
         baseline_results = None
         finetuned_results = None
-        
+
         with ThreadPoolExecutor(max_workers=2) as executor:
             future_baseline = executor.submit(evaluate_baseline)
             future_finetuned = executor.submit(evaluate_finetuned)
-            
+
             # 等待两个任务完成
             for future in as_completed([future_baseline, future_finetuned]):
                 try:
@@ -239,14 +244,18 @@ class PerformanceComparison:
                 except Exception as e:
                     print(f"✗ 评估失败: {e}")
                     raise
-        
+
         print()
 
         # 对比结果
         if model_type == "llm":
-            comparison = self.compare_llm_performance(baseline_results, finetuned_results)
+            comparison = self.compare_llm_performance(
+                baseline_results, finetuned_results
+            )
         else:
-            comparison = self.compare_reranker_performance(baseline_results, finetuned_results)
+            comparison = self.compare_reranker_performance(
+                baseline_results, finetuned_results
+            )
 
         # 保存对比报告
         if output_dir:
@@ -258,11 +267,16 @@ class PerformanceComparison:
             # 保存详细结果JSON
             json_path = output_dir / f"{model_type}_comparison_results.json"
             with open(json_path, "w", encoding="utf-8") as f:
-                json.dump({
-                    "baseline_results": baseline_results,
-                    "finetuned_results": finetuned_results,
-                    "comparison": comparison,
-                }, f, ensure_ascii=False, indent=2)
+                json.dump(
+                    {
+                        "baseline_results": baseline_results,
+                        "finetuned_results": finetuned_results,
+                        "comparison": comparison,
+                    },
+                    f,
+                    ensure_ascii=False,
+                    indent=2,
+                )
             print(f"✓ 详细结果已保存: {json_path}")
 
         # 打印对比摘要
@@ -271,18 +285,18 @@ class PerformanceComparison:
         print("=" * 70)
         print()
         print("基线模型指标:")
-        for metric, value in comparison['baseline']['metrics'].items():
+        for metric, value in comparison["baseline"]["metrics"].items():
             print(f"  {metric}: {value:.4f}")
         print()
         print("微调后模型指标:")
-        for metric, value in comparison['finetuned']['metrics'].items():
+        for metric, value in comparison["finetuned"]["metrics"].items():
             print(f"  {metric}: {value:.4f}")
         print()
         print("性能改进:")
         for metric, improvement in comparison.get("improvement", {}).items():
-            abs_imp = improvement['absolute']
-            rel_imp = improvement['relative']
-            if rel_imp != float('inf'):
+            abs_imp = improvement["absolute"]
+            rel_imp = improvement["relative"]
+            if rel_imp != float("inf"):
                 print(f"  {metric}: {abs_imp:+.4f} ({rel_imp:+.2f}%)")
             else:
                 print(f"  {metric}: {abs_imp:+.4f} (从0提升)")

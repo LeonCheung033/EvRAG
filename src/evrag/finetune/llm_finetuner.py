@@ -9,7 +9,7 @@ import sys
 import os
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Optional
 
 
 class LLMFineTuner:
@@ -60,12 +60,14 @@ class LLMFineTuner:
             config = {}
 
         # 更新配置
-        config.update({
-            "model_name_or_path": model_path,
-            "dataset": dataset_name,
-            "output_dir": str(self.output_dir),
-            **kwargs,
-        })
+        config.update(
+            {
+                "model_name_or_path": model_path,
+                "dataset": dataset_name,
+                "output_dir": str(self.output_dir),
+                **kwargs,
+            }
+        )
 
         # 如果有测试集，添加评估配置
         if test_file and test_file.exists():
@@ -94,7 +96,6 @@ class LLMFineTuner:
             cuda_visible_devices: 可见的GPU设备（如"0,1,2,3"）
             resume_from_checkpoint: 从checkpoint恢复训练
         """
-        import os
 
         # 设置环境变量
         if cuda_visible_devices:
@@ -108,7 +109,7 @@ class LLMFineTuner:
             with open(self.config_path, "w", encoding="utf-8") as f:
                 yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
 
-        print(f"开始训练...")
+        print("开始训练...")
         print(f"  配置文件: {self.config_path}")
         print(f"  输出目录: {self.output_dir}")
         if cuda_visible_devices:
@@ -119,6 +120,7 @@ class LLMFineTuner:
         config_file = str(self.config_path.absolute())
         # 使用shutil.which查找llamafactory-cli命令
         import shutil
+
         llamafactory_cli = shutil.which("llamafactory-cli")
         if not llamafactory_cli:
             # 如果找不到，使用python -m方式
@@ -130,7 +132,7 @@ class LLMFineTuner:
         env = dict(os.environ)
         if cuda_visible_devices:
             env["CUDA_VISIBLE_DEVICES"] = cuda_visible_devices
-        
+
         # 添加NCCL环境变量以解决分布式训练hang问题
         # 单机多卡训练优化配置
         if cuda_visible_devices and "," in cuda_visible_devices:
@@ -141,7 +143,9 @@ class LLMFineTuner:
             env.setdefault("NCCL_IB_DISABLE", "1")  # 禁用InfiniBand
             env.setdefault("NCCL_DEBUG", "INFO")  # 设置INFO级别以便调试
             env.setdefault("NCCL_TIMEOUT", "1800")  # 增加超时时间到30分钟
-            env.setdefault("TORCH_NCCL_BLOCKING_WAIT", "1")  # 使用阻塞等待，更稳定（使用新变量名）
+            env.setdefault(
+                "TORCH_NCCL_BLOCKING_WAIT", "1"
+            )  # 使用阻塞等待，更稳定（使用新变量名）
             env.setdefault("NCCL_ASYNC_ERROR_HANDLING", "1")  # 启用异步错误处理
 
         # 创建日志目录和日志文件
@@ -149,7 +153,7 @@ class LLMFineTuner:
         log_dir.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         log_file = log_dir / f"llm_training_{timestamp}.log"
-        
+
         print(f"  训练日志: {log_file}")
 
         # 执行训练命令，同时保存日志
@@ -158,14 +162,16 @@ class LLMFineTuner:
                 # 写入训练开始信息
                 log_file_handle.write("=" * 70 + "\n")
                 log_file_handle.write("LLM Fine-tuning Log\n")
-                log_file_handle.write(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                log_file_handle.write(
+                    f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                )
                 log_file_handle.write(f"配置文件: {self.config_path}\n")
                 log_file_handle.write(f"输出目录: {self.output_dir}\n")
                 if cuda_visible_devices:
                     log_file_handle.write(f"GPU设备: {cuda_visible_devices}\n")
                 log_file_handle.write("=" * 70 + "\n\n")
                 log_file_handle.flush()
-                
+
                 # 使用Popen实时读取输出
                 process = subprocess.Popen(
                     cmd,
@@ -176,30 +182,32 @@ class LLMFineTuner:
                     text=True,
                     bufsize=1,  # 行缓冲
                 )
-                
+
                 # 实时读取输出并同时写入日志和控制台
                 return_code = None
                 while True:
                     output = process.stdout.readline()
-                    if output == '' and process.poll() is not None:
+                    if output == "" and process.poll() is not None:
                         break
                     if output:
                         # 同时写入日志文件和控制台
                         log_file_handle.write(output)
                         log_file_handle.flush()
                         print(output, end="")
-                
+
                 return_code = process.poll()
-                
+
                 # 写入训练结束信息
                 log_file_handle.write("\n" + "=" * 70 + "\n")
-                log_file_handle.write(f"训练完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                log_file_handle.write(
+                    f"训练完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                )
                 log_file_handle.write(f"退出码: {return_code}\n")
                 log_file_handle.write("=" * 70 + "\n")
-                
+
                 if return_code != 0:
                     raise subprocess.CalledProcessError(return_code, cmd)
-                
+
                 print(f"✓ 训练完成: {self.output_dir}")
                 print(f"✓ 训练日志已保存: {log_file}")
             except subprocess.CalledProcessError as e:
@@ -243,4 +251,3 @@ class LLMFineTuner:
         """
         checkpoints = self.get_checkpoints()
         return checkpoints[-1] if checkpoints else None
-

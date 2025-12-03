@@ -32,7 +32,7 @@ class RerankerFineTuner:
         self.config_path = Path(config_path)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # 确定RAG-Retrieval路径
         if rag_retrieval_path:
             self.rag_retrieval_path = Path(rag_retrieval_path)
@@ -43,7 +43,7 @@ class RerankerFineTuner:
             current_file = Path(__file__).resolve()
             project_root = current_file.parent.parent.parent.parent
             self.rag_retrieval_path = project_root / "RAG-Retrieval"
-        
+
         if not self.rag_retrieval_path.exists():
             raise FileNotFoundError(
                 f"RAG-Retrieval路径不存在: {self.rag_retrieval_path}\n"
@@ -77,13 +77,15 @@ class RerankerFineTuner:
             config = {}
 
         # 更新配置
-        config.update({
-            "model_name_or_path": model_path,
-            "train_dataset": str(train_file),
-            "val_dataset": str(val_file),
-            "output_dir": str(self.output_dir),
-            **kwargs,
-        })
+        config.update(
+            {
+                "model_name_or_path": model_path,
+                "train_dataset": str(train_file),
+                "val_dataset": str(val_file),
+                "output_dir": str(self.output_dir),
+                **kwargs,
+            }
+        )
 
         # 保存配置文件
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
@@ -104,13 +106,12 @@ class RerankerFineTuner:
         Args:
             cuda_visible_devices: 可见的GPU设备（如"0"）
         """
-        import os
 
         # 设置环境变量
         if cuda_visible_devices:
             os.environ["CUDA_VISIBLE_DEVICES"] = cuda_visible_devices
 
-        print(f"开始训练...")
+        print("开始训练...")
         print(f"  配置文件: {self.config_path}")
         print(f"  输出目录: {self.output_dir}")
         if cuda_visible_devices:
@@ -118,7 +119,7 @@ class RerankerFineTuner:
 
         # RAG-Retrieval的训练需要在特定目录下运行
         train_dir = self.rag_retrieval_path / "rag_retrieval" / "train" / "reranker"
-        
+
         if not train_dir.exists():
             raise FileNotFoundError(f"训练目录不存在: {train_dir}")
 
@@ -127,28 +128,37 @@ class RerankerFineTuner:
         log_dir.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         log_file = log_dir / f"reranker_training_{timestamp}.log"
-        
+
         print(f"  训练日志: {log_file}")
 
         # 读取配置文件，将相对路径转换为绝对路径
         with open(self.config_path, "r", encoding="utf-8") as f:
             config = yaml.safe_load(f) or {}
-        
+
         # 将相对路径转换为绝对路径（相对于项目根目录）
         project_root = Path(__file__).parent.parent.parent.parent
-        if "train_dataset" in config and not Path(config["train_dataset"]).is_absolute():
-            config["train_dataset"] = str((project_root / config["train_dataset"]).absolute())
+        if (
+            "train_dataset" in config
+            and not Path(config["train_dataset"]).is_absolute()
+        ):
+            config["train_dataset"] = str(
+                (project_root / config["train_dataset"]).absolute()
+            )
         if "val_dataset" in config and not Path(config["val_dataset"]).is_absolute():
-            config["val_dataset"] = str((project_root / config["val_dataset"]).absolute())
+            config["val_dataset"] = str(
+                (project_root / config["val_dataset"]).absolute()
+            )
         if "output_dir" in config and not Path(config["output_dir"]).is_absolute():
             config["output_dir"] = str((project_root / config["output_dir"]).absolute())
-        
+
         # 创建临时配置文件（使用绝对路径）
-        temp_config = tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False)
+        temp_config = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".yaml", delete=False
+        )
         yaml.dump(config, temp_config, allow_unicode=True, default_flow_style=False)
         temp_config.close()
         temp_config_path = temp_config.name
-        
+
         # 使用subprocess在正确的目录下执行训练
         # 因为RAG-Retrieval使用相对导入，需要在特定目录下运行
         cmd = [
@@ -164,14 +174,16 @@ class RerankerFineTuner:
                 # 写入训练开始信息
                 log_file_handle.write("=" * 70 + "\n")
                 log_file_handle.write("Reranker Fine-tuning Log\n")
-                log_file_handle.write(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                log_file_handle.write(
+                    f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                )
                 log_file_handle.write(f"配置文件: {self.config_path}\n")
                 log_file_handle.write(f"输出目录: {self.output_dir}\n")
                 if cuda_visible_devices:
                     log_file_handle.write(f"GPU设备: {cuda_visible_devices}\n")
                 log_file_handle.write("=" * 70 + "\n\n")
                 log_file_handle.flush()
-                
+
                 # 使用Popen实时读取输出
                 process = subprocess.Popen(
                     cmd,
@@ -181,36 +193,38 @@ class RerankerFineTuner:
                     text=True,
                     bufsize=1,  # 行缓冲
                 )
-                
+
                 # 实时读取输出并同时写入日志和控制台
                 return_code = None
                 while True:
                     output = process.stdout.readline()
-                    if output == '' and process.poll() is not None:
+                    if output == "" and process.poll() is not None:
                         break
                     if output:
                         # 同时写入日志文件和控制台
                         log_file_handle.write(output)
                         log_file_handle.flush()
                         print(output, end="")
-                
+
                 return_code = process.poll()
-                
+
                 # 写入训练结束信息
                 log_file_handle.write("\n" + "=" * 70 + "\n")
-                log_file_handle.write(f"训练完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                log_file_handle.write(
+                    f"训练完成时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+                )
                 log_file_handle.write(f"退出码: {return_code}\n")
                 log_file_handle.write("=" * 70 + "\n")
-                
+
                 if return_code != 0:
                     raise subprocess.CalledProcessError(return_code, cmd)
-                
+
                 # 删除临时配置文件
                 try:
                     os.unlink(temp_config_path)
                 except:
                     pass
-                
+
                 print(f"✓ 训练完成: {self.output_dir}")
                 print(f"✓ 训练日志已保存: {log_file}")
             except subprocess.CalledProcessError as e:
@@ -221,7 +235,7 @@ class RerankerFineTuner:
                 log_file_handle.write("=" * 70 + "\n")
                 # 删除临时配置文件
                 try:
-                    if 'temp_config_path' in locals():
+                    if "temp_config_path" in locals():
                         os.unlink(temp_config_path)
                 except:
                     pass
@@ -235,7 +249,7 @@ class RerankerFineTuner:
                 log_file_handle.write("=" * 70 + "\n")
                 # 删除临时配置文件
                 try:
-                    if 'temp_config_path' in locals():
+                    if "temp_config_path" in locals():
                         os.unlink(temp_config_path)
                 except:
                     pass
@@ -255,5 +269,6 @@ class RerankerFineTuner:
             for item in self.output_dir.iterdir():
                 if item.is_dir() and item.name.startswith("checkpoint-"):
                     checkpoints.append(item)
-        return sorted(checkpoints, key=lambda x: int(x.name.split("-")[1]) if "-" in x.name else 0)
-
+        return sorted(
+            checkpoints, key=lambda x: int(x.name.split("-")[1]) if "-" in x.name else 0
+        )

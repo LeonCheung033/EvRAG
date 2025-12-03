@@ -37,15 +37,17 @@ class LocalLLMClient(BaseLLMClient):
 
         # 优先使用传入的参数，如果为None则使用配置文件的默认值
         # 注意：调用者应该明确指定base_url和model，避免混淆基线和微调模型
-        self.api_key = api_key or settings.local_llm_api_key or settings.llm_api_key or "EMPTY"
-        
+        self.api_key = (
+            api_key or settings.local_llm_api_key or settings.llm_api_key or "EMPTY"
+        )
+
         # 如果base_url未指定，使用配置文件的默认值（但给出警告）
         if base_url is None:
             print("⚠ 警告: base_url未指定，使用配置文件默认值（可能是基线模型配置）")
             self.base_url = settings.local_llm_base_url or settings.llm_base_url
         else:
             self.base_url = base_url
-        
+
         # 如果model未指定，使用配置文件的默认值（但给出警告）
         if model is None:
             print("⚠ 警告: model未指定，使用配置文件默认值（可能是基线模型配置）")
@@ -97,24 +99,24 @@ class LocalLLMClient(BaseLLMClient):
         # 处理extra_body参数（用于传递chat_template_kwargs等，参考官方文档）
         # 从kwargs中提取enable_thinking（如果存在），默认False
         enable_thinking = kwargs.pop("enable_thinking", False)
-        
+
         # 处理extra_body
         if "extra_body" in kwargs:
             extra_body = kwargs.pop("extra_body")
         else:
             extra_body = {}
-        
+
         # 设置chat_template_kwargs（如果不存在或需要更新enable_thinking）
         if "chat_template_kwargs" not in extra_body:
             extra_body["chat_template_kwargs"] = {"enable_thinking": enable_thinking}
         else:
             # 如果已存在，更新enable_thinking（允许外部覆盖）
             extra_body["chat_template_kwargs"]["enable_thinking"] = enable_thinking
-        
+
         # 设置top_k（非思考模式推荐值）
         if "top_k" not in extra_body:
             extra_body["top_k"] = 20
-        
+
         # vLLM API: 如果model为None，不传递model参数，让vLLM使用默认模型
         create_kwargs = {
             "messages": messages,
@@ -124,7 +126,7 @@ class LocalLLMClient(BaseLLMClient):
         api_model = model or self.model
         if api_model:
             create_kwargs["model"] = api_model
-        
+
         completion = self.client.chat.completions.create(
             **create_kwargs,
             max_tokens=max_tokens,
@@ -158,20 +160,20 @@ class LocalLLMClient(BaseLLMClient):
         """
         # 处理extra_body参数（用于传递chat_template_kwargs等）
         enable_thinking = kwargs.pop("enable_thinking", False)
-        
+
         if "extra_body" in kwargs:
             extra_body = kwargs.pop("extra_body")
         else:
             extra_body = {}
-        
+
         if "chat_template_kwargs" not in extra_body:
             extra_body["chat_template_kwargs"] = {"enable_thinking": enable_thinking}
         else:
             extra_body["chat_template_kwargs"]["enable_thinking"] = enable_thinking
-        
+
         if "top_k" not in extra_body:
             extra_body["top_k"] = 20
-        
+
         stream = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,

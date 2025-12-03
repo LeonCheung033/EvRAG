@@ -4,7 +4,6 @@ OpenAI API客户端
 连接到远程OpenAI兼容的API服务（如豆包、通义千问等）。
 """
 
-import os
 from typing import List, Dict, Optional, Any, Iterator
 from openai import OpenAI
 
@@ -103,7 +102,7 @@ class OpenAIClient(BaseLLMClient):
 
         # 过滤掉 enable_thinking 参数（Deepseek 等 API 不支持）
         filtered_kwargs = {k: v for k, v in kwargs.items() if k != "enable_thinking"}
-        
+
         completion = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,
@@ -138,7 +137,7 @@ class OpenAIClient(BaseLLMClient):
         """
         # 过滤掉 enable_thinking 参数（Deepseek 等 API 不支持）
         filtered_kwargs = {k: v for k, v in kwargs.items() if k != "enable_thinking"}
-        
+
         stream = self.client.chat.completions.create(
             model=model or self.model,
             messages=messages,

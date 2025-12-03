@@ -4,18 +4,19 @@
 """
 
 import matplotlib
-matplotlib.use('Agg')  # 使用非交互式后端
+
+matplotlib.use("Agg")  # 使用非交互式后端
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 import numpy as np
 from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 import pandas as pd
 
 # 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans', 'Arial Unicode MS']
-plt.rcParams['axes.unicode_minus'] = False
+plt.rcParams["font.sans-serif"] = ["SimHei", "DejaVu Sans", "Arial Unicode MS"]
+plt.rcParams["axes.unicode_minus"] = False
 sns.set_style("whitegrid")
 
 
@@ -56,8 +57,7 @@ class TrainingVisualizer:
         # LLaMA-Factory格式: train/loss, eval/loss
         # RAG-Retrieval格式: avg_loss, cur_loss, val_loss
         data = self._read_tensorboard_scalars(
-            log_dir, 
-            ["train/loss", "eval/loss", "avg_loss", "cur_loss", "val_loss"]
+            log_dir, ["train/loss", "eval/loss", "avg_loss", "cur_loss", "val_loss"]
         )
 
         fig, ax = plt.subplots(figsize=(12, 6))
@@ -68,22 +68,33 @@ class TrainingVisualizer:
             train_values = data["train/loss"]["values"]
             if smooth:
                 train_values = self._smooth_curve(train_values)
-            ax.plot(train_steps, train_values, label="Training Loss", linewidth=2, alpha=0.8)
+            ax.plot(
+                train_steps, train_values, label="Training Loss", linewidth=2, alpha=0.8
+            )
         # 使用RAG-Retrieval格式
         elif "avg_loss" in data:
             train_steps = data["avg_loss"]["steps"]
             train_values = data["avg_loss"]["values"]
             if smooth:
                 train_values = self._smooth_curve(train_values)
-            ax.plot(train_steps, train_values, label="Average Loss", linewidth=2, alpha=0.8)
-        
+            ax.plot(
+                train_steps, train_values, label="Average Loss", linewidth=2, alpha=0.8
+            )
+
         # 绘制当前loss（可选）
         if "cur_loss" in data and "avg_loss" in data:
             cur_steps = data["cur_loss"]["steps"]
             cur_values = data["cur_loss"]["values"]
             if smooth:
                 cur_values = self._smooth_curve(cur_values)
-            ax.plot(cur_steps, cur_values, label="Current Loss", linewidth=1, alpha=0.5, linestyle=":")
+            ax.plot(
+                cur_steps,
+                cur_values,
+                label="Current Loss",
+                linewidth=1,
+                alpha=0.5,
+                linestyle=":",
+            )
 
         # 验证loss
         if "eval/loss" in data:
@@ -91,13 +102,27 @@ class TrainingVisualizer:
             eval_values = data["eval/loss"]["values"]
             if smooth:
                 eval_values = self._smooth_curve(eval_values)
-            ax.plot(eval_steps, eval_values, label="Validation Loss", linewidth=2, alpha=0.8, linestyle="--")
+            ax.plot(
+                eval_steps,
+                eval_values,
+                label="Validation Loss",
+                linewidth=2,
+                alpha=0.8,
+                linestyle="--",
+            )
         elif "val_loss" in data:
             eval_steps = data["val_loss"]["steps"]
             eval_values = data["val_loss"]["values"]
             if smooth:
                 eval_values = self._smooth_curve(eval_values)
-            ax.plot(eval_steps, eval_values, label="Validation Loss", linewidth=2, alpha=0.8, linestyle="--")
+            ax.plot(
+                eval_steps,
+                eval_values,
+                label="Validation Loss",
+                linewidth=2,
+                alpha=0.8,
+                linestyle="--",
+            )
 
         ax.set_xlabel("Training Steps", fontsize=12)
         ax.set_ylabel("Loss", fontsize=12)
@@ -141,11 +166,25 @@ class TrainingVisualizer:
         if "train/learning_rate" in data:
             steps = data["train/learning_rate"]["steps"]
             values = data["train/learning_rate"]["values"]
-            ax.plot(steps, values, label="Learning Rate", linewidth=2, color="green", alpha=0.8)
+            ax.plot(
+                steps,
+                values,
+                label="Learning Rate",
+                linewidth=2,
+                color="green",
+                alpha=0.8,
+            )
         elif "lr" in data:
             steps = data["lr"]["steps"]
             values = data["lr"]["values"]
-            ax.plot(steps, values, label="Learning Rate", linewidth=2, color="green", alpha=0.8)
+            ax.plot(
+                steps,
+                values,
+                label="Learning Rate",
+                linewidth=2,
+                color="green",
+                alpha=0.8,
+            )
 
         ax.set_xlabel("Training Steps", fontsize=12)
         ax.set_ylabel("Learning Rate", fontsize=12)
@@ -154,7 +193,10 @@ class TrainingVisualizer:
             ax.legend(fontsize=10)
         ax.grid(True, alpha=0.3)
         # 只有当学习率值大于0时才使用对数刻度
-        if "train/learning_rate" in data and min(data["train/learning_rate"]["values"]) > 0:
+        if (
+            "train/learning_rate" in data
+            and min(data["train/learning_rate"]["values"]) > 0
+        ):
             ax.set_yscale("log")
         elif "lr" in data and min(data["lr"]["values"]) > 0:
             ax.set_yscale("log")
@@ -235,24 +277,27 @@ class TrainingVisualizer:
 
         # 读取GPU日志
         import csv
+
         data = []
         with open(gpu_log_path, "r", encoding="utf-8") as f:
             reader = csv.reader(f)
             for row in reader:
                 if len(row) >= 8:
                     try:
-                        data.append({
-                            "timestamp": pd.to_datetime(row[0]),
-                            "gpu_index": int(row[1]),
-                            "utilization": float(row[3].replace("%", "")),
-                            "memory_used": int(row[4].replace("MiB", "").strip()),
-                            "memory_total": int(row[5].replace("MiB", "").strip()),
-                        })
+                        data.append(
+                            {
+                                "timestamp": pd.to_datetime(row[0]),
+                                "gpu_index": int(row[1]),
+                                "utilization": float(row[3].replace("%", "")),
+                                "memory_used": int(row[4].replace("MiB", "").strip()),
+                                "memory_total": int(row[5].replace("MiB", "").strip()),
+                            }
+                        )
                     except Exception:
                         continue
 
         if not data:
-            print(f"⚠ GPU日志数据为空")
+            print("⚠ GPU日志数据为空")
             return output_path
 
         df = pd.DataFrame(data)
@@ -368,4 +413,3 @@ class TrainingVisualizer:
             smoothed.append(np.mean(values[start:end]))
 
         return smoothed
-

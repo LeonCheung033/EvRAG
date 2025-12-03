@@ -9,6 +9,7 @@ __author__ = "Leon Cheung"
 
 from .config import Settings, get_settings, reload_settings
 from .tool_func import merge_docs, post_processing
+
 __all__ = [
     "Settings",
     "get_settings",

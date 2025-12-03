@@ -53,7 +53,14 @@ class ChatClient:
         self.prompt_template = prompt_template or LLM_CHAT_PROMPT
         self.system_message = system_message or "你是一个有用的人工智能助手."
 
-    def chat(self, query: str, context: str, stream: bool = False, enable_thinking: bool = False, **kwargs) -> str:
+    def chat(
+        self,
+        query: str,
+        context: str,
+        stream: bool = False,
+        enable_thinking: bool = False,
+        **kwargs,
+    ) -> str:
         """
         发送RAG问答请求
 
@@ -90,7 +97,7 @@ class ChatClient:
                 "temperature": 0.7,
                 "top_p": 0.8,
             }
-        
+
         default_kwargs["enable_thinking"] = enable_thinking
         default_kwargs.update(kwargs)
 

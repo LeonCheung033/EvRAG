@@ -24,7 +24,9 @@ class TrainingMonitor:
             gpu_log_path: GPU监控日志文件路径
         """
         self.log_dir = Path(log_dir)
-        self.gpu_log_path = Path(gpu_log_path) if gpu_log_path else self.log_dir / "gpu_monitor.log"
+        self.gpu_log_path = (
+            Path(gpu_log_path) if gpu_log_path else self.log_dir / "gpu_monitor.log"
+        )
         self.gpu_log_path.parent.mkdir(parents=True, exist_ok=True)
         self.monitoring = False
         self.monitor_thread: Optional[threading.Thread] = None
@@ -98,15 +100,17 @@ class TrainingMonitor:
             reader = csv.reader(f)
             for row in reader:
                 if len(row) >= 8:
-                    data.append({
-                        "timestamp": row[0],
-                        "gpu_index": int(row[1]),
-                        "gpu_name": row[2],
-                        "utilization": float(row[3].replace("%", "")),
-                        "memory_used": int(row[4].replace("MiB", "").strip()),
-                        "memory_total": int(row[5].replace("MiB", "").strip()),
-                        "temperature": int(row[6].replace("C", "").strip()),
-                    })
+                    data.append(
+                        {
+                            "timestamp": row[0],
+                            "gpu_index": int(row[1]),
+                            "gpu_name": row[2],
+                            "utilization": float(row[3].replace("%", "")),
+                            "memory_used": int(row[4].replace("MiB", "").strip()),
+                            "memory_total": int(row[5].replace("MiB", "").strip()),
+                            "temperature": int(row[6].replace("C", "").strip()),
+                        }
+                    )
 
         return data
 
@@ -134,4 +138,3 @@ class TrainingMonitor:
             "event_files": [str(f) for f in event_files],
             "latest_event_file": str(max(event_files, key=lambda x: x.stat().st_mtime)),
         }
-

@@ -129,4 +129,3 @@ class SiliconFlowReranker(BaseReranker):
         except Exception as e:
             print(f"SiliconFlow Reranker error: {e}")
             return candidates[:topk]
-
