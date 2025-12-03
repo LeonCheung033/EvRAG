@@ -46,6 +46,10 @@ EvRAG是一个面向文档问答的检索增强生成（RAG）系统，旨在解
 
 ### 整体架构
 
+![系统架构图](resources/images/sys_architecture.png)
+
+我们的EvRAG系统采用两层架构设计，完整流程如下：
+
 ```
 ┌─────────────────┐
 │   用户界面层     │
@@ -167,23 +171,285 @@ vim config/config.yaml
 
 ## 📖 使用指南
 
-### 方式一：命令行接口（CLI）
+### 完整工作流程
 
-#### 1. 数据准备
+根据项目设计，完整的RAG系统构建流程包括以下步骤：
+
+#### 阶段1：数据准备和索引构建
+
+**1.1 数据准备（PDF解析、文档清洗、文档切分）**
 
 ```bash
-# 解析PDF文件，提取文本和图片
+# 解析PDF文件，提取文本和图片，并进行清洗和切分
 python main.py prepare-data --pdf-path data/Tesla_Manual.pdf
 ```
 
-#### 2. 构建索引
+这一步会生成：
+- `data/processed_docs/raw_docs.pkl` - 原始文档（每页一个Document）
+- `data/processed_docs/clean_docs.pkl` - 清洗后的文档
+- `data/processed_docs/split_docs.pkl` - 切分后的文档（父文档+子文档）
+- MongoDB集合 `manual_text` - 文档存储到数据库
+
+**数据处理Pipeline**：
+
+![数据处理Pipeline](resources/images/data_pipeline.png)
+
+数据处理包含四个主要阶段：
+1. **PDF解析**: 使用PyMuPDF提取文本和图片
+2. **文档清洗**: 使用LLM（Doubao API）清洗文档，让句子通顺并按标题归类
+3. **文档切分**: 
+   - 语义切分（M3E-small模型）→ 生成父文档
+   - 句子级切分（RecursiveCharacterTextSplitter）→ 生成子文档（256 tokens, overlap=50）
+4. **数据入库**: 保存到MongoDB和pickle文件
+
+**1.2 构建检索索引**
 
 ```bash
 # 构建BM25和Milvus检索索引
-python main.py build-index --pdf-path data/Tesla_Manual.pdf
+python main.py build-index
 ```
 
-#### 3. 问答
+这一步会生成：
+- `data/saved_index/bm25retriever.pkl` - BM25索引
+- `data/saved_index/milvus.db` - Milvus向量索引
+
+#### 阶段2：训练数据生成
+
+**2.1 生成初始QA对**
+
+```bash
+# 从清洗后的文档生成初始QA对
+python main.py gen-qa data/processed_docs/clean_docs.pkl \
+    --output data/qa_pairs/qa_pair.json
+```
+
+**2.2 QA数据处理（质量打分、过滤、问题改写、数据扩充）**
+
+```bash
+# 完整流程：质量打分 → 过滤 → 问题改写 → 训练/测试集切分 → 关键词提取 → 添加负样本
+python main.py process-qa \
+    --qa-pair-path data/qa_pairs/qa_pair.json \
+    --output-dir data/qa_pairs
+```
+
+这一步会生成：
+- `data/qa_pairs/filtered_qa_pair.json` - 过滤后的QA对
+- `data/qa_pairs/expand_qa_pair.json` - 问题改写后的QA对
+- `data/qa_pairs/train_qa_pair.json` - 训练集
+- `data/qa_pairs/test_qa_pair.json` - 测试集
+
+**2.3 生成微调训练数据**
+
+```bash
+# 生成LLM和Reranker的训练数据
+python main.py generate-sft-data \
+    --train-qa-path data/qa_pairs/train_qa_pair.json \
+    --output-dir data
+```
+
+这一步会生成：
+- `data/qa_pairs/train_data.json` - RAG检索数据
+- `data/summary_data/train.json` - LLM训练数据（6,406条）
+- `data/summary_data/test.json` - LLM测试数据（516条）
+- `data/rerank_data/train.json` - Reranker训练数据（约17,190条）
+- `data/rerank_data/dev.json` - Reranker开发集（1,000条）
+- `data/rerank_data/test.json` - Reranker测试集（458条）
+
+![QA数据统计](resources/images/qa_statistics.png)
+
+#### 阶段3：模型微调（使用脚本）
+
+模型微调是提升RAG系统性能的关键步骤。我们使用LoRA方法微调LLM，使用Pointwise Ranking方法微调Reranker。
+
+**3.1 环境准备**
+
+在开始微调之前，需要安装依赖的微调框架：
+
+```bash
+# 1. 克隆LLaMA-Factory（LLM微调框架）
+cd /path/to/EvRAG
+git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git LLaMA-Factory-main
+
+# 2. 克隆RAG-Retrieval（Reranker微调框架）
+git clone --depth 1 https://github.com/NovaSearch-Team/RAG-Retrieval.git RAG-Retrieval
+
+# 3. 安装LLaMA-Factory
+cd LLaMA-Factory-main
+pip install -e ".[torch,metrics]" --no-build-isolation
+cd ..
+
+# 4. 安装RAG-Retrieval
+cd RAG-Retrieval
+pip install -e .
+cd ..
+
+# 5. 验证安装
+python -c "from llamafactory.train.tuner import run_exp; print('✓ LLaMA-Factory已安装')"
+python -c "import rag_retrieval; print('✓ RAG-Retrieval已安装')"
+```
+
+**3.2 LLM微调（Qwen3-8B）**
+
+**3.2.1 训练配置**
+
+LLM微调使用LoRA（Low-Rank Adaptation）方法，只需要微调0.27%的参数（约2180万个参数），大幅减少显存占用和训练时间。
+
+主要配置参数（`config/finetune/qwen3_lora_sft.yaml`）：
+- **基础模型**: Qwen3-8B
+- **微调方法**: LoRA (rank=8, target=all)
+- **训练数据**: 6,406条训练样本，516条测试样本
+- **训练轮数**: 3 epochs
+- **学习率**: 2.0e-05（余弦退火）
+- **序列长度**: 2048 tokens（优化后，覆盖95%+数据）
+- **Batch配置**: per_device=4, gradient_accumulation=4, 6卡GPU
+- **有效batch size**: 6 × 4 × 4 = 96
+
+**3.2.2 修改训练脚本**
+
+训练脚本已更新为使用相对路径，如果LLaMA-Factory-main在项目根目录下，通常不需要修改。
+
+如果需要自定义路径，编辑 `scripts/training/train_llm.sh`：
+
+```bash
+# 如果LLaMA-Factory不在项目根目录，取消注释并修改以下行：
+# LLAMAFACTORY_PATH="/path/to/your/LLaMA-Factory-main"
+```
+
+脚本会自动检测项目根目录，并查找 `LLaMA-Factory-main` 目录。
+
+**3.2.3 执行训练**
+
+```bash
+# 设置使用的GPU（可选，默认使用0,1,2,3）
+export CUDA_VISIBLE_DEVICES="0,1,2,3"
+
+# 执行训练
+./scripts/training/train_llm.sh
+```
+
+**3.2.4 训练监控**
+
+训练过程中可以通过TensorBoard监控训练进度：
+
+```bash
+# 启动TensorBoard
+tensorboard --logdir models/finetuned/qwen3_lora_sft/runs
+```
+
+访问 `http://localhost:6006` 查看训练曲线。
+
+**训练结果示例**：
+- **训练Loss**: 从初始~2.0降到最终0.6494（下降67%）
+- **评估Loss**: 0.4125（eval_loss < train_loss，无过拟合）
+- **训练时间**: 约2小时16分（6卡GPU）
+- **训练速度**: 2.34 samples/s
+
+![LLM训练Loss曲线](resources/images/llm_training_loss.png)
+
+**3.2.5 模型输出**
+
+微调后的模型保存在：`models/finetuned/qwen3_lora_sft/`
+
+**3.3 Reranker微调（BGE-Reranker-v2-m3）**
+
+**3.3.1 训练配置**
+
+Reranker微调使用Pointwise Ranking方法，将排序问题转化为分类问题。
+
+主要配置参数（`config/finetune/reranker_training.yaml`）：
+- **基础模型**: BGE-Reranker-v2-m3
+- **微调方法**: Pointwise Binary Cross-Entropy Loss
+- **训练数据**: 约17,190条训练样本，1,000条开发集，458条测试集
+- **训练轮数**: 2 epochs（数据量增加后可训练更多轮）
+- **学习率**: 2e-5（更保守的学习率）
+- **Batch配置**: batch_size=8, gradient_accumulation=2
+- **有效batch size**: 8 × 2 = 16
+- **序列长度**: 4096 tokens（支持长文档）
+- **标签**: 0（负样本）/ 1（中等样本）/ 2（正样本）
+
+**3.3.2 修改训练脚本**
+
+训练脚本已更新为使用相对路径，如果RAG-Retrieval在项目根目录下，通常不需要修改。
+
+如果需要自定义路径，编辑 `scripts/training/train_reranker.sh`：
+
+```bash
+# 如果RAG-Retrieval不在项目根目录，取消注释并修改以下行：
+# RAG_RETRIEVAL_PATH="/path/to/your/RAG-Retrieval"
+```
+
+脚本会自动检测项目根目录，并查找 `RAG-Retrieval` 目录。
+
+**3.3.3 Bug修复（重要）**
+
+如果遇到维度不匹配错误，需要修复RAG-Retrieval中的bug：
+
+```bash
+# 修复文件1: RAG-Retrieval/rag_retrieval/train/reranker/model_bert.py
+# 将第32行的 logits.squeeze() 改为 logits.squeeze(-1)
+
+# 修复文件2: RAG-Retrieval/rag_retrieval/train/reranker/model_llm.py  
+# 将第40行的 logits.squeeze() 改为 logits.squeeze(-1)
+```
+
+**3.3.4 执行训练**
+
+```bash
+# 设置使用的GPU（可选，默认使用0）
+export CUDA_VISIBLE_DEVICES="0"
+
+# 执行训练
+./scripts/training/train_reranker.sh
+```
+
+**3.3.5 训练监控**
+
+```bash
+# 启动TensorBoard
+tensorboard --logdir models/finetuned/bge_reranker/runs
+```
+
+**训练结果示例**：
+- **训练Loss**: 从初始1.7446降到最终0.6693（下降61.6%）
+- **验证Loss**: 0.6163（验证loss < 训练loss，无过拟合）
+- **训练时间**: 约13-14分钟（单卡GPU）
+- **Top1 Recall**: 0.9825（微调后）
+
+![Reranker训练Loss曲线](resources/images/reranker_training_loss.png)
+
+**3.3.6 模型输出**
+
+微调后的模型保存在：`models/finetuned/bge_reranker/`
+
+**3.4 微调注意事项**
+
+1. **GPU显存要求**：
+   - LLM微调：建议至少6张GPU（每张16GB+），或单张32GB+ GPU
+   - Reranker微调：单张16GB+ GPU即可
+
+2. **训练时间**：
+   - LLM微调：约2-3小时（6卡GPU）或11小时（单卡GPU）
+   - Reranker微调：约13-14分钟（单卡GPU）
+
+3. **数据准备**：
+   - 确保已完成"阶段2：训练数据生成"
+   - 检查训练数据文件是否存在：
+     - `data/summary_data/train.json`（LLM训练数据）
+     - `data/rerank_data/train.json`（Reranker训练数据）
+
+4. **配置文件**：
+   - LLM配置：`config/finetune/qwen3_lora_sft.yaml`
+   - Reranker配置：`config/finetune/reranker_training.yaml`
+   - 根据你的GPU配置调整batch size和序列长度
+
+5. **常见问题**：
+   - **显存不足**：减小`per_device_train_batch_size`或`cutoff_len`
+   - **训练速度慢**：增加`dataloader_num_workers`和`preprocessing_num_workers`
+   - **过拟合**：减少训练轮数或降低学习率
+
+#### 阶段4：RAG系统使用
+
+**4.1 命令行问答**
 
 ```bash
 # 基础问答
@@ -196,12 +462,75 @@ python main.py infer "如何打开车窗？" --stream
 python main.py infer "如何打开车窗？" --enable-thinking
 ```
 
-#### 4. 生成QA对
+**4.2 Web界面使用**
+
+见下方"方式二：Web界面（Gradio）"部分。
+
+#### 阶段5：系统评估
+
+**5.1 RAG系统评估**
 
 ```bash
-# 从文档生成问答对
-python main.py gen-qa data/processed_docs/clean_docs.pkl \
-    --output data/qa_pairs/qa_pair.json
+# 评估RAG系统性能
+python main.py evaluate-rag \
+    --test-data data/qa_pairs/test_qa_pair_verify.json \
+    --output-dir rag_test_reports/rag_evaluation
+```
+
+**5.2 基线对比评估**
+
+```bash
+# 对比基线和微调模型
+./scripts/evaluation/run_baseline_finetuned_comparison.sh
+```
+
+**5.3 实验结果**
+
+我们的RAG系统在676个手工标注测试样本上取得了优异的性能：
+
+![性能对比表格](resources/images/performance_comparison_table.png)
+
+**核心性能指标**：
+- **综合准确率**: 92.08%（vs 基线80.92%，提升13.8%）
+- **语义+关键词得分**: 0.9064（vs 基线0.8084，提升12.1%）
+- **ContextPrecision**: 0.9405（vs 基线0.6992，提升34.5%）
+- **ContextRecall**: 0.9675（vs 基线0.8591，提升12.6%）
+- **参数量**: 8B（vs 基线32B，减少75%）
+
+![消融实验表格](resources/images/ablation_study_table.png)
+
+**消融实验结果**：
+- 方案1（基线Reranker + 基线LLM）: 0.8805
+- 方案2（基线Reranker + 微调LLM）: 0.8894 (+1.01%)
+- 方案3（微调Reranker + 基线LLM）: 0.9090 (+3.24%)
+- 方案4（微调Reranker + 微调LLM）: **0.9208** (+4.58%)
+- 方案5（Qwen3-32B基线）: 0.8092
+
+![组件贡献度分析](resources/images/component_contribution.png)
+
+**组件贡献度**：
+- Reranker微调独立贡献: +3.24%
+- LLM微调独立贡献: +1.01%
+- 协同效应: +0.33%
+
+![指标对比柱状图](resources/images/metrics_comparison_bar.png)
+
+### 辅助工具命令
+
+以下命令用于数据分析和可视化，不是核心流程的一部分：
+
+```bash
+# 分析数据质量
+python main.py analyze-data
+
+# 展示文档处理示例
+python main.py show-examples --num 5
+
+# 分析SFT数据
+python main.py analyze-sft-data
+
+# 绘制训练指标图表
+python main.py plot-training-metrics --log-dir logs/finetune/llm
 ```
 
 ### 方式二：Web界面（Gradio）
@@ -241,7 +570,9 @@ python -m src.evrag.server.rag_server
 ./scripts/deployment/stop_vllm_finetuned.sh
 ```
 
-### 完整复现流程
+### 快速开始（使用预训练模型）
+
+如果你已经有微调好的模型，可以直接使用RAG系统：
 
 #### 步骤1：环境准备
 
@@ -258,35 +589,37 @@ conda activate evrag
 pip install -r requirements.txt
 ```
 
-#### 步骤2：数据准备
+#### 步骤2：数据准备（如果还没有）
 
 ```bash
 # 准备PDF文件（示例：Tesla手册）
 # 将PDF文件放到 data/ 目录下
 
-# 解析PDF
+# 解析PDF并构建索引
 python main.py prepare-data --pdf-path data/Tesla_Manual.pdf
-
-# 构建索引
-python main.py build-index --pdf-path data/Tesla_Manual.pdf
+python main.py build-index
 ```
 
 #### 步骤3：启动服务
 
 ```bash
-# 启动vLLM服务
+# 1. 启动vLLM服务（端口8001）
 ./scripts/deployment/start_vllm_finetuned.sh
 
-# 启动RAG服务（新终端）
+# 2. 启动RAG服务（端口8002，新终端）
 python -m src.evrag.server.rag_server
 
-# 启动Gradio前端（新终端）
+# 3. 启动Gradio前端（端口8080，新终端）
 ./scripts/deployment/start_gradio.sh
 ```
 
-#### 步骤4：测试
+#### 步骤4：使用系统
 
 访问 `http://localhost:8080`，输入问题进行测试。
+
+### 完整复现流程（从零开始）
+
+如果你需要从零开始构建完整的RAG系统（包括模型微调），请按照"完整工作流程"部分的步骤执行。
 
 ---
 
