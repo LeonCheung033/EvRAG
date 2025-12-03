@@ -33,3 +33,6 @@ numpy>=1.24.0
 # 评估相关依赖
 rouge-score>=0.1.2
 nltk>=3.8.1
+
+# Gradio前端依赖
+gradio>=4.0.0
