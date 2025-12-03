@@ -150,6 +150,10 @@ class RerankerFineTuner:
             )
         if "output_dir" in config and not Path(config["output_dir"]).is_absolute():
             config["output_dir"] = str((project_root / config["output_dir"]).absolute())
+        if "model_name_or_path" in config and not Path(config["model_name_or_path"]).is_absolute():
+            config["model_name_or_path"] = str(
+                (project_root / config["model_name_or_path"]).absolute()
+            )
 
         # 创建临时配置文件（使用绝对路径）
         temp_config = tempfile.NamedTemporaryFile(

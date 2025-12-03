@@ -24,6 +24,10 @@
 
 ## 🎯 项目概述
 
+### 演示视频
+
+🎥 **[系统演示视频](resources/video/demo.mp4)** - 观看完整的系统演示和使用教程
+
 ### 问题定义
 
 EvRAG是一个面向文档问答的检索增强生成（RAG）系统，旨在解决以下问题：
@@ -48,41 +52,64 @@ EvRAG是一个面向文档问答的检索增强生成（RAG）系统，旨在解
 
 ![系统架构图](resources/images/sys_architecture.png)
 
-我们的EvRAG系统采用两层架构设计，完整流程如下：
-
-```
-┌─────────────────┐
-│   用户界面层     │
-│  (CLI / Gradio) │
-└────────┬────────┘
-         │
-┌────────▼────────┐
-│   RAG服务层     │
-│  (FastAPI)      │
-└────────┬────────┘
-         │
-    ┌────┴────┐
-    │         │
-┌───▼───┐ ┌──▼──────┐
-│检索层 │ │生成层   │
-│BM25   │ │LLM     │
-│Milvus │ │(vLLM)  │
-└───┬───┘ └────────┘
-    │
-┌───▼──────┐
-│重排序层  │
-│Reranker │
-└─────────┘
-```
 
 ### 核心流程
 
-1. **检索阶段**：使用BM25（稀疏检索）和Milvus（向量检索）并行检索相关文档
-2. **合并去重**：合并两种检索结果，去除重复文档
-3. **重排序**：使用BGE Reranker对文档进行精排
-4. **上下文构建**：将top-k文档组织成上下文
-5. **答案生成**：使用微调的LLM生成答案
-6. **后处理**：提取答案、引用页码、相关图片
+根据系统架构图，EvRAG的RAG流程包含以下步骤：
+
+```
+用户查询
+    ↓
+历史对话处理（多轮对话时，总结历史上下文）
+    ↓
+┌─────────────────────────────────┐
+│  并行检索阶段（混合检索）         │
+│  ├─ BM25检索（稀疏检索，关键词） │
+│  └─ Milvus检索（向量检索，语义） │
+└──────────────┬──────────────────┘
+               ↓
+        合并与去重
+    （基于unique_id去重，
+     如有parent_id则获取父文档）
+               ↓
+        重排序（BGE Reranker）
+    （对合并后的文档进行精排，
+     选择top-k最相关文档）
+               ↓
+        上下文构建
+    （将top-k文档组织成结构化上下文）
+               ↓
+    ┌───────────────────────────┐
+    │  LLM生成（vLLM服务）      │
+    │  - 输入：查询 + 上下文    │
+    │  - 输出：带引用的答案     │
+    └───────────┬───────────────┘
+                ↓
+          后处理
+    ├─ 提取答案（去除引用标记）
+    ├─ 提取引用页码
+    └─ 提取相关图片
+                ↓
+          返回结果
+    （答案 + 引用页码 + 相关图片 + 性能指标）
+```
+
+**详细说明**：
+
+1. **用户查询输入**：接收用户问题（支持多轮对话）
+2. **历史对话处理**：当存在历史对话时，保留最近N轮对话，对更早的历史进行LLM总结
+3. **并行检索**：
+   - **BM25检索**：基于关键词匹配的稀疏检索，擅长精确匹配
+   - **Milvus检索**：基于向量相似度的稠密检索，擅长语义理解
+4. **合并去重**：合并两种检索结果，基于`unique_id`去重；如果文档有`parent_id`，从MongoDB获取父文档（包含更完整的上下文）
+5. **重排序**：使用微调的BGE-Reranker-v2-m3模型对合并后的文档进行精排，选择top-k最相关的文档
+6. **上下文构建**：将重排序后的top-k文档组织成结构化上下文，格式为`【序号】文档内容`
+7. **LLM生成**：通过vLLM服务调用微调的Qwen3-8B模型，输入查询和上下文，生成带引用的答案
+8. **后处理**：
+   - 提取答案文本（去除引用标记如【1】【2】）
+   - 提取引用页码（从文档metadata中获取）
+   - 提取相关图片（从文档metadata中获取图片信息）
+9. **返回结果**：返回答案、引用页码、相关图片和性能指标（检索时间、重排序时间、生成时间等）
 
 ### 技术栈
 
@@ -110,6 +137,8 @@ EvRAG是一个面向文档问答的检索增强生成（RAG）系统，旨在解
 ---
 
 ## 🚀 快速开始
+
+> 💡 **提示**：在开始之前，建议先观看[系统演示视频](resources/video/demo.mp4)了解系统功能和使用方法。
 
 ### 环境要求
 
@@ -179,6 +208,27 @@ vim config/config.yaml
 
 **1.1 数据准备（PDF解析、文档清洗、文档切分）**
 
+**前置步骤：启动MongoDB和语义切分服务**
+
+在执行数据准备之前，必须先启动MongoDB和语义切分服务：
+
+```bash
+# 启动MongoDB和语义切分服务（必需）
+./scripts/deployment/start_mongodb_semantic_services.sh
+```
+
+这个脚本会：
+1. 启动MongoDB服务（端口27017）
+2. 配置Milvus连接（本地文件模式）
+3. 启动语义切分服务（端口6000）
+
+**注意**：
+- MongoDB用于存储文档数据，必须在数据准备前启动
+- 语义切分服务用于文档的语义切分，也需要提前启动
+- 如果服务已在运行，脚本会跳过启动步骤
+
+**执行数据准备**
+
 ```bash
 # 解析PDF文件，提取文本和图片，并进行清洗和切分
 python main.py prepare-data --pdf-path data/Tesla_Manual.pdf
@@ -201,6 +251,82 @@ python main.py prepare-data --pdf-path data/Tesla_Manual.pdf
    - 语义切分（M3E-small模型）→ 生成父文档
    - 句子级切分（RecursiveCharacterTextSplitter）→ 生成子文档（256 tokens, overlap=50）
 4. **数据入库**: 保存到MongoDB和pickle文件
+
+**MongoDB使用说明**：
+
+MongoDB在EvRAG系统中用于存储和管理文档数据，支持父子文档关联检索。
+
+**1. MongoDB安装和启动**
+
+```bash
+# 方式1：使用项目提供的启动脚本（推荐）
+./scripts/deployment/start_mongodb_semantic_services.sh
+
+# 方式2：手动启动MongoDB
+# 如果已安装MongoDB，直接启动服务
+mongod --dbpath data/mongodb/data --logpath data/mongodb/log/mongodb.log --fork
+
+# 方式3：使用Docker（可选）
+docker run -d -p 27017:27017 --name mongodb \
+  -v $(pwd)/data/mongodb/data:/data/db \
+  mongo:7.0
+```
+
+**2. MongoDB配置**
+
+在`config/config.yaml`中配置MongoDB连接信息：
+
+```yaml
+mongodb_host: "localhost"      # MongoDB主机地址
+mongodb_port: 27017            # MongoDB端口
+mongodb_database: "evrag"       # 数据库名称
+```
+
+**3. 数据存储结构**
+
+MongoDB中存储的文档结构：
+
+- **数据库**: `evrag`
+- **集合**: `manual_text`
+- **文档格式**:
+  ```json
+  {
+    "unique_id": "文档唯一标识符",
+    "page_content": "文档内容",
+    "metadata": {
+      "page": 页码,
+      "parent_id": "父文档ID（子文档才有）",
+      "unique_id": "文档唯一标识符",
+      "images_info": [图片信息列表],
+      ...
+    }
+  }
+  ```
+
+**4. MongoDB在RAG流程中的作用**
+
+- **文档存储**: 在文档切分阶段，将父文档和子文档保存到MongoDB
+- **父子关联检索**: 当检索到的子文档有`parent_id`时，从MongoDB获取父文档（包含更完整的上下文）
+- **数据持久化**: 提供比pickle文件更灵活的查询和管理能力
+
+**5. MongoDB管理工具**
+
+```bash
+# 检查MongoDB中的数据
+python -m src.evrag.parser.check.check_mongodb
+
+# 清空MongoDB集合（重新生成数据时使用）
+python -m src.evrag.parser.check.clear_mongodb --collection manual_text
+
+# 获取MongoDB连接字符串
+python -m src.evrag.utils.get_mongodb_connection_string
+```
+
+**6. 注意事项**
+
+- MongoDB必须在数据准备阶段启动，否则文档无法保存到数据库
+- 如果MongoDB未启动，系统会使用pickle文件作为备用存储
+- 父子文档关联检索需要MongoDB支持，可以提升检索质量
 
 **1.2 构建检索索引**
 
@@ -237,6 +363,8 @@ python main.py process-qa \
 - `data/qa_pairs/expand_qa_pair.json` - 问题改写后的QA对
 - `data/qa_pairs/train_qa_pair.json` - 训练集
 - `data/qa_pairs/test_qa_pair.json` - 测试集
+
+**数据格式参考**：查看 `examples/data/qa_pair_example.json` 了解QA对数据格式。
 
 **2.3 生成微调训练数据**
 
@@ -449,20 +577,7 @@ tensorboard --logdir models/finetuned/bge_reranker/runs
 
 #### 阶段4：RAG系统使用
 
-**4.1 命令行问答**
-
-```bash
-# 基础问答
-python main.py infer "如何打开车窗？" --topk 5
-
-# 流式输出
-python main.py infer "如何打开车窗？" --stream
-
-# 启用思考模式（复杂推理任务）
-python main.py infer "如何打开车窗？" --enable-thinking
-```
-
-**4.2 Web界面使用**
+**4.1 Web界面使用**
 
 见下方"方式二：Web界面（Gradio）"部分。
 
@@ -480,13 +595,45 @@ python main.py evaluate-rag \
 **5.2 基线对比评估**
 
 ```bash
-# 对比基线和微调模型
+# 对比基线和微调模型（推荐，自动启动和停止服务）
 ./scripts/evaluation/run_baseline_finetuned_comparison.sh
+
+# 或者手动执行评估（需要先启动vLLM服务）
+# 1. 启动基线vLLM服务（端口8000）
+./scripts/deployment/start_vllm_for_evaluation.sh
+
+# 2. 运行基线评估
+./scripts/evaluation/run_baseline_evaluation.sh
+
+# 3. 运行微调模型评估（需要先启动微调vLLM服务）
+./scripts/deployment/start_vllm_finetuned.sh
+./scripts/evaluation/run_finetuned_evaluation.sh
+
+# 4. 停止评估服务
+./scripts/deployment/stop_vllm_for_evaluation.sh
 ```
 
-**5.3 实验结果**
+**5.3 评估结果分析**
 
-我们的RAG系统在676个手工标注测试样本上取得了优异的性能：
+```bash
+# 分析评估结果（生成对比报告）
+python scripts/evaluation/analyze_evaluation_results.py
+
+# LLM模型对比评估
+python scripts/evaluation/evaluate_llm_comparison.py
+
+# Reranker模型对比评估
+python scripts/evaluation/evaluate_reranker_comparison.py
+
+# Qwen基线模型评估（使用Qwen3-32B）
+python scripts/evaluation/run_qwen_baseline_evaluation.py \
+    --test-data data/qa_pairs/test_qa_pair.json \
+    --output-dir rag_test_reports/qwen_baseline
+```
+
+**5.4 实验结果**
+
+我们的RAG系统在676个核对过的质量测试样本上取得了优异的性能：
 
 ![性能对比表格](resources/images/performance_comparison_table.png)
 
@@ -566,8 +713,14 @@ python -m src.evrag.server.rag_server
 #### 4. 停止服务
 
 ```bash
+# 停止Gradio前端
 ./scripts/deployment/stop_gradio.sh
+
+# 停止vLLM服务
 ./scripts/deployment/stop_vllm_finetuned.sh
+
+# 停止MongoDB和语义切分服务（如果不再需要）
+./scripts/deployment/stop_mongodb_semantic_services.sh
 ```
 
 ### 快速开始（使用预训练模型）
@@ -589,7 +742,21 @@ conda activate evrag
 pip install -r requirements.txt
 ```
 
-#### 步骤2：数据准备（如果还没有）
+#### 步骤2：启动MongoDB（必需）
+
+MongoDB用于存储文档数据，必须在数据准备前启动：
+
+```bash
+# 启动MongoDB和语义切分服务
+./scripts/deployment/start_mongodb_semantic_services.sh
+
+# 或手动启动MongoDB（如果已安装）
+mongod --dbpath data/mongodb/data --logpath data/mongodb/log/mongodb.log --fork
+```
+
+**注意**：如果MongoDB未启动，文档切分阶段会失败。确保MongoDB在端口27017上运行。
+
+#### 步骤3：数据准备（如果还没有）
 
 ```bash
 # 准备PDF文件（示例：Tesla手册）
@@ -600,7 +767,7 @@ python main.py prepare-data --pdf-path data/Tesla_Manual.pdf
 python main.py build-index
 ```
 
-#### 步骤3：启动服务
+#### 步骤4：启动服务
 
 ```bash
 # 1. 启动vLLM服务（端口8001）
@@ -613,7 +780,7 @@ python -m src.evrag.server.rag_server
 ./scripts/deployment/start_gradio.sh
 ```
 
-#### 步骤4：使用系统
+#### 步骤5：使用系统
 
 访问 `http://localhost:8080`，输入问题进行测试。
 
@@ -649,22 +816,40 @@ EvRAG/
 │   ├── evaluation/               # 评估模块
 │   ├── finetune/                # 微调模块
 │   └── utils/                   # 工具函数
+├── examples/                     # 示例数据目录
+│   └── data/                    # 数据格式示例
+│       ├── qa_pair_example.json          # QA对数据格式示例
+│       ├── llm_training_example.json     # LLM训练数据格式示例
+│       ├── reranker_training_example.jsonl  # Reranker训练数据格式示例
+│       └── README.md            # 数据格式说明文档
 ├── scripts/                      # 脚本目录
-│   ├── deployment/              # 部署脚本
-│   │   ├── start_gradio.sh
-│   │   ├── start_vllm_finetuned.sh
-│   │   └── ...
+│   ├── deployment/              # 部署脚本（启动/停止服务）
+│   │   ├── start_gradio.sh              # 启动Gradio前端
+│   │   ├── start_vllm_finetuned.sh      # 启动微调vLLM服务
+│   │   ├── start_vllm_for_evaluation.sh # 启动评估用vLLM服务
+│   │   ├── start_mongodb_semantic_services.sh  # 启动MongoDB和语义切分服务
+│   │   ├── stop_gradio.sh               # 停止Gradio前端
+│   │   ├── stop_vllm_finetuned.sh       # 停止微调vLLM服务
+│   │   ├── stop_vllm_for_evaluation.sh  # 停止评估用vLLM服务
+│   │   └── stop_mongodb_semantic_services.sh   # 停止MongoDB和语义切分服务
 │   ├── evaluation/              # 评估脚本
-│   │   ├── run_finetuned_evaluation.sh
-│   │   └── ...
+│   │   ├── run_baseline_evaluation.sh           # 基线模型评估
+│   │   ├── run_finetuned_evaluation.sh          # 微调模型评估
+│   │   ├── run_baseline_finetuned_comparison.sh # 基线vs微调对比
+│   │   ├── run_qwen_baseline_evaluation.py      # Qwen基线评估
+│   │   ├── evaluate_llm_comparison.py           # LLM对比评估
+│   │   ├── evaluate_reranker_comparison.py     # Reranker对比评估
+│   │   └── analyze_evaluation_results.py        # 评估结果分析
 │   ├── training/                # 训练脚本
-│   │   ├── train_llm.sh
-│   │   └── train_reranker.sh
+│   │   ├── train_llm.sh        # LLM微调训练
+│   │   └── train_reranker.sh   # Reranker微调训练
 │   ├── utils/                   # 工具脚本
-│   │   ├── check_code_quality.sh
-│   │   └── monitor_gpu.sh
+│   │   ├── check_code_quality.sh  # 代码质量检查
+│   │   ├── monitor_gpu.sh         # GPU监控
+│   │   └── test_image_loading.py  # 图片加载测试
 │   └── setup/                    # 设置脚本
-│       └── download_models.sh
+│       ├── download_models.sh     # 下载模型
+│       └── manage_dependencies.sh  # 依赖管理
 ├── config/                       # 配置文件
 │   ├── config.example.yaml       # 配置示例
 │   └── config.yaml               # 实际配置（需创建）
@@ -772,6 +957,26 @@ ruff format src/
 ruff check src/
 ```
 
+### 工具脚本
+
+```bash
+# GPU使用情况监控（实时监控GPU显存、利用率、温度等）
+./scripts/utils/monitor_gpu.sh
+
+# 测试图片加载功能（查找包含图片的文档，检查图片路径）
+python scripts/utils/test_image_loading.py
+```
+
+### 环境设置脚本
+
+```bash
+# 下载所需模型文件
+./scripts/setup/download_models.sh
+
+# 管理项目依赖（自动生成和更新requirements.txt）
+./scripts/setup/manage_dependencies.sh
+```
+
 ### 代码规范
 
 - **Python风格**：遵循PEP 8
@@ -846,7 +1051,7 @@ export MONGODB_PORT=27017
 
 ### Q4: 如何微调模型？
 
-**A**: 参考 `scripts/training/` 目录下的训练脚本，详细说明请参考 `dev_docs/` 目录下的相关文档。
+**A**: 参考 `scripts/training/` 目录下的训练脚本，详细说明请参考 `dev_docs/training/` 目录下的相关文档。
 
 ### Q5: 性能优化建议？
 
@@ -860,10 +1065,15 @@ export MONGODB_PORT=27017
 
 ## 📚 相关文档
 
+- **项目报告**：[AIAA报告](resources/aiaa.pdf) - 完整的项目技术报告和实验分析
+- **演示视频**：[系统演示视频](resources/video/demo.mp4) - 系统功能演示和使用教程
+- **公开文档**：[docs/README.md](docs/README.md) - 面向外部用户的文档目录
+  - [环境配置指南](docs/environment.md) - 环境设置和配置
+  - [开发指南](docs/development.md) - 项目结构和开发规范
+  - [数据处理指南](docs/data.md) - 数据处理流程
+  - [前端实现指南](docs/frontend.md) - Gradio前端和RAG服务API
 - **脚本说明**：[scripts/README.md](scripts/README.md)
-- **环境设置**：`dev_docs/ENVIRONMENT.md`
-- **项目结构**：`dev_docs/PROJECT_STRUCTURE.md`
-- **Gradio实现**：`dev_docs/gradio_implementation_summary.md`
+- **开发文档**：[dev_docs/README.md](dev_docs/README.md) - 内部开发文档目录索引
 
 ---
 

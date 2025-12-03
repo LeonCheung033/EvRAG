@@ -15,9 +15,9 @@ logging_steps: 10
 lora_rank: 8
 lora_target: all
 lr_scheduler_type: cosine
-model_name_or_path: /remote-home/share/liangZhang/EvRAG/models/Qwen3-8B/
+model_name_or_path: models/Qwen3-8B/  # 基础模型路径（相对于项目根目录）
 num_train_epochs: 3.0
-output_dir: models/finetuned/qwen3_lora_sft
+output_dir: models/finetuned/qwen3_lora_sft  # 输出目录（相对于项目根目录）
 overwrite_cache: true
 overwrite_output_dir: true
 per_device_train_batch_size: 4  # 优化：平衡速度和显存，4×2048=8192 tokens/step（比优化前的9000少）

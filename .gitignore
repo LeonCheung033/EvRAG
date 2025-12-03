@@ -26,7 +26,6 @@ models/
 logs/
 *.pkl
 *.db
-*.pdf
 *.h5
 *.hdf5
 
@@ -42,6 +41,8 @@ logs/
 .env
 .env.local
 .env.*.local
+# 但保留示例文件
+!.env.example
 config/config.yaml
 requirements.txt
 evrag-gitflow-uv-de56e013.plan.md
