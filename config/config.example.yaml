@@ -1,0 +1,113 @@
+# EvRAG配置文件示例
+# 复制此文件为 config.yaml 并根据实际情况修改
+# 
+# 使用方法：
+#   cp config/config.example.yaml config/config.yaml
+#   然后编辑 config/config.yaml 填入你的实际配置
+#
+# 配置优先级（从高到低）：
+#   1. 环境变量（.env 文件或系统环境变量）
+#   2. YAML配置文件（config/config.yaml）
+#   3. 默认值
+#
+# 提示：敏感信息（如API密钥）建议使用环境变量配置，更安全
+#       可以参考 .env.example 文件了解如何配置环境变量
+
+# 基础路径配置
+base_dir: "."  # 项目根目录，可以使用绝对路径或相对路径
+
+# 数据路径配置
+data_dir: "data"
+pdf_path: "data/Tesla_Manual.pdf"
+test_doc_path: "data/test_docs.txt"
+stopwords_path: "data/stopwords.txt"
+image_save_dir: "data/saved_images"
+raw_docs_path: "data/processed_docs/raw_docs.pkl"
+clean_docs_path: "data/processed_docs/clean_docs.pkl"
+split_docs_path: "data/processed_docs/split_docs.pkl"
+
+# 索引路径配置
+index_dir: "data/saved_index"
+bm25_pickle_path: "data/saved_index/bm25retriever.pkl"
+tfidf_pickle_path: "data/saved_index/tfidfretriever.pkl"
+milvus_db_path: "data/saved_index/milvus.db"
+faiss_db_path: "data/saved_index/faiss.db"
+faiss_qwen_db_path: "data/saved_index/faiss_qwen.db"
+
+# 模型路径配置
+# 注意：模型路径可以使用绝对路径或相对路径（相对于base_dir）
+models_dir: "models"
+m3e_small_model_path: "models/m3e-small"
+bge_m3_model_path: "models/bge-m3"
+qwen3_embedding_model_path: "models/Qwen3-Embedding-0.6B"
+qwen3_reranker_model_path: "models/Qwen3-Reranker-4B"
+bge_reranker_model_path: "models/bge-reranker-v2-m3"
+# 微调后的模型路径（如果已进行微调训练）
+bge_reranker_tuned_model_path: "models/finetuned/bge_reranker/runs/checkpoints/checkpoint_0"
+
+# LLM配置 - 多服务商支持
+device: "cuda"
+
+# 本地vLLM服务配置（用于问答、推理等）
+# 基线模型配置（端口8000）
+local_llm_model_name: "Qwen3-8B"  # 基线模型名称（必须与vLLM注册的模型ID一致，不是路径）
+local_llm_base_url: "http://localhost:8000/v1"  # 基线模型vLLM服务地址
+local_llm_api_key: "EMPTY"  # 本地服务通常不需要API key
+
+# 微调模型配置（端口8001）
+finetuned_llm_model_name: "qwen3_lora_sft"  # 微调模型名称（必须与vLLM注册的模型ID一致，不是路径）
+finetuned_llm_base_url: "http://localhost:8001/v1"  # 微调模型vLLM服务地址
+finetuned_llm_api_key: "EMPTY"  # 本地服务通常不需要API key
+
+# 豆包API配置（用于文档清洗等）
+# 请访问 https://console.volcengine.com/ark 获取API密钥和接入点ID
+doubao_api_key: "YOUR_DOUBAO_API_KEY"  # 豆包API密钥，请在此处填写
+doubao_base_url: "https://ark.cn-beijing.volces.com/api/v3"  # 豆包API地址
+doubao_model_name: "YOUR_DOUBAO_ENDPOINT_ID"  # 豆包推理接入点ID，请替换为您的接入点ID
+
+# Deepseek API配置（用于生成问答数据）
+# 请访问 https://platform.deepseek.com 获取API密钥
+deepseek_api_key: "YOUR_DEEPSEEK_API_KEY"  # Deepseek API密钥
+deepseek_base_url: "https://api.deepseek.com"  # Deepseek API地址
+deepseek_model_name: "deepseek-chat"  # Deepseek模型名称
+
+# SiliconFlow API配置（用于Reranker数据生成）
+# 请访问 https://siliconflow.cn 获取API密钥
+siliconflow_api_key: "YOUR_SILICONFLOW_API_KEY"  # SiliconFlow API密钥（需要配置）
+siliconflow_base_url: "https://api.siliconflow.cn/v1"  # SiliconFlow API地址
+siliconflow_reranker_model: "Qwen/Qwen3-Reranker-8B"  # Reranker模型名称
+
+# 注意：
+# 1. 文档清洗使用 OpenAIClient 连接豆包API
+# 2. API密钥优先级：环境变量（如 DOUBAO_API_KEY）> 配置文件 doubao_api_key
+# 3. 如果使用本地vLLM服务，需要先启动vLLM服务（参考 scripts/deployment/start_vllm_finetuned.sh）
+# 4. 敏感信息（API密钥）建议通过环境变量配置，参考 .env.example 文件
+
+# GPU设备分配配置
+# 根据你的GPU数量和显存情况调整以下配置
+# 示例配置（8卡GPU）：
+#   GPU 0: 语义切分服务（M3E-small，~1GB）
+#   GPU 1: Milvus检索器（BGE-M3，~2-3GB）
+#   GPU 2: Reranker（BGE-Reranker-v2-m3，~2-3GB）
+#   GPU 3,5: vLLM服务（Qwen3-8B，tensor parallelism，2卡）
+#   注意：Qwen3-8B的注意力头数为32，必须能被tensor并行度整除，所以使用2卡而不是3卡
+semantic_chunk_gpu_id: 0      # 语义切分服务使用的GPU ID
+milvus_retriever_gpu_id: 1    # Milvus检索器使用的GPU ID
+reranker_gpu_id: 2            # Reranker使用的GPU ID
+vllm_gpu_ids: [3, 4]          # vLLM服务使用的GPU ID列表（tensor parallelism，注意：注意力头数必须能被并行度整除）
+finetuned_reranker_gpu_id: 5  # 微调后的Reranker使用的GPU ID
+
+# MongoDB配置
+mongodb_host: "localhost"
+mongodb_port: 27017
+mongodb_database: "evrag"
+
+# 服务配置
+server_host: "0.0.0.0"
+server_port: 8000
+semantic_chunk_url: "http://0.0.0.0:6000/v1/semantic-chunks"
+
+# PDF解析配置
+pdf_min_filter_pages: 4      # 最小页码（跳过封面等，从0开始）
+pdf_max_filter_pages: 247    # 最大页码（None表示不限制）
+pdf_page_clip: 50            # 页面底部裁剪像素数（去除页眉页脚）

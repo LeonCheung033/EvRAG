@@ -1,0 +1,115 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Build files
+build/
+dist/
+wheels/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv
+venv/
+ENV/
+env/
+.conda/
+
+# 数据文件（通常很大，不应该提交到Git）
+data/
+models/
+logs/
+*.pkl
+*.db
+*.h5
+*.hdf5
+
+# IDE配置（个人偏好，不需要共享）
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# 环境变量文件（包含敏感信息）
+.env
+.env.local
+.env.*.local
+# 但保留示例文件
+!.env.example
+config/config.yaml
+requirements.txt
+evrag-gitflow-uv-de56e013.plan.md
+evrag-gitflow-conda-phase2.plan.md
+
+# 测试覆盖率报告
+htmlcov/
+.coverage
+.coverage.*
+.coveragerc
+.pytest_cache/
+.tox/
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# 操作系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 临时文件
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# 模型检查点
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+
+# 数据库文件
+*.sqlite
+*.sqlite3
+
+# 代码检查缓存
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage*
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+.hypothesis/
+.ipynb_checkpoints/
+*.ipynb
+
+# data、model、log
+data/
+models/
+log/
+mongodb/
+reports/
+rag_test_reports/
+dev_docs/
+
+# 微调依赖项目（已克隆到本地，但不提交到git）
+LLaMA-Factory-main/
+RAG-Retrieval/

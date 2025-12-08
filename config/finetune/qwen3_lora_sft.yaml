@@ -1,0 +1,34 @@
+bf16: true
+cutoff_len: 2048  # 优化：从4500减少到2048，实际数据最大长度约2936，2048足够且大幅提速
+dataloader_num_workers: 8  # 优化：从4增加到8，加速数据加载
+dataset: faq_summary
+eval_dataset: faq_summary_eval
+ddp_timeout: 180000000
+do_eval: true
+do_train: true
+eval_steps: 100
+eval_strategy: steps
+finetuning_type: lora
+gradient_accumulation_steps: 4  # 优化：保持有效batch size=16（4卡×4×4=64，或6卡×4×4=96）
+learning_rate: 2.0e-05
+logging_steps: 10
+lora_rank: 8
+lora_target: all
+lr_scheduler_type: cosine
+model_name_or_path: models/Qwen3-8B/  # 基础模型路径（相对于项目根目录）
+num_train_epochs: 3.0
+output_dir: models/finetuned/qwen3_lora_sft  # 输出目录（相对于项目根目录）
+overwrite_cache: true
+overwrite_output_dir: true
+per_device_train_batch_size: 4  # 优化：平衡速度和显存，4×2048=8192 tokens/step（比优化前的9000少）
+plot_loss: true
+preprocessing_num_workers: 16
+report_to: tensorboard
+resume_from_checkpoint: null
+save_only_model: false
+save_steps: 100
+stage: sft
+template: qwen3_nothink
+trust_remote_code: true
+warmup_ratio: 0.1
+flash_attn: sdpa  # 优化：使用PyTorch SDPA（内置，无需额外安装，性能接近FlashAttention）

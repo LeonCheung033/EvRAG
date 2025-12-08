@@ -1,0 +1,12 @@
+faq_summary:
+  columns:
+    prompt: instruction
+    query: input
+    response: output
+  file_name: data/finetune/train_llamafactory.json
+faq_summary_eval:
+  columns:
+    prompt: instruction
+    query: input
+    response: output
+  file_name: data/finetune/test_llamafactory.json

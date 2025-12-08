@@ -1,0 +1,29 @@
+batch_size: 8
+document_format: '{}'
+epochs: 2
+gradient_accumulation_steps: 2
+log_interval: 10
+log_with: tensorboard
+loss_type: pointwise_bce
+lr: 2e-5
+max_label: 2
+max_len: 4096
+min_label: 0
+mixed_precision: fp16
+model_name_or_path: models/bge-reranker-v2-m3  # 基础模型路径（相对于项目根目录）
+model_type: bert_encoder
+num_labels: 1
+num_max_checkpoints: 5
+output_dir: models/finetuned/bge_reranker  # 输出目录（相对于项目根目录）
+query_format: '{}'
+save_on_epoch_end: 1
+seed: 42
+shuffle_rate: 0.0
+stable_proportion: 0.0
+train_dataset: data/rerank_data/train.json  # 训练数据集路径（相对于项目根目录）
+train_dataset_type: pointwise
+train_label_key: label
+val_dataset: data/rerank_data/dev.json  # 验证数据集路径（相对于项目根目录）
+val_dataset_type: pointwise
+val_label_key: label
+warmup_proportion: 0.1
